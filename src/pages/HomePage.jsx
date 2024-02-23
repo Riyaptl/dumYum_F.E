@@ -4,17 +4,17 @@ import BannerSlider from '../component/BannerSlider'
 import SpecialSlider from '../component/SpecialSlider'
 import Testimonial from '../component/Testimonial'
 import Footer from '../component/Footer'
-import TestSlider from '../component/TestSlider'
 import VideoSection from '../component/VideoSection'
+import ExploreSlider from '../component/ExploreSlider'
 
 const HomePage = () => {
   return (
     <div className=' h-screen'>
      <Navbar />
       <BannerSlider  />
-      <SpecialSlider />
+      <ExploreSlider />
       <VideoSection />
-      <TestSlider />
+      <SpecialSlider />
       <Testimonial />
       <Footer /> 
     </div>
