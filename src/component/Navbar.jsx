@@ -1,52 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './Navbar.css';
+import {Link} from "react-router-dom"
+import { useDispatch, useSelector } from 'react-redux';
+import {getCategories} from "../slices/categorySlice"
+import { getSpecials } from '../slices/specialSlice';
 
 const Navbar = () => {
+  const dispatch = useDispatch();
+  const {categories} = useSelector((state) => state.category)
+  const {specials} = useSelector((state) => state.special)
+
   const jsonData = {
     logo: 'Logo',
     menuItems: [
       { title: 'Home', url: '#' },
+      { title: 'Products', url: '#', isMegaMenu: true },
       { title: 'About', url: '#' },
-      { title: 'Dropdown Menu', url: '#', isDropdown: true },
-      { title: 'Mega Menu', url: '#', isMegaMenu: true },
-
-    ],
-    dropdownItems: [
-      { title: 'Drop menu 1', url: '#' },
-      { title: 'Drop menu 2', url: '#' },
-      { title: 'Drop menu 3', url: '#' },
-      { title: 'Drop menu 4', url: '#' }
+      { title: 'B2B Connect', url: '#' },
     ],
     megaMenu: {
       imageUrl: 'https://fadzrinmadu.github.io/hosted-assets/responsive-mega-menu-and-dropdown-menu-using-only-html-and-css/img.jpg',
-      categories: [
-        {
-          title: 'Design Services',
-          items: [
-            { title: 'Graphics', url: '#' },
-            { title: 'Vectors', url: '#' },
-            { title: 'Business cards', url: '#' },
-            { title: 'Custom logo', url: '#' }
-          ]
-        },
-        {
-          title: 'Email Services',
-          items: [
-            { title: 'Personal Email', url: '#' },
-            { title: 'Business Email', url: '#' },
-            { title: 'Mobile Email', url: '#' },
-            { title: 'Web Marketing', url: '#' }
-          ]
-        },
-        {
-          title: 'Security services',
-          items: [
-            { title: 'Site Seal', url: '#' },
-            { title: 'VPS Hosting', url: '#' },
-            { title: 'Privacy Seal', url: '#' },
-            { title: 'Website design', url: '#' }
-          ]
-        }
+      types: [
+        {title: 'Collections'},
+        {title: 'Our Specials'},
       ]
     },
     feedback: {
@@ -55,39 +31,47 @@ const Navbar = () => {
     }
   };
 
+  useEffect(() => {
+    dispatch(getCategories())
+    dispatch(getSpecials())
+  }, [])
+
   return (
     <nav className="responsive-navbar">
       <div className="wrapper">
-        <div className="logo"><a href="#">{jsonData.logo}</a></div>
+        <div className="logo"><Link to="#">{jsonData.logo}</Link></div>
         <input type="checkbox" id="menu-btn" />
         <label htmlFor="menu-btn" className="menu-icon"><i className="fas fa-bars"></i></label>
         <input type="checkbox" id="close-btn" />
         <ul className="nav-links">
           <label htmlFor="close-btn" className="btn close-btn"><i className="fas fa-times"></i></label>
+          
+          
           {jsonData.menuItems.map((menuItem, index) => (
             <li key={index}>
-              <a href={menuItem.url}>{menuItem.title}</a>
-              {menuItem.isDropdown && (
-                <ul className="drop-menu">
-                  {jsonData.dropdownItems.map((item, index) => (
-                    <li key={index}><a href={item.url}>{item.title}</a></li>
-                  ))}
-                </ul>
-              )}
+              <Link to={menuItem.url}>{menuItem.title}</Link>
               {menuItem.isMegaMenu && (
                 <div className="mega-box">
                   <div className="content">
                     <div className="row">
                       <img src={jsonData.megaMenu.imageUrl} alt="" />
                     </div>
-                    {jsonData.megaMenu.categories.map((category, categoryIndex) => (
-                      <div key={categoryIndex} className="row">
-                        <header>{category.title}</header>
-                        <ul className="mega-links">
-                          {category.items.map((item, itemIndex) => (
-                            <li key={itemIndex}><a href={item.url}>{item.title}</a></li>
-                          ))}
-                        </ul>
+                    {jsonData.megaMenu.types.map((type, typeIndex) => (
+                      <div key={typeIndex} className="row">
+                        <header>{type.title}</header>
+                        {type.title === "Collections" ? 
+                          <ul className="mega-links">
+                            {categories.map((item, itemIndex) => (
+                              <li key={itemIndex}><Link to="#">{item.name}</Link></li>
+                            ))}
+                          </ul>
+                          :
+                          <ul className="mega-links">
+                            {specials.map((item, itemIndex) => (
+                              <li key={itemIndex}><Link to="#">{item.name}</Link></li>
+                              ))}
+                          </ul>
+                          }
                       </div>
                     ))}
                   </div>
@@ -96,7 +80,7 @@ const Navbar = () => {
             </li>
           ))}
           <li>
-            <a href="#" className=''>Meet the Master</a>
+            <Link to="#" className=''>Meet the Master</Link>
             <div className="meet-chef-dropdown">
               <div className="content">
                 <div className="row">

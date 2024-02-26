@@ -6,19 +6,20 @@ import Testimonial from '../component/Testimonial'
 import Footer from '../component/Footer'
 import VideoSection from '../component/VideoSection'
 import ExploreSlider from '../component/ExploreSlider'
+import { useSelector } from 'react-redux'
 
 const HomePage = () => {
   return (
     <div className=' h-screen'>
-     <Navbar />
-      <BannerSlider  />
-      <ExploreSlider />
-      <VideoSection />
-      <SpecialSlider />
-      <Testimonial />
-      <Footer /> 
-    </div>
-  )
+        <Navbar />
+        <BannerSlider  />
+        <ExploreSlider />
+        <VideoSection />
+        <SpecialSlider />
+        <Testimonial />
+        <Footer /> 
+      </div>
+    )
 }
 
 export default HomePage
