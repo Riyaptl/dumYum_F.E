@@ -11,10 +11,11 @@ import { useNavigate } from "react-router-dom";
 
 const SpecialSlider = () => {
   const sliderRef = useRef(null);
-  const [hoveredTitle, setHoveredTitle] = useState("");
+  const [hoveredSpecial, setHoveredSpecial] = useState(null);
   const navigate = useNavigate();
   const {specials} = useSelector((state) => state.special)
   const specialImages = "http://localhost:8000/uploads/special/"
+  const [image, setImage] = useState(null)
 
   const settings = {
     infinite: true,
@@ -46,6 +47,14 @@ const SpecialSlider = () => {
     navigate("/chocolate")
   }
 
+  const handleHover = (special) =>{
+    setHoveredSpecial(special)
+  }
+
+  const handleNormal = () =>{
+    setHoveredSpecial(null)
+  }
+
   return (
     (<div className="w-full flex justify-center py-14 relative">
       <div className="w-11/12">
@@ -60,22 +69,25 @@ const SpecialSlider = () => {
               <div onClick={handleShop}
                 key={special._id}
                 className="px-5 relative overflow-hidden"
-                onMouseEnter={() => setHoveredTitle(special.name)}
-                onMouseLeave={() => setHoveredTitle("")}
+                onMouseEnter={() => handleHover(special)}
+                onMouseLeave={handleNormal}
                 >
-                {special.smallImages.length > 0 ?
+                {special.smallImages.length > 1 ? 
                   <img
-                  src={specialImages+special.smallImages[0]}
-                  alt={special.name}
-                  className="w-full h-72 object-cover transition-transform transform hover:scale-110"
-                  /> :
+                    src={
+                      hoveredSpecial === special ? specialImages+special.smallImages[1] : specialImages+special.smallImages[0] 
+                    }
+                    alt={special.name}
+                    className="w-full h-72 object-cover transition-transform transform hover:scale-110"
+                    />                 
+                  :
                   <img
                   src={image1}
                   alt={special.name}
                   className="w-full h-72 object-cover transition-transform transform hover:scale-110"
                   />
                 }
-                {hoveredTitle === special.name && (
+                {hoveredSpecial === special && (
                   <div className="absolute inset-0 flex justify-center items-center">
                     <div className="bg-transparent text-white px-4 py-2 rounded">
                       <h2 className="text-lg font-semibold">{special.name}</h2>
