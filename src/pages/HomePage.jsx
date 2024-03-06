@@ -9,7 +9,7 @@ import ExploreSlider from '../component/ExploreSlider'
 
 const HomePage = () => {
   return (
-    <div className=' h-screen'>
+    <div className='h-screen'>
      <Navbar />
       <BannerSlider  />
       <ExploreSlider />

@@ -56,7 +56,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="responsive-navbar">
+    <nav className="relative">
       <div className="wrapper">
         <div className="logo"><a href="#">{jsonData.logo}</a></div>
         <input type="checkbox" id="menu-btn" />
