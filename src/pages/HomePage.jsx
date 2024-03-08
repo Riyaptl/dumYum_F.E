@@ -18,8 +18,8 @@ const HomePage = () => {
         <SpecialSlider />
         <Testimonial />
         <Footer /> 
-      </div>
-    )
+      </div> 
+  )
 }
 
 export default HomePage

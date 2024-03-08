@@ -31,7 +31,7 @@ const Footer = () => {
       <div className="container mx-auto">
         <div className="">
           {/* Footer CTA */}
-          <div className="border-b-[#37363647] border-b border-solid flex justify-between max-w-[85%] m-auto">
+          <div className="border-b-[#37363647] border-b border-solid flex justify-between max-w-[85%] m-auto bg-[#fffbf7] py-3">
             <div className="flex items-center mb-4">
               <IoLocationSharp className="text-[#5555] text-3xl" />
               <div className="inline-block pl-[15px]">

@@ -37,7 +37,7 @@ const Navbar = () => {
   }, [])
 
   return (
-    <nav className="responsive-navbar">
+    <nav className="relative">
       <div className="wrapper">
         <div className="logo"><Link to="#">{jsonData.logo}</Link></div>
         <input type="checkbox" id="menu-btn" />
