@@ -1,28 +1,26 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { TiArrowLeftThick, TiArrowRightThick } from "react-icons/ti";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import {getAnimationSpecials} from "../slices/animationSlice"
+import { getSpecials } from "../slices/specialSlice";
+import image1 from "../assets/slider1.png";
 
 const BannerSlider = () => {
   const sliderRef = useRef(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate(); 
+  const specialImages = "http://localhost:8000/uploads/special/"
+  const {animationLoading, animationSpecials} = useSelector((state) => state.animation)
+  const {specials} = useSelector((state) => state.special)
 
-  const sliderContent = [
-    {
-      id: 1,
-      image: "https://lepure.in/cdn/shop/products/re-min_460x.jpg?v=1664703775",
-      title: "Discover Paradise...",
-      subtitle: "Your Gateway to Dreams...",
-      text: "Explore dreamy destinations. Your next adventure awaits!"
-    },
-    {
-      id: 2,
-      image: "https://media.istockphoto.com/id/1634513475/photo/autumn-or-fall-leaves-in-floral-watercolor-background-for-thanksgiving-or-fall-designs-orange.jpg?s=1024x1024&w=is&k=20&c=1s0SERQqzjK3QvYvNvySyB3Z63yXNo8KY9gwwT3s-kY=",
-      title: "Journey to Serenity...",
-      subtitle: "Where Tranquility Beckons...",
-      text: "Seek tranquil landscapes. Find peace in beauty."
-    },
-  ];
+
+  useEffect(() => {
+    dispatch(getAnimationSpecials())
+  }, [])
 
   const handleNext = () => {
     sliderRef.current.slickNext();
@@ -43,24 +41,29 @@ const BannerSlider = () => {
     centerPadding: "0",
   };
 
+  const handleShop = () =>{
+    navigate("/chocolate")
+  }
+
   return (
     <div className="w-full flex flex-col items-center justify-center">
       <div className="w-full overflow-hidden  relative">
         <Slider {...settings} ref={sliderRef}>
-          {sliderContent.map((slide, index) => (
+          {animationSpecials.map((animation, index) => (
             <div key={index} className="w-full h-[85vh] md:h-auto flex items-center justify-center relative">
-              <img src={slide.image} alt={`Image ${slide.id}`} className="w-full h-[85vh] object-cover " />
+              {animation.images.length > 0 ?
+                <img src={specialImages+animation.images[0]} alt={`Image ${animation.name}`} className="w-full h-[85vh] object-cover " /> :
+                <img src={image1} alt={`Image ${animation.name}`} className="w-full h-[85vh] object-cover " />
+              }
               <div className="absolute top-1/2 left-4 text-left text-white">
-                <h2 className="text-3xl md:text-4xl font-bold">{slide.title}</h2>
-                <p className="text-lg md:text-xl">{slide.subtitle}</p>
-                <p className="text-lg md:text-xl">{slide.text}</p>
-                {/* <div className="absolute">
-                {index === 0 && (
-                  <button className="bg-[#FF9933] hover:bg-[#63AB45] duration-300 px-4 py-2 rounded-full text-white absolute bottom-8">
+                <h2 className="text-3xl md:text-4xl font-bold">{animation.name}</h2>
+                <p className="text-lg md:text-xl">{animation.tagline}</p>
+                <p className="text-lg md:text-xl">{animation.description}</p>
+                <div className="absolute">
+                <button className="bg-[#FF9933] hover:bg-[#63AB45] duration-300 px-8 py-2 rounded-full text-white absolute top-2" onClick={handleShop}>
                     Explore Now
-                  </button>
-                )}
-                </div> */}
+                </button>
+                </div>
               </div>
             </div>
           ))}

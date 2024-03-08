@@ -1,47 +1,21 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import image1 from "../assets/slider1.png";
 import image2 from "../assets/slider2.png";
 import { TiArrowLeftThick, TiArrowRightThick } from "react-icons/ti";
+import {getSpecials} from "../slices/specialSlice"
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const SpecialSlider = () => {
   const sliderRef = useRef(null);
-  const [hoveredTitle, setHoveredTitle] = useState("");
-
-  const TourType = [
-    {
-      id: 1,
-      image: image1,
-      title: "City Tour",
-    },
-    {
-      id: 2,
-      image: image2,
-      title: "Beach Party",
-    },
-    {
-      id: 3,
-      image: image1,
-      title: "Museum Tour",
-    },
-    {
-      id: 4,
-      image: image2,
-      title: "Cruise Ship",
-    },
-    {
-      id: 5,
-      image: image1,
-      title: "Explore History",
-    },
-    {
-      id: 6,
-      image: image2,
-      title: "Hiking & Diving",
-    },
-  ];
+  const [hoveredSpecial, setHoveredSpecial] = useState(null);
+  const navigate = useNavigate();
+  const {specials} = useSelector((state) => state.special)
+  const specialImages = "http://localhost:8000/uploads/special/"
+  const [image, setImage] = useState(null)
 
   const settings = {
     infinite: true,
@@ -69,8 +43,20 @@ const SpecialSlider = () => {
     sliderRef.current.slickPrev();
   };
 
+  const handleShop = () =>{
+    navigate("/chocolate")
+  }
+
+  const handleHover = (special) =>{
+    setHoveredSpecial(special)
+  }
+
+  const handleNormal = () =>{
+    setHoveredSpecial(null)
+  }
+
   return (
-    <div className="w-full flex justify-center py-14 relative">
+    (<div className="w-full flex justify-center py-14 relative">
       <div className="w-11/12">
         <div className="text-center pb-8">
           <h2 className="text-black font-serif text-center text-3xl ">
@@ -78,23 +64,33 @@ const SpecialSlider = () => {
           </h2>
         </div>
         <Slider {...settings} ref={sliderRef}>
-          {TourType.map((TourType) => {
+          {specials.map((special) => {
             return (
-              <div
-                key={TourType.id}
+              <div onClick={handleShop}
+                key={special._id}
                 className="px-5 relative overflow-hidden"
-                onMouseEnter={() => setHoveredTitle(TourType.title)}
-                onMouseLeave={() => setHoveredTitle("")}
-              >
-                <img
-                  src={TourType.image}
-                  alt={TourType.title}
+                onMouseEnter={() => handleHover(special)}
+                onMouseLeave={handleNormal}
+                >
+                {special.smallImages.length > 1 ? 
+                  <img
+                    src={
+                      hoveredSpecial === special ? specialImages+special.smallImages[1] : specialImages+special.smallImages[0] 
+                    }
+                    alt={special.name}
+                    className="w-full h-72 object-cover transition-transform transform hover:scale-110"
+                    />                 
+                  :
+                  <img
+                  src={image1}
+                  alt={special.name}
                   className="w-full h-72 object-cover transition-transform transform hover:scale-110"
-                />
-                {hoveredTitle === TourType.title && (
+                  />
+                }
+                {hoveredSpecial === special && (
                   <div className="absolute inset-0 flex justify-center items-center">
                     <div className="bg-transparent text-white px-4 py-2 rounded">
-                      <h2 className="text-lg font-semibold">{TourType.title}</h2>
+                      <h2 className="text-lg font-semibold">{special.name}</h2>
                     </div>
                   </div>
                 )}
@@ -115,7 +111,7 @@ const SpecialSlider = () => {
           <TiArrowRightThick />
         </button>
       </div>
-    </div>
+    </div>)
   );
 };
 
