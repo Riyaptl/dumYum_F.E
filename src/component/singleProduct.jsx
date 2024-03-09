@@ -5,10 +5,12 @@ import { useLocation } from 'react-router-dom'
 import Slider from 'react-slick'
 import {getSingleSubCategory} from "../slices/subCategorySlice"
 import {addCart, getcartQuantity, checkDelivery} from "../slices/cartSlice"
+import {getRating} from "../slices/ratingSlice"
 
 const SingleProduct = () => {
   const [showOverlay, setShowOverlay] = useState(false)
   const [quantity, setQuantity] = useState(1)
+  const [status, setStatus] = useState('')
   const [itemCount, setItemCount] = useState(0)
   const [addressDetails, setAddressDetails] = useState({
     address: '',
@@ -27,10 +29,14 @@ const SingleProduct = () => {
   const [activeTab, setActiveTab] = useState('description')
   const id = location.pathname.split('/')[2]
   const {cartQuantity, error, deliveryStatus} = useSelector((state) => state.cart)
+  const {rating} = useSelector((state) => state.rating)
   const pageImages = `http://localhost:8000/uploads/subCategory/`
 
   useEffect(() => {
     dispatch(getSingleSubCategory(id))
+    dispatch(getRating(id))
+    setStatus('')
+    console.log('hit');
   }, [id])
 
   useEffect(() => {
@@ -67,15 +73,6 @@ const SingleProduct = () => {
     }
   };
 
-  // const hasProduct = (id) => {
-  //   // console.log(cart);
-  //   // console.log(cart?.cart.predefinedOrder);
-  //   const subCat = cart?.cart.predefinedOrder.find((obj) => obj.subCategoryId == id)
-  //   // const subCat = cartProducts.find((obj) => obj.subCategoryId == id)
-  //   return subCat
-  //   return
-  // }
-
   const handleSubmitAddress = async () => {
     // await dispatch();
     setShowOverlay(false);
@@ -108,8 +105,9 @@ const SingleProduct = () => {
     setActiveTab(tab)
   }
 
-  const handleCheck = (pincode) => {
-    dispatch(checkDelivery(pincode))
+  const handleCheck = async (pincode) => {
+    await dispatch(checkDelivery(pincode))
+    setStatus(deliveryStatus)
   }
 
   return (
@@ -146,6 +144,21 @@ const SingleProduct = () => {
               </button>
             </div>
           </div>
+          {rating?.rating}{Array.from({ length: rating?.rating }, (_, i) => (
+            <svg
+            key={i}
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5 text-yellow-500 fill-current"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            >
+            <path
+            fillRule="evenodd"
+            d="M10 3.578l1.124 3.459h3.617a.414.414 0 0 1 .268.732l-2.926 2.135 1.109 3.4a.414.414 0 0 1-.602.484L10 13.28l-2.99 2.268a.414.414 0 0 1-.602-.484l1.109-3.4-2.926-2.135a.414.414 0 0 1 .268-.732h3.617L10 3.578z"
+            clipRule="evenodd"
+            />
+            </svg>
+          ))}
           <div className="lg:w-1/2 lg:pl-8">
             <div className="mb-6">
               <h1 className="text-3xl font-extralight mb-2">
@@ -166,7 +179,7 @@ const SingleProduct = () => {
                 <button onClick={() => handleCheck(pincode)} className="hover:border hover:border-black hover:text-black hover:bg-transparent bg-black duration-300 p-2 text-white">
                   Check
                 </button>
-                {deliveryStatus}
+                {status}
               </div>
                 <div className="mt-2 border border-separate text-black ">
                   <button
@@ -254,7 +267,42 @@ const SingleProduct = () => {
               <p>{singleSubCategory?.description}</p>
             </div>
           )}
-
+          {activeTab === 'reviews' && (
+            <div className="mt-4">
+              <h2 className="text-2xl font-semibold mb-2">Reviews:</h2>
+              {rating?.review.map((rating, index) => (
+                <div
+                  key={index}
+                  className="bg-white rounded-lg p-4 mb-4 shadow-md border border-gray-200"
+                >
+                  <div className="flex items-center mb-2">
+                    <p className="text-lg font-semibold">{rating.customer}</p>
+                    <div className="flex items-center ml-4">
+                      {/* Display star ratings */}
+                      {Array.from({ length: rating?.rating }, (_, i) => (
+                        <svg
+                          key={i}
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5 text-yellow-500 fill-current"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M10 3.578l1.124 3.459h3.617a.414.414 0 0 1 .268.732l-2.926 2.135 1.109 3.4a.414.414 0 0 1-.602.484L10 13.28l-2.99 2.268a.414.414 0 0 1-.602-.484l1.109-3.4-2.926-2.135a.414.414 0 0 1 .268-.732h3.617L10 3.578z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      ))}
+                      <span className="ml-2 text-gray-600">{rating.createdAt.toString().split('T')[0]}</span>
+                    </div>
+                  </div>
+                  <p className="text-gray-700">{rating.title}</p>
+                  <p className="text-gray-700">{rating.description}</p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -263,38 +311,3 @@ const SingleProduct = () => {
 
 export default SingleProduct
 
-// {activeTab === 'reviews' && (
-//   <div className="mt-4">
-//     <h2 className="text-2xl font-semibold mb-2">Reviews:</h2>
-//     {singleSubCategory.ratings.map((rating, index) => (
-//       <div
-//         key={index}
-//         className="bg-white rounded-lg p-4 mb-4 shadow-md border border-gray-200"
-//       >
-//         <div className="flex items-center mb-2">
-//           <p className="text-lg font-semibold">{rating.user}</p>
-//           <div className="flex items-center ml-4">
-//             {/* Display star ratings */}
-//             {Array.from({ length: rating.rating }, (_, i) => (
-//               <svg
-//                 key={i}
-//                 xmlns="http://www.w3.org/2000/svg"
-//                 className="h-5 w-5 text-yellow-500 fill-current"
-//                 viewBox="0 0 20 20"
-//                 fill="currentColor"
-//               >
-//                 <path
-//                   fillRule="evenodd"
-//                   d="M10 3.578l1.124 3.459h3.617a.414.414 0 0 1 .268.732l-2.926 2.135 1.109 3.4a.414.414 0 0 1-.602.484L10 13.28l-2.99 2.268a.414.414 0 0 1-.602-.484l1.109-3.4-2.926-2.135a.414.414 0 0 1 .268-.732h3.617L10 3.578z"
-//                   clipRule="evenodd"
-//                 />
-//               </svg>
-//             ))}
-//             <span className="ml-2 text-gray-600">{rating.date}</span>
-//           </div>
-//         </div>
-//         <p className="text-gray-700">{rating.comment}</p>
-//       </div>
-//     ))}
-//   </div>
-// )}
