@@ -43,8 +43,8 @@ const ExploreSlider = () => {
     sliderRef.current.slickPrev();
   };
 
-  const handleShop = () =>{
-    navigate("/chocolate")
+  const handleShop = (id) =>{
+    navigate(`/${id}?page=category`)
   }
 
   return (
@@ -57,9 +57,9 @@ const ExploreSlider = () => {
           {categories.map((category) => {
             return (
               <div key={category._id} className="px-5 relative">
-                {category.images.length > 0 ?
+                {category.smallImages.length > 0 ?
                 <img
-                  src={categoryImages+category.images[0]}
+                  src={categoryImages+category.smallImages[0]}
                   alt={category.name}
                   className="w-full h-80 object-cover  transform transition-transform hover:scale-105"
                 /> :
@@ -73,7 +73,7 @@ const ExploreSlider = () => {
                   <h2 className="text-lg font-semibold">{category.name}</h2>
                   <h2 className="text-lg font-semibold">{category.tagline}</h2>
                 </div>
-                <button className="bg-[#FF9933] hover:bg-[#63AB45] duration-300 px-4 py-2 rounded-full text-white absolute bottom-8" onClick={handleShop}>
+                <button onClick={() => handleShop(category._id)} className="bg-[#FF9933] hover:bg-[#63AB45] duration-300 px-4 py-2 rounded-full text-white absolute bottom-8" >
                     Shop Now
                 </button>
               </div>

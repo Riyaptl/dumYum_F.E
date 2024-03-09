@@ -9,9 +9,8 @@ const ProductPage = () => {
   return (
     <div>
       <Navbar />
-      {/* <FooterBanner  />
-      <Products /> */}
-      <SingleProductPage />
+      <FooterBanner  />
+      <Products />
       <Footer />
     </div>
   )

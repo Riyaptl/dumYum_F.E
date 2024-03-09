@@ -43,8 +43,8 @@ const SpecialSlider = () => {
     sliderRef.current.slickPrev();
   };
 
-  const handleShop = () =>{
-    navigate("/chocolate")
+  const handleShop = (id) =>{
+    navigate(`/${id}?page=special`)
   }
 
   const handleHover = (special) =>{
@@ -66,7 +66,7 @@ const SpecialSlider = () => {
         <Slider {...settings} ref={sliderRef}>
           {specials.map((special) => {
             return (
-              <div onClick={handleShop}
+              <div onClick={() => handleShop(special._id)}
                 key={special._id}
                 className="px-5 relative overflow-hidden"
                 onMouseEnter={() => handleHover(special)}
