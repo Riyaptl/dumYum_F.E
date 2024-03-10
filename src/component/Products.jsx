@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import image1 from "../assets/slider1.png";
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
 import image2 from "../assets/slider2.png";
 
 const productsData = [
@@ -92,28 +94,72 @@ const productVariant = {
 };
 
 const Products = () => {
-  const [cart, setCart] = useState({});
+  const [showOverlay, setShowOverlay] = useState(false)
+  const [addressDetails, setAddressDetails] = useState({
+    address: '',
+    city: '',
+    pincode: '',
+    state: ''
+  });
+  const [err, setErr] = useState(null)
+  const [subCategories, setSubCategories] = useState([])
+  const dispatch = useDispatch();
+  const location = useLocation()
+  const navigate = useNavigate()
+  const page = location.search.split('=')[1]
+  const {singleCategory} = useSelector((state) => state.category)
+  const {singleSpecial} = useSelector((state) => state.special)
+  const {cartProducts, error} = useSelector((state) => state.cart)
+  const subCategoryImages = "http://localhost:8000/uploads/subCategory/"
 
-  const handleAddToCart = (productId) => {
-    setCart((prevCart) => ({
-      ...prevCart,
-      [productId]: (prevCart[productId] || 0) + 1,
-    }));
-  };
+  // useEffect(() => {
+  //   dispatch(getCartProducts())
+  // }, [])
 
-  const handleIncrement = (productId) => {
-    setCart((prevCart) => ({
-      ...prevCart,
-      [productId]: (prevCart[productId] || 0) + 1,
-    }));
-  };
+  useEffect(() => {
+    if (page === "category"){
+      setSubCategories(singleCategory?.subCategories)
+    }else if (page === "special"){
+      setSubCategories(singleSpecial?.subCategories)
+    }
+  }, [singleCategory, singleSpecial, page])
 
-  const handleDecrement = (productId) => {
-    setCart((prevCart) => ({
-      ...prevCart,
-      [productId]: Math.max(0, (prevCart[productId] || 0) - 1),
-    }));
-  };
+  // useEffect(() => {
+  //   setErr(err)
+  //   console.log(error);
+  //   if (error === "Address detail is required"){
+  //     setShowOverlay(true)
+  //   }
+  // }, [error])
+
+  // const handleAddToCart = async (productId) => {
+  //   await dispatch(addCart(productId));
+  //   // await dispatch(getCartProducts());
+  // };
+
+  // const handleIncrement = async (productId) => {
+  //   await dispatch(addQuantity(productId));
+  //   await dispatch(getCartProducts());
+  // };
+
+  // const handleDecrement = async (productId) => {
+  //   await dispatch(removeQuantity(productId));
+  //   await dispatch(getCartProducts());
+  // };
+
+  // const hasProduct = (id) => {
+  //   const subCat = cartProducts.find((obj) => obj.subCategoryId == id)
+  //   return subCat
+  // }
+
+  // const handleSubmitAddress = async () => {
+  //   // await dispatch();
+  //   setShowOverlay(false);
+  // };
+
+  const handleShop = (id) =>{
+    navigate(`/product/${id}`)
+  }
 
   return (
     <motion.div
@@ -122,34 +168,52 @@ const Products = () => {
       animate="visible"
       className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-4 max-w-[80%] m-auto"
     >
-      {productsData.map(product => (
+      {subCategories?.map(product => (
         <motion.div
-          key={product.id}
+          key={product._id}
           variants={productVariant}
           whileTap={{ scale: 0.95 }}
           className="bg-white  overflow-hidden flex flex-col justify-between"
         >
-          <motion.img
-            src={product.image}
-            alt={product.name}
-            className="w-full  object-cover transition duration-300 transform hover:scale-105"
-            whileHover={{ scale: 1.05 }}
-          />
+          {product.smallImages.length > 0 ?
+              <motion.img
+              onClick={() => handleShop(product._id)}
+              src={subCategoryImages+product.smallImages[0]}
+              alt={product.name}
+              className="w-full  object-cover transition duration-300 transform hover:scale-105"
+              whileHover={{ scale: 1.05 }}
+              /> 
+              :
+              <motion.img
+              onClick={() => handleShop(product._id)}
+              src={image1}
+              alt={product.name}
+              className="w-full  object-cover transition duration-300 transform hover:scale-105"
+              whileHover={{ scale: 1.05 }}
+              />
+          }
           <div className="p-4 text-center">
             <h2 className="text-xl font-serif">{product.name}</h2>
-            <p className="text-gray-800 font-bold">{product.price}</p>
-            {cart[product.id] ? (
+            <p className="text-gray-800 font-bold">{product.finalPrice}</p>
+            
+            {/* <button
+                className="mt-2 px-4 py-2 border border-separate text-black  :border hover:border-black"
+                onClick={() => handleAddToCart(product._id)}
+              >
+                Add to Cart
+              </button> */}
+            {/* { hasProduct(product._id) ? (
               <div className="mt-2 border border-separate text-black ">
                 <button
                   className="px-4 py-2 "
-                  onClick={() => handleDecrement(product.id)}
+                  onClick={() => handleDecrement(product._id)}
                 >
                   -
                 </button>
-                <span className="px-4 py-2">{cart[product.id]}</span>
+                <span className="px-4 py-2">{hasProduct(product._id).quantity}</span>
                 <button
                   className="px-4 py-2 "
-                  onClick={() => handleIncrement(product.id)}
+                  onClick={() => handleIncrement(product._id)}
                 >
                   +
                 </button>
@@ -157,14 +221,15 @@ const Products = () => {
             ) : (
               <button
                 className="mt-2 px-4 py-2 border border-separate text-black  :border hover:border-black"
-                onClick={() => handleAddToCart(product.id)}
+                onClick={() => handleAddToCart(product._id)}
               >
                 Add to Cart
               </button>
-            )}
+            )} */}
           </div>
         </motion.div>
       ))}
+      
     </motion.div>
   );
 }

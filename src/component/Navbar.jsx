@@ -13,10 +13,10 @@ const Navbar = () => {
   const jsonData = {
     logo: 'Logo',
     menuItems: [
-      { title: 'Home', url: '#' },
+      { title: 'Home', url: '/' },
       { title: 'Products', url: '#', isMegaMenu: true },
-      { title: 'About', url: '#' },
-      { title: 'B2B Connect', url: '#' },
+      { title: 'About', url: '/' },
+      { title: 'B2B Connect', url: '/' },
     ],
     megaMenu: {
       imageUrl: 'https://fadzrinmadu.github.io/hosted-assets/responsive-mega-menu-and-dropdown-menu-using-only-html-and-css/img.jpg',
@@ -39,7 +39,7 @@ const Navbar = () => {
   return (
     <nav className="relative">
       <div className="wrapper">
-        <div className="logo"><Link to="#">{jsonData.logo}</Link></div>
+        <div className="logo"><Link to="/">{jsonData.logo}</Link></div>
         <input type="checkbox" id="menu-btn" />
         <label htmlFor="menu-btn" className="menu-icon"><i className="fas fa-bars"></i></label>
         <input type="checkbox" id="close-btn" />
@@ -62,13 +62,13 @@ const Navbar = () => {
                         {type.title === "Collections" ? 
                           <ul className="mega-links">
                             {categories.map((item, itemIndex) => (
-                              <li key={itemIndex}><Link to="#">{item.name}</Link></li>
+                              <li key={itemIndex}><Link to={`/${item._id}?page=category`}>{item.name}</Link></li>
                             ))}
                           </ul>
                           :
                           <ul className="mega-links">
                             {specials.map((item, itemIndex) => (
-                              <li key={itemIndex}><Link to="#">{item.name}</Link></li>
+                              <li key={itemIndex}><Link to={`/${item._id}?page=special`}>{item.name}</Link></li>
                               ))}
                           </ul>
                           }

@@ -15,7 +15,6 @@ const BannerSlider = () => {
   const navigate = useNavigate(); 
   const specialImages = "http://localhost:8000/uploads/special/"
   const {animationLoading, animationSpecials} = useSelector((state) => state.animation)
-  const {specials} = useSelector((state) => state.special)
 
 
   useEffect(() => {
@@ -41,8 +40,8 @@ const BannerSlider = () => {
     centerPadding: "0",
   };
 
-  const handleShop = () =>{
-    navigate("/chocolate")
+  const handleShop = (id) =>{
+    navigate(`/${id}?page=special`)
   }
 
   return (
@@ -60,7 +59,8 @@ const BannerSlider = () => {
                 <p className="text-lg md:text-xl">{animation.tagline}</p>
                 <p className="text-lg md:text-xl">{animation.description}</p>
                 <div className="absolute">
-                <button className="bg-[#FF9933] hover:bg-[#63AB45] duration-300 px-8 py-2 rounded-full text-white absolute top-2" onClick={handleShop}>
+                
+                <button onClick={() => handleShop(animation._id)} className="bg-[#FF9933] hover:bg-[#63AB45] duration-300 px-8 py-2 rounded-full text-white absolute top-2">
                     Explore Now
                 </button>
                 </div>
