@@ -5,13 +5,15 @@ import ProductPage from './pages/ProductPage'
 import SingleCategory from './pages/SingleCategory'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SingleProductPage from './pages/SingleProductPage';
+import AuthForm from './pages/AuthForm';
 
 function App() {
   return (
     <div>
       <Router>
         <Routes>
-          <Route exact path="/" element={<HomePage/>}/>
+          <Route exact path="/" element={<AuthForm />}/>
+          {/* <Route exact path="/" element={<HomePage/>}/>  */}
           <Route exact path="/:id" element={<ProductPage/>}/>
           <Route exact path="/product/:id" element={<SingleProductPage/>}/>
         </Routes>
