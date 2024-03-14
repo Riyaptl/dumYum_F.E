@@ -1,5 +1,6 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import cartService from "../services/cartService";
+import Cookies from "js-cookie";
 
 const initialState = {
     loading: false,
@@ -14,6 +15,14 @@ export const addCart = createAsyncThunk(
     "cart/addCart",
     async ({subCategoryId, quantity}) => {
         const res = await cartService.addCart({subCategoryId, quantity});
+        return res.data;
+    }
+)
+
+export const addBucketCart = createAsyncThunk(
+    "cart/addBucketCart",
+    async (bucket) => {
+        const res = await cartService.addBucketCart(bucket);
         return res.data;
     }
 )
@@ -79,6 +88,22 @@ const cartSlice = createSlice({
             state.error = null;
         })
         .addCase(addCart.rejected, (state, action) => {
+            state.loading = false;
+            state.message = null;
+            state.error = action.error.message ;
+            console.log(state.error);
+        })
+        .addCase(addBucketCart.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        })
+        .addCase(addBucketCart.fulfilled, (state, action) => {
+            Cookies.remove('cart')
+            state.loading = false;
+            state.message = action.payload.message;
+            state.error = null;
+        })
+        .addCase(addBucketCart.rejected, (state, action) => {
             state.loading = false;
             state.message = null;
             state.error = action.error.message ;

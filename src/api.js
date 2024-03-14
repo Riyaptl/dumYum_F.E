@@ -36,6 +36,9 @@ export const server = async () => {
       },
       (error) => {
         const message = error.response.data.message;
+        if (message === "Json Web Token is expired, try again" || message === "Json Web Token is invalid, try again"){
+          localStorage.clear()
+        }
         if (Array.isArray(message)) 
         {
           throw new Error(message[0]);
@@ -53,8 +56,8 @@ export const server = async () => {
 };
 
 export default {
-  get: async (url, params) => (await server()).get(url, params),
-  post: async (url, params) => (await server()).post(url, params),
+  get: async (url, params ) => (await server()).get(url, params),
+  post: async (url, params ) => (await server()).post(url, params),
   delete: async (url) => (await server()).delete(url),
 };
 
