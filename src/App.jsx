@@ -8,6 +8,7 @@ import SingleProductPage from './pages/SingleProductPage';
 import AuthForm from './pages/AuthForm';
 import UserDetailsForm from './pages/UserDetailsForm';
 import { useSelector } from 'react-redux';
+import CartPage from './pages/CartPage';
 
 function App() {
   const {isLoggedIn} = useSelector((state) => state.auth)
@@ -19,7 +20,8 @@ function App() {
           <Route exact path="/auth" element={<AuthForm/>}/> 
           {/* <Route exact path="/auth" element={isLoggedIn ? <HomePage/> : <AuthForm/>}/>  */}
           <Route exact path="/details" element={<UserDetailsForm/>}/> 
-          <Route exact path="/" element={<HomePage/>}/> 
+          {/* <Route exact path="/" element={<HomePage/>}/>  */}
+          <Route exact path="/" element={<CartPage/>}/> 
           <Route exact path="/:id" element={<ProductPage/>}/>
           <Route exact path="/product/:id" element={<SingleProductPage/>}/>
         </Routes>
