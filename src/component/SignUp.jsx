@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BiShow, BiHide } from 'react-icons/bi';
+import { setUserData } from '../slices/authSlice';
+import { useDispatch } from 'react-redux';
 
 function SignUp(props) {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
   const [formData, setFormData] = useState({
     first_name: '',
     last_name: '',
@@ -21,16 +26,18 @@ function SignUp(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (
-      formData.first_name.trim() === '' ||
-      formData.last_name.trim() === '' ||
-      formData.email.trim() === '' ||
-      formData.password.trim() === '' ||
-      formData.password_confirmation.trim() === ''
-    ) {
-      alert('All fields are required');
-      return;
-    }
+    // if (
+    //   formData.first_name.trim() === '' ||
+    //   formData.last_name.trim() === '' ||
+    //   formData.email.trim() === '' ||
+    //   formData.password.trim() === '' ||
+    //   formData.password_confirmation.trim() === ''
+    // ) {
+    //   alert('All fields are required');
+    //   return;
+    // }
+    
+    dispatch(setUserData({name: `${formData.first_name} ${formData.last_name}`, email: formData.email, password: formData.password}))
 
     setFormData({
       first_name: '',
@@ -40,7 +47,8 @@ function SignUp(props) {
       password_confirmation: '',
     });
 
-    
+
+    navigate("/details")
   };
 
   const togglePasswordVisibility = () => {

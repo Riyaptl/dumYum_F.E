@@ -5,7 +5,6 @@ export const subCategoryService = {
         return Api.get(`subCategory/all/${catId}`);
     },
     getSingle: (id) => {
-        console.log(id);
         return Api.get(`subCategory/${id}`)
     }
 }

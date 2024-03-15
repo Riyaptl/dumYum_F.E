@@ -1,15 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaChild, FaUser, FaAddressCard, FaCalendarAlt, FaRing } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
+import { signUp } from '../slices/authSlice';
+import { addBucketCart } from '../slices/cartSlice';
+import Cookies from 'js-cookie';
 
 const UserDetailsForm = () => {
+  const cart = Cookies.get('cart') && JSON.parse(Cookies.get('cart'))
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const {username, email, password, authError} = useSelector((state) => state.auth)
+  const [error, setError] = useState("")
+
   const [formData, setFormData] = useState({
     contact: {
-      mobile: '',
+      phone: '',
       address: {
         houseNumber: '',
         street: '',
         state: '',
-        district: '',
+        city: '',
         nearby: '',
         pincode: ''
       }
@@ -20,6 +31,10 @@ const UserDetailsForm = () => {
     hasKids: false,
     kids: []
   });
+
+  useEffect(() => {
+    setError(authError)
+  }, [authError])
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -50,13 +65,12 @@ const UserDetailsForm = () => {
       setFormData(prevState => ({
         ...prevState,
         [name]: checked,
-        kids: checked ? [{ name: '', birthday: '' }] : []
+        kids: checked ? [''] : []
       }));
     } else if (name.startsWith('kid')) {
       const index = parseInt(name.split('.')[1]);
-      const field = name.split('.')[2];
       const updatedKids = [...formData.kids];
-      updatedKids[index][field] = value;
+      updatedKids[index] = value;
       setFormData(prevState => ({
         ...prevState,
         kids: updatedKids
@@ -72,14 +86,45 @@ const UserDetailsForm = () => {
   const addKid = () => {
     setFormData(prevState => ({
       ...prevState,
-      kids: [...prevState.kids, { name: '', birthday: '' }]
+      kids: [...prevState.kids, '']
     }));
   };
 
-  const handleSubmit = (e) => {
+  // useEffect(() => {
+  //   console.log(formData.kids);
+  // }, [formData.kids])
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here you can submit the form data
-    console.log(formData);
+    const {address,} = formData.contact
+    const {city, state, pincode, ...restAddress} = address
+    const kidsBirthdate = formData.kids.filter(entry => entry !== '')
+    const data = {
+      name: username, 
+      email, 
+      password,
+      phone: formData.contact.phone,
+      city, 
+      state,
+      pincode,
+      address: Object.values(restAddress).join(" ").trim(),
+      birthdate: formData.birthday,
+      marraigeStatus: formData.maritalStatus,
+      kidsStatus: formData.hasKids ? 'yes' : 'no',
+      anniversary: formData.anniversary,
+      kidsBirthdate
+    }
+    let signUpFormData = {}
+    for(let key in data){
+      if (data[key]){
+        signUpFormData[key] = data[key]
+      }
+    }
+    let res = await dispatch(signUp(signUpFormData));
+    if (!res.error && cart){
+      res = await dispatch(addBucketCart(cart))
+    }
+    !res.error && navigate("/")
   };
 
   return (
@@ -94,16 +139,15 @@ const UserDetailsForm = () => {
             <div className="grid grid-cols-2 gap-4">
               {/* Contact Details */}
               <div>
-                <label htmlFor="mobile" className="block text-gray-700 text-sm font-bold mb-2"><FaUser className="inline-block mr-2" /> Mobile Number *</label>
+                <label htmlFor="phone" className="block text-gray-700 text-sm font-bold mb-2"><FaUser className="inline-block mr-2" /> Mobile Number *</label>
                 <input
                   type="text"
-                  id="mobile"
-                  name="contact.mobile"
-                  value={formData.contact.mobile}
+                  id="phone"
+                  name="contact.phone"
+                  value={formData.contact.phone}
                   onChange={handleChange}
                   placeholder="Enter mobile number"
                   className="w-full border border-gray-300 rounded px-3 py-2"
-                  required
                 />
               </div>
               {/* Address Details */}
@@ -117,7 +161,6 @@ const UserDetailsForm = () => {
                   onChange={handleChange}
                   placeholder="Enter house number"
                   className="w-full border border-gray-300 rounded px-3 py-2"
-                  required
                 />
               </div>
               {/* More Address Details */}
@@ -131,7 +174,6 @@ const UserDetailsForm = () => {
                   onChange={handleChange}
                   placeholder="Enter street"
                   className="w-full border border-gray-300 rounded px-3 py-2"
-                  required
                 />
               </div>
               {/* State Details */}
@@ -145,21 +187,19 @@ const UserDetailsForm = () => {
                   onChange={handleChange}
                   placeholder="Enter state"
                   className="w-full border border-gray-300 rounded px-3 py-2"
-                  required
                 />
               </div>
-              {/* District Details */}
+              {/* city Details */}
               <div>
-                <label htmlFor="district" className="block text-gray-700 text-sm font-bold mb-2"><FaAddressCard className="inline-block mr-2" /> District *</label>
+                <label htmlFor="city" className="block text-gray-700 text-sm font-bold mb-2"><FaAddressCard className="inline-block mr-2" /> city *</label>
                 <input
                   type="text"
-                  id="district"
-                  name="contact.address.district"
-                  value={formData.contact.address.district}
+                  id="city"
+                  name="contact.address.city"
+                  value={formData.contact.address.city}
                   onChange={handleChange}
-                  placeholder="Enter district"
+                  placeholder="Enter city"
                   className="w-full border border-gray-300 rounded px-3 py-2"
-                  required
                 />
               </div>
               {/* Nearby Details */}
@@ -173,7 +213,6 @@ const UserDetailsForm = () => {
                   onChange={handleChange}
                   placeholder="Enter nearby"
                   className="w-full border border-gray-300 rounded px-3 py-2"
-                  required
                 />
               </div>
               {/* Pincode */}
@@ -187,7 +226,7 @@ const UserDetailsForm = () => {
                   onChange={handleChange}
                   placeholder="Enter pincode"
                   className="w-full border border-gray-300 rounded px-3 py-2"
-                  required
+                  // required
                 />
               </div>
               {/* Birthday */}
@@ -200,7 +239,6 @@ const UserDetailsForm = () => {
                   value={formData.birthday}
                   onChange={handleChange}
                   className="w-full border border-gray-300 rounded px-3 py-2"
-                  required
                 />
               </div>
             </div>
@@ -276,7 +314,7 @@ const UserDetailsForm = () => {
                       <div key={index} className="mb-4 border p-4 rounded-lg">
                         <h5 className="text-md font-semibold mb-2">Kid {index + 1}</h5>
                         <div className="grid grid-cols-2 gap-4">
-                          <div>
+                          {/* <div>
                             <label htmlFor={`kidName${index}`} className="block text-gray-700 text-sm font-bold mb-2">Name *</label>
                             <input
                               type="text"
@@ -287,17 +325,16 @@ const UserDetailsForm = () => {
                               className="w-full border border-gray-300 rounded px-3 py-2"
                               required
                             />
-                          </div>
+                          </div> */}
                           <div>
                             <label htmlFor={`kidBirthday${index}`} className="block text-gray-700 text-sm font-bold mb-2">Birthday *</label>
                             <input
                               type="date"
                               id={`kidBirthday${index}`}
-                              name={`kid.${index}.birthday`}
-                              value={kid.birthday}
+                              name={`kid.${index}`}
+                              value={kid}
                               onChange={handleChange}
                               className="w-full border border-gray-300 rounded px-3 py-2"
-                              required
                             />
                           </div>
                         </div>
@@ -309,7 +346,8 @@ const UserDetailsForm = () => {
               )}
             </div>
           </div>
-<div className='flex justify-center'>
+          {error}
+          <div className='flex justify-center'>
           <button type="submit" className="bg-fuchsia-50 hover:bg-fuchsia-100 text-black px-4 py-2 mt-4  border border-chocolate shadow-md transition duration-300 ease-in-out transform hover:scale-105">
               Submit
           </button></div>

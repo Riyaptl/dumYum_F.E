@@ -3,17 +3,26 @@ import { TiArrowLeftThick, TiArrowRightThick } from 'react-icons/ti'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import Slider from 'react-slick'
+import { FaChild, FaUser, FaAddressCard, FaCalendarAlt, FaRing } from 'react-icons/fa';
+import { ImCross } from "react-icons/im";
 import {getSingleSubCategory} from "../slices/subCategorySlice"
 import {addCart, getcartQuantity, checkDelivery} from "../slices/cartSlice"
 import {getRating} from "../slices/ratingSlice"
+import {addAddress} from "../slices/customerSlice"
+import Cookies from 'js-cookie';
 
 const SingleProduct = () => {
-  const [showOverlay, setShowOverlay] = useState(false)
+  const {isLoggedIn} = useSelector((state) => state.auth)
+  // const [showOverlay, setShowOverlay] = useState(false)
+  const [cart, setCart] = useState(!isLoggedIn && Cookies.get('cart') ? JSON.parse(Cookies.get('cart')) : [])
   const [quantity, setQuantity] = useState(1)
+  const [quantInCart, setQuantInCart] = useState(0)
   const [status, setStatus] = useState('')
-  const [itemCount, setItemCount] = useState(0)
+  // const [itemCount, setItemCount] = useState(0)
   const [addressDetails, setAddressDetails] = useState({
-    address: '',
+    houseNumber: '',
+    street: '',
+    nearby: '',
     city: '',
     pincode: '',
     state: ''
@@ -36,31 +45,68 @@ const SingleProduct = () => {
     dispatch(getSingleSubCategory(id))
     dispatch(getRating(id))
     setStatus('')
-    console.log('hit');
+    isLoggedIn && dispatch(getcartQuantity(id))
   }, [id])
 
   useEffect(() => {
-    dispatch(getcartQuantity(id))
-  }, [cartQuantity, id])
+    if (isLoggedIn){
+      setQuantInCart(cartQuantity)
+    }else{
+      const item = cart[cart.findIndex(obj => obj.subCategoryId === id)]
+      setQuantInCart(item ? item.quantity : 0)
+    }
+  }, [cartQuantity, id, cart])
 
-  useEffect(() => {
-    setItemCount(cartQuantity)
-  }, [cartQuantity])
+  // useEffect(() => {
+  //   setItemCount(cartQuantity)
+  // }, [cartQuantity])
 
   useEffect(() => {
     setErr(err)
-    console.log('*****error*****',error);
-    if (error === "Address detail is required"){
-      setShowOverlay(true)
-    }
   }, [error])
+
+  useEffect(() => {
+    // console.log('cart', cart);
+    Cookies.set('cart', JSON.stringify(cart))
+  }, [cart])
 
   const handlePincodeChange = (e) => {
     setPincode(e.target.value)
   }
 
+  const handleChange = (e) => {
+    const {name, value} = e.target
+    setAddressDetails({
+      ...addressDetails,
+      [name]: value
+    })
+  }
+
   const handleAddToCart = async (subCategoryId) => {
-    await dispatch(addCart({subCategoryId, quantity}));
+    if (isLoggedIn){
+      const res = await dispatch(addCart({subCategoryId, quantity}));
+      // if (res.error?.message === "Address detail is required"){
+      //   setShowOverlay(true)
+      // }
+    }else{
+      const updatedCart = [...cart];
+      console.log(updatedCart);
+      const itemIndex = updatedCart.findIndex(obj => obj.subCategoryId === id);
+
+      let total = quantity;
+      if (itemIndex !== -1) {
+        total += updatedCart[itemIndex].quantity;
+        updatedCart.splice(itemIndex, 1); // Remove existing item
+      }
+
+      updatedCart.push({
+        subCategoryId: id,
+        quantity: total
+      });
+
+      setCart(updatedCart);
+
+    }
   };
 
   const handleIncrement = async () => {
@@ -73,10 +119,21 @@ const SingleProduct = () => {
     }
   };
 
-  const handleSubmitAddress = async () => {
-    // await dispatch();
-    setShowOverlay(false);
-  };
+  // const handleSubmitAddress = async () => {
+  //   if (isLoggedIn){
+  //     const {pincode, state, city, ...address} = addressDetails
+  //     await dispatch(addAddress({pincode, state, city, address:Object.values(address).join(", ")}))
+  //     setAddressDetails({
+  //       houseNumber: '',
+  //       street: '',
+  //       nearby: '',
+  //       city: '',
+  //       pincode: '',
+  //       state: ''
+  //     });      
+  //   }
+  //   setShowOverlay(false);
+  // };
 
   const settings = {
     dots: false,
@@ -109,6 +166,9 @@ const SingleProduct = () => {
     await dispatch(checkDelivery(pincode))
     setStatus(deliveryStatus)
   }
+  // const closeOverlay = () => {
+  //   setShowOverlay(false);
+  // };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -202,42 +262,10 @@ const SingleProduct = () => {
                 >
                   Add to Cart
                 </button>
-                <p>{itemCount} items in cart</p>
+                <p>{quantInCart} items in cart</p>
             </div>
           </div>
         </div>
-        {showOverlay && (
-          <div>
-            <form onSubmit={handleSubmitAddress}>
-              <input
-                type="text"
-                placeholder="Address"
-                value={addressDetails.address}
-                onChange={(e) => setAddressDetails({ ...addressDetails, address: e.target.value })}
-              />
-              <input
-                type="number"
-                placeholder="Pincode"
-                value={addressDetails.pincode}
-                onChange={(e) => setAddressDetails({ ...addressDetails, pincode: e.target.value })}
-              />
-              <input
-                type="text"
-                placeholder="City"
-                value={addressDetails.city}
-                onChange={(e) => setAddressDetails({ ...addressDetails, city: e.target.value })}
-              />
-              <input
-                type="text"
-                placeholder="State"
-                value={addressDetails.state}
-                onChange={(e) => setAddressDetails({ ...addressDetails, state: e.target.value })}
-              />
-              {/* Add more address fields here */}
-              <button type="submit">Submit</button>
-            </form>
-          </div>
-        )}
         <div className="mb-4">
           <div className="flex border-b pb-2">
             <button
@@ -310,4 +338,74 @@ const SingleProduct = () => {
 }
 
 export default SingleProduct
-
+// {showOverlay && (
+//   <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
+//     <div className="w-72 h-60 md:w-1/2 lg:w-2/6 lg:h-1/2 bg-white flex justify-center rounded shadow-lg relative">
+//       <div className="absolute top-4 right-4 text-lg text-red-600">
+//         <ImCross onClick={closeOverlay} />
+//       </div>
+//       <div className="w-64 md: xl:w-96 flex flex-col justify-center">
+//         <input
+//           value={addressDetails.houseNumber}
+//           onChange={handleChange}
+//           type="text"
+//           name="houseNumber"
+//           className="w-full border border-grey-300 mb-5 px-2 py-2"
+//           placeholder="Enter your house number"
+//           required
+//         />
+//         <input 
+//           value={addressDetails.street}
+//           onChange={handleChange}
+//           type="text"
+//           name="street"
+//           className="w-full border border-grey-300 mb-5 px-2 py-2"
+//           placeholder="Enter your street"
+//           required
+//         />
+//         <input 
+//           className="w-full border border-grey-300 mb-5 px-2 py-2"
+//           value={addressDetails.nearby}
+//           onChange={handleChange}
+//           type="text"
+//           name="nearby"
+//           placeholder="Enter your nearby"
+//           required
+//         />
+//         <input 
+//           className="w-full border border-grey-300 mb-5 px-2 py-2"
+//           value={addressDetails.pincode}
+//           onChange={handleChange}
+//           type="text"
+//           name="pincode"
+//           placeholder="Enter your pincode"
+//           required
+//         />      
+//         <input 
+//           className="w-full border border-grey-300 mb-5 px-2 py-2"
+//           value={addressDetails.city}
+//           onChange={handleChange}
+//           type="text"
+//           name="city"
+//           placeholder="Enter your city"
+//           required
+//         />      
+//         <input 
+//           className="w-full border border-grey-300 mb-5 px-2 py-2"
+//           value={addressDetails.state}
+//           onChange={handleChange}
+//           type="text"
+//           name="state"
+//           placeholder="Enter your state"
+//           required
+//         />  
+//         <button
+//             onClick={handleSubmitAddress}
+//             className="bg-blue-500 text-white py-2 px-4 hover:bg-blue-600"
+//           >
+//             Submit
+//         </button>     
+//       </div>
+//     </div>
+//   </div>
+// )}

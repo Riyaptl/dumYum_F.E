@@ -1,19 +1,35 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { ImCross } from "react-icons/im";
 import { BiShow, BiHide } from "react-icons/bi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {signIn, forgotPass, sendOTP} from "../slices/authSlice"
+import {addBucketCart} from "../slices/cartSlice"
+import Cookies from 'js-cookie';
 
 function SignIn(props) {
+  const cart = Cookies.get('cart') && JSON.parse(Cookies.get('cart'))
+  const [error, setError] = useState("")
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const {authError} = useSelector((state) => state.auth)
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
+  const [forgotPassData, setForgotPassData] = useState({
+    otp: "",
+    newPassword: "",
+    confirmPassword: ""
+  })
+
   const [showPassword, setShowPassword] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
 
+  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -22,7 +38,16 @@ function SignIn(props) {
     });
   };
 
+  const handleChange = (e) => {
+    const {name, value} = e.target
+    setForgotPassData({
+      ...forgotPassData,
+      [name]: value
+    });
+  };
+
   const handleForgotPasswordClick = () => {
+    setError("")
     setShowOverlay(true);
   };
 
@@ -30,9 +55,37 @@ function SignIn(props) {
     setShowOverlay(false);
   };
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    // console.log('hit');
+    setError(authError)
+  }, [authError])
+
+  const handleSendOTP = async () => {
+    if (formData.email != ""){
+      const res = await dispatch(sendOTP(formData.email))
+      !res.error && setOtpSent(true)
+    }else {
+      setError("Enter email id")
+    }
+  }
+
+  const handleResetPassword = () => {
+    dispatch(forgotPass({...forgotPassData, email: formData.email}))
+    setShowOverlay(false);
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(signIn({ formData }));
+    try {
+      let res = await dispatch(signIn({ ...formData }));
+      if (!res.error && cart){
+        console.log('cart', cart);
+        res = await dispatch(addBucketCart(cart))
+      }
+      !res.error && navigate("/")
+    } catch (error) {
+      setError(error.message)
+    }
   };
 
   const togglePasswordVisibility = () => {
@@ -82,6 +135,7 @@ function SignIn(props) {
               Forgot password
             </Link>
           </div>
+          {error}
           <div className="flex items-center justify-center mt-6">
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -100,6 +154,7 @@ function SignIn(props) {
             </span>
           </div>
         </form>
+       
 
         {showOverlay && (
           <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
@@ -109,16 +164,77 @@ function SignIn(props) {
               </div>
               <div className="w-64 md: xl:w-96 flex flex-col justify-center">
                 <input
+                  value={formData.email}
+                  onChange={handleInputChange}
                   type="email"
+                  name="email"
                   className="w-full border border-grey-300 mb-5 px-2 py-2"
                   placeholder="Enter Your Email"
+                  required
                 />
-                <button
-                  onClick={closeOverlay}
-                  className="bg-blue-500 text-white py-2 px-4 hover:bg-blue-600"
-                >
-                  Reset Password
-                </button>
+                {otpSent &&
+                <>
+                  <input 
+                    value={forgotPassData.otp}
+                    onChange={handleChange}
+                    type="number"
+                    name="otp"
+                    className="w-full border border-grey-300 mb-5 px-2 py-2"
+                    placeholder="Enter OTP sent"
+                    required
+                  />
+                  <div className="mb-6 relative">
+                    <input 
+                      className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      value={forgotPassData.newPassword}
+                      onChange={handleChange}
+                      type={showPassword ? "text" : "password"}
+                      name="newPassword"
+                      placeholder="Enter new password"
+                      required
+                    />
+                    <div
+                      className="absolute top-0 right-0 mt-3 mr-3 cursor-pointer"
+                      onClick={togglePasswordVisibility}
+                      >
+                      {showPassword ? <BiHide /> : <BiShow />}
+                    </div>
+                  </div>
+                  <div className="mb-6 relative">
+                    <input 
+                      className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      value={forgotPassData.confirmPassword}
+                      onChange={handleChange}
+                      type={showPassword ? "text" : "password"}
+                      name="confirmPassword"
+                      placeholder="Confirm new password"
+                      required
+                    />
+                    <div
+                      className="absolute top-0 right-0 mt-3 mr-3 cursor-pointer"
+                      onClick={togglePasswordVisibility}
+                      >
+                      {showPassword ? <BiHide /> : <BiShow />}
+                    </div>
+                  </div>                
+                </>
+                }
+                {error}
+                {!otpSent ? 
+                  <button
+                    onClick={handleSendOTP}
+                    className="bg-blue-500 text-white py-2 px-4 hover:bg-blue-600"
+                  >
+                    Send OTP
+                  </button> 
+                  :
+                  <button
+                    onClick={handleResetPassword}
+                    className="bg-blue-500 text-white py-2 px-4 hover:bg-blue-600"
+                  >
+                    Reset Password
+                  </button> 
+                }
               </div>
             </div>
           </div>
