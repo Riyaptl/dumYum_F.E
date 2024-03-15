@@ -1,14 +1,17 @@
 import React, { useEffect } from 'react';
 import './Navbar.css';
-import {Link} from "react-router-dom"
+import {Link, useNavigate} from "react-router-dom"
 import { useDispatch, useSelector } from 'react-redux';
 import {getCategories} from "../slices/categorySlice"
 import { getSpecials } from '../slices/specialSlice';
+import  {logOut}  from '../slices/authSlice';
 
 const Navbar = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {categories} = useSelector((state) => state.category)
   const {specials} = useSelector((state) => state.special)
+  const {isLoggedIn} = useSelector((state) => state.auth)
 
   const jsonData = {
     logo: 'Logo',
@@ -35,6 +38,11 @@ const Navbar = () => {
     dispatch(getCategories())
     dispatch(getSpecials())
   }, [])
+
+  const handleLogout = () => {
+    dispatch(logOut())
+    navigate("/")
+  }
 
   return (
     <nav className="relative">
@@ -93,6 +101,9 @@ const Navbar = () => {
             </div>
           </li>
         </ul>
+        {isLoggedIn &&
+          <button onClick={handleLogout}>logout</button>
+        }
       </div>
     </nav>
   );

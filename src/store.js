@@ -5,8 +5,10 @@ import specialReducer from "./slices/specialSlice"
 import animationReducer from "./slices/animationSlice"
 import cartReducer from "./slices/cartSlice"
 import ratingReducer from "./slices/ratingSlice"
+import authReducer from "./slices/authSlice"
 
 const reducer = {
+    auth: authReducer,
     category: categoryReducer,
     subCategory: subCategoryReducer,
     cart: cartReducer,
