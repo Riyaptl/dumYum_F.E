@@ -9,6 +9,10 @@ import AuthForm from './pages/AuthForm';
 import UserDetailsForm from './pages/UserDetailsForm';
 import { useSelector } from 'react-redux';
 import CartPage from './pages/CartPage';
+import TermConditionsPage from './pages/TermConditionsPage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+
+
 
 function App() {
   const {isLoggedIn} = useSelector((state) => state.auth)
@@ -21,7 +25,8 @@ function App() {
           {/* <Route exact path="/auth" element={isLoggedIn ? <HomePage/> : <AuthForm/>}/>  */}
           <Route exact path="/details" element={<UserDetailsForm/>}/> 
           {/* <Route exact path="/" element={<HomePage/>}/>  */}
-          <Route exact path="/" element={<CartPage/>}/> 
+          <Route exact path="/" element={<PrivacyPolicyPage />}/> 
+          {/* <Route exact path="/" element={<TermConditionsPage />}/>  */}
           <Route exact path="/:id" element={<ProductPage/>}/>
           <Route exact path="/product/:id" element={<SingleProductPage/>}/>
         </Routes>

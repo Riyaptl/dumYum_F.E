@@ -64,12 +64,13 @@ const Cart = () => {
   const taxPercentage = 10
   const shippingCharge = 10.0
   const totalCost =
-    totalProductPrice +
-    totalProductPrice * (taxPercentage / 100) +
-    shippingCharge
+     totalProductPrice +
+     totalProductPrice * (taxPercentage / 100) +
+     shippingCharge
 
   const editAddress = () => {
     console.log('Edit address')
+
   }
   const checkShippingAvailability = () => {
     setShippingAvailable(pincode === '12345')
@@ -87,13 +88,13 @@ const Cart = () => {
             <h3 className="font-semibold text-gray-600 text-xs uppercase w-2/5">
               Product Details
             </h3>
-            <h3 className="font-semibold text-center text-gray-600 text-xs uppercase w-1/5 text-center">
+            <h3 className="font-semibold  text-gray-600 text-xs uppercase w-1/5 text-center">
               Quantity
             </h3>
-            <h3 className="font-semibold text-center text-gray-600 text-xs uppercase w-1/5 text-center">
+            <h3 className="font-semibold  text-gray-600 text-xs uppercase w-1/5 text-center">
               Price
             </h3>
-            <h3 className="font-semibold text-center text-gray-600 text-xs uppercase w-1/5 text-center">
+            <h3 className="font-semibold  text-gray-600 text-xs uppercase w-1/5 text-center">
               Total
             </h3>
           </div>
