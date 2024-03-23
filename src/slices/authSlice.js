@@ -39,11 +39,19 @@ export const forgotPass = createAsyncThunk(
 export const signUp = createAsyncThunk (
     "auth/signUp",
     async (formData) => {
+        console.log(formData);
         const res = await authService.signUp(formData)
         return res.data
     }
 )
 
+export const checkEmail = createAsyncThunk (
+    "auth/checkEmail",
+    async (formData) => {
+        const res = await authService.checkEmail(formData)
+        return res.data
+    }
+)
 
 const authSlice = createSlice({
     name: "cart",
@@ -58,7 +66,6 @@ const authSlice = createSlice({
             state.username = action.payload.name;
             state.email = action.payload.email;
             state.password = action.payload.password;
-            console.log(state.username, state.email, state.password);
         }
     },
     extraReducers: (builder) => {
@@ -98,6 +105,21 @@ const authSlice = createSlice({
         .addCase(signUp.rejected, (state, action) => {
             state.loading = false;
             state.isLoggedIn = false;
+            state.message = null;
+            state.authError = action.error.message;
+        })
+        .addCase(checkEmail.pending, (state) => {
+            state.loading = true;
+            state.authError = null;
+            state.message = null;
+        })
+        .addCase(checkEmail.fulfilled, (state, action) => {
+            state.loading = false;
+            state.message = action.payload.message;
+            state.authError = null;
+        })
+        .addCase(checkEmail.rejected, (state, action) => {
+            state.loading = false;
             state.message = null;
             state.authError = action.error.message;
         })

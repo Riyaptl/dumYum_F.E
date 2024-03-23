@@ -97,17 +97,14 @@ const UserDetailsForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const {address,} = formData.contact
-    const {city, state, pincode, ...restAddress} = address
     const kidsBirthdate = formData.kids.filter(entry => entry !== '')
     const data = {
       name: username, 
       email, 
       password,
       phone: formData.contact.phone,
-      city, 
-      state,
-      pincode,
-      address: Object.values(restAddress).join(" ").trim(),
+      addressDetails: [address],
+      pincode: address.pincode,
       birthdate: formData.birthday,
       marraigeStatus: formData.maritalStatus,
       kidsStatus: formData.hasKids ? 'yes' : 'no',

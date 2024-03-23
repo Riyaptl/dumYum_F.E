@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { BiShow, BiHide } from 'react-icons/bi';
-import { setUserData } from '../slices/authSlice';
+import { checkEmail, setUserData } from '../slices/authSlice';
 import { useDispatch } from 'react-redux';
 
 function SignUp(props) {
@@ -23,7 +23,7 @@ function SignUp(props) {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // if (
@@ -37,7 +37,8 @@ function SignUp(props) {
     //   return;
     // }
     
-    dispatch(setUserData({name: `${formData.first_name} ${formData.last_name}`, email: formData.email, password: formData.password}))
+    await dispatch(setUserData({name: `${formData.first_name} ${formData.last_name}`, email: formData.email, password: formData.password}))
+    await dispatch(checkEmail({email: formData.email}))
 
     setFormData({
       first_name: '',
