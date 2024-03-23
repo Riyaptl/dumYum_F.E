@@ -56,6 +56,7 @@ const Cart = () => {
     })
   }
 
+
   const remove = async (subCategoryId) => {
     await dispatch(removeProduct({subCategoryId}))
   }
@@ -73,9 +74,21 @@ const Cart = () => {
     await dispatch(whetherDeliver({pincode: checkPincode}))
   }
 
+  const totalProductPrice = products.reduce(
+    (total, product) => total + product.price * product.quantity,
+    0,
+  )
+  const taxPercentage = 10
+  const shippingCharge = 10.0
+  const totalCost =
+     totalProductPrice +
+     totalProductPrice * (taxPercentage / 100) +
+     shippingCharge
+
   const editAddress = () => {
     setShowOverlay(true);
     console.log('Edit address')
+
   }
 
   const closeOverlay = () => {
@@ -115,13 +128,13 @@ const Cart = () => {
             <h3 className="font-semibold text-gray-600 text-xs uppercase w-2/5">
               Product Details
             </h3>
-            <h3 className="font-semibold text-center text-gray-600 text-xs uppercase w-1/5 text-center">
+            <h3 className="font-semibold  text-gray-600 text-xs uppercase w-1/5 text-center">
               Quantity
             </h3>
-            <h3 className="font-semibold text-center text-gray-600 text-xs uppercase w-1/5 text-center">
+            <h3 className="font-semibold  text-gray-600 text-xs uppercase w-1/5 text-center">
               Price
             </h3>
-            <h3 className="font-semibold text-center text-gray-600 text-xs uppercase w-1/5 text-center">
+            <h3 className="font-semibold  text-gray-600 text-xs uppercase w-1/5 text-center">
               Total
             </h3>
           </div>
