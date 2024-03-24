@@ -82,7 +82,7 @@ const SingleProduct = () => {
     })
   }
 
-  const handleAddToCart = async (subCategoryId) => {
+  const handleAddToCart = async (subCategoryId, price, image, name, category) => {
     if (isLoggedIn){
       const res = await dispatch(addCart({subCategoryId, quantity}));
       // if (res.error?.message === "Address detail is required"){
@@ -101,7 +101,11 @@ const SingleProduct = () => {
 
       updatedCart.push({
         subCategoryId: id,
-        quantity: total
+        quantity: total,
+        price,
+        image,
+        name, 
+        category
       });
 
       setCart(updatedCart);
@@ -258,7 +262,7 @@ const SingleProduct = () => {
                 </div> 
                 <button
                   className="mt-2 px-4 py-2 border border-separate text-black  :border hover:border-black"
-                  onClick={() => handleAddToCart(singleSubCategory?._id)}
+                  onClick={() => handleAddToCart(singleSubCategory?._id, singleSubCategory?.finalPrice, singleSubCategory?.smallImages[0], singleSubCategory?.name, singleSubCategory?.category)}
                 >
                   Add to Cart
                 </button>
