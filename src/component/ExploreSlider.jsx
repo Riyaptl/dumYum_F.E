@@ -14,7 +14,7 @@ const ExploreSlider = () => {
   const sliderRef = useRef(null);
   const navigate = useNavigate();
   const {categories} = useSelector((state) => state.category)
-  const categoryImages = "http://localhost:8000/uploads/category/"
+  const categoryImages = "https://dumyum.onrender.com/uploads/category/"
 
 
   const settings = {
