@@ -24,15 +24,13 @@ function App() {
           <ToastContainer />
         <Routes>
           <Route exact path="/auth" element={<AuthForm/>}/> 
-          {/* <Route exact path="/auth" element={isLoggedIn ? <HomePage/> : <AuthForm/>}/>  */}
           <Route exact path="/details" element={<UserDetailsForm/>}/> 
           <Route exact path="/" element={<HomePage/>}/> 
-          <Route exact path="/cart" element={<CartPage/>}/> 
-          {/* <Route exact path="/" element={<HomePage/>}/>  */}
-          <Route exact path="/" element={<PrivacyPolicyPage />}/> 
-          {/* <Route exact path="/" element={<TermConditionsPage />}/>  */}
           <Route exact path="/:id" element={<ProductPage/>}/>
           <Route exact path="/product/:id" element={<SingleProductPage/>}/>
+          <Route exact path="/cart" element={<CartPage/>}/> 
+          <Route exact path="/policy" element={<PrivacyPolicyPage />}/> 
+          <Route exact path="/t&c" element={<TermConditionsPage />}/> 
         </Routes>
       </Router>
     </div>
