@@ -11,6 +11,8 @@ import { useSelector } from 'react-redux';
 import CartPage from './pages/CartPage';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import TermConditionsPage from './pages/TermConditionsPage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 
 
 function App() {
@@ -26,6 +28,9 @@ function App() {
           <Route exact path="/details" element={<UserDetailsForm/>}/> 
           <Route exact path="/" element={<HomePage/>}/> 
           <Route exact path="/cart" element={<CartPage/>}/> 
+          {/* <Route exact path="/" element={<HomePage/>}/>  */}
+          <Route exact path="/" element={<PrivacyPolicyPage />}/> 
+          {/* <Route exact path="/" element={<TermConditionsPage />}/>  */}
           <Route exact path="/:id" element={<ProductPage/>}/>
           <Route exact path="/product/:id" element={<SingleProductPage/>}/>
         </Routes>
