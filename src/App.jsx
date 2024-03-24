@@ -23,9 +23,9 @@ function App() {
       <Router>
           <ToastContainer />
         <Routes>
+          <Route exact path="/" element={<HomePage/>}/> 
           <Route exact path="/auth" element={<AuthForm/>}/> 
           <Route exact path="/details" element={<UserDetailsForm/>}/> 
-          <Route exact path="/" element={<HomePage/>}/> 
           <Route exact path="/:id" element={<ProductPage/>}/>
           <Route exact path="/product/:id" element={<SingleProductPage/>}/>
           <Route exact path="/cart" element={<CartPage/>}/> 

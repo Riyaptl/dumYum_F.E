@@ -45,10 +45,6 @@ const Navbar = () => {
     dispatch(logOut())
     navigate("/")
   }
-  
-  const handleLogin = () => {
-    navigate("/auth")
-  }
 
   return (
     <nav className="relative">
@@ -110,11 +106,12 @@ const Navbar = () => {
         {isLoggedIn ?
         <>
           <button onClick={handleLogout}>Logout</button>
-          <a href='/cart'>Cart</a>
+          {/* <button onClick={() => navigate("/cart")}>Cart</button> */}
+          <Link to='/cart'>Cart</Link>
         </>
         :
-          <button onClick={handleLogin}>Login</button>
-          // <a href='/auth'>Login</a>
+          // <button onClick={() => navigate("/auth")}>Login</button>
+          <Link to='/auth'>Login</Link>
         }
       </div>
     </nav>
