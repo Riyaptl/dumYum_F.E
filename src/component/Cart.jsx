@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { FaEdit, FaTruck } from 'react-icons/fa'
 import { AiOutlineCheck } from 'react-icons/ai'
 import { useDispatch, useSelector } from 'react-redux'
-import { getCart, updateQuantity, removeProduct } from '../slices/cartSlice'
+import { getCart, updateQuantity, removeProduct, updateAddressCart } from '../slices/cartSlice'
 import { addAddress, updateAddress, getAddress } from '../slices/customerSlice'
 import { ImCross } from "react-icons/im";
 import { getLocationCart, whetherDeliver } from '../slices/locationSlice'
@@ -31,14 +31,17 @@ const Cart = () => {
     dispatch(getAddress())
   }, [])
 
-  useEffect(() => {
-    setAddressDetails({...address})
-  }, [address])
+  // useEffect(() => {
+  //   setAddressDetails({...address})
+  // }, [address])
 
   useEffect(() => {
     const addressCart = cart?.addressDetails
     if (addressCart){
       setPincode(addressCart.pincode)
+      setAddressDetails({
+        ...addressCart
+      })
     }
   }, [cart])
     
@@ -73,7 +76,12 @@ const Cart = () => {
     await dispatch(whetherDeliver({pincode: checkPincode}))
   }
 
-  const editAddress = () => {
+  const selectAddress = async (selectedAddress) => {
+    await dispatch(updateAddressCart(selectedAddress))
+    setCheckPincode("")
+  }
+
+  const addNewAddress = () => {
     setShowOverlay(true);
     console.log('Edit address')
   }
@@ -83,21 +91,22 @@ const Cart = () => {
   };
 
   const handleSubmitAddress = async () => {
-    await dispatch(getLocationCart({pincode: addressDetails.pincode}))
+    await dispatch(addAddress({...addressDetails}))
+    await dispatch(updateAddressCart({...addressDetails}))
+    dispatch(getAddress())
     setCheckPincode("")
     setShowOverlay(false);
   };
 
-  const handleSaveAddress = async () => {
-    if (addressDetails.pincode === pincode){
-      console.log('hit');
-      await dispatch(updateAddress({...addressDetails}))
-    }else{
-      await dispatch(addAddress({...addressDetails}))
-      setPincode(addressDetails.pincode)
-    }
-    await dispatch(getLocationCart({pincode: addressDetails.pincode}))
-  }
+  // const handleSaveAddress = async () => {
+  //   if (addressDetails.pincode === pincode){
+  //     await dispatch(updateAddress({...addressDetails}))
+  //   }else{
+  //     await dispatch(addAddress({...addressDetails}))
+  //     setPincode(addressDetails.pincode)
+  //   }
+  //   await dispatch(getLocationCart({pincode: addressDetails.pincode}))
+  // }
 
   const handleCheckout = () => {
     cart.addressDetails = {...addressDetails}
@@ -313,29 +322,25 @@ const Cart = () => {
               <span className='flex items-center'>
               <FaTruck className="mr-2" />
               <h2 className="font-semibold text-lg">Shipping Address</h2></span>
-              <button onClick={editAddress} className="ml-2 ">
+              {/* <button onClick={addNewAddress} className="ml-2 ">
+                <FaEdit />
+              </button> */}
+            </div>
+            {address?.map((add, index) => (
+              <div className="mt-6 flex justify-between">
+                <input type="checkbox" onChange={() => selectAddress(add)} checked={add.pincode === addressDetails.pincode}/>
+                <div className="mt-6" key={index}>
+                  <p>{add.houseNumber}, {add.street}, {add.nearby}, {address.city}, {add.state}, {add.pincode}</p>
+                </div>
+              </div>
+            ))}
+            <div className="mt-6 flex justify-between">
+              <span className='flex items-center'>
+              <FaTruck className="mr-2" />
+              <h2 className="font-semibold text-lg">Add Address</h2></span>
+              <button onClick={addNewAddress} className="ml-2 ">
                 <FaEdit />
               </button>
-            </div>
-            <div className="mt-2">
-              {cart?.addressDetails.houseNumber && 
-                <p>houseNumber - {addressDetails.houseNumber} </p>
-              }
-              {cart?.addressDetails.street && 
-                <p>street - {addressDetails.street} </p>
-              }
-              {cart?.addressDetails.nearby && 
-                <p>nearby - {addressDetails.nearby} </p>
-              }
-              {cart?.addressDetails.city && 
-                <p>city - {addressDetails.city} </p>
-              }
-              {cart?.addressDetails.state && 
-                <p>state - {addressDetails.state} </p>
-              }
-              {cart?.addressDetails.pincode && 
-                <p>pincode - {addressDetails.pincode} </p>
-              }
             </div>
 
             {showOverlay && (
@@ -399,9 +404,9 @@ const Cart = () => {
                     placeholder="Enter your state"
                     required
                   />  
-                  <div> 
+                  {/* <div> 
                     <input type="checkbox" onChange={handleSaveAddress}/> Save for future orders
-                  </div>
+                  </div> */}
                   <button
                       onClick={handleSubmitAddress}
                       className="bg-blue-500 text-white py-2 px-4 hover:bg-blue-600"
@@ -425,3 +430,21 @@ const Cart = () => {
 }
 
 export default Cart
+{/* {cart?.addressDetails.houseNumber && 
+                <p>houseNumber - {addressDetails.houseNumber} </p>
+              }
+              {cart?.addressDetails.street && 
+                <p>street - {addressDetails.street} </p>
+              }
+              {cart?.addressDetails.nearby && 
+                <p>nearby - {addressDetails.nearby} </p>
+              }
+              {cart?.addressDetails.city && 
+                <p>city - {addressDetails.city} </p>
+              }
+              {cart?.addressDetails.state && 
+                <p>state - {addressDetails.state} </p>
+              }
+              {cart?.addressDetails.pincode && 
+                <p>pincode - {addressDetails.pincode} </p>
+              } */}

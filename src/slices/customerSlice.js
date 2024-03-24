@@ -87,7 +87,6 @@ const authSlice = createSlice({
             state.loading = true;
             state.error = action.error.message;
             state.addressDetails = null;
-            console.log(state.error);
         })
     }
 })

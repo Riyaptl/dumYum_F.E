@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const baseURL = "http://localhost:8000/api/v1";
 
@@ -56,8 +57,44 @@ export const server = async () => {
 };
 
 export default {
-  get: async (url, params ) => (await server()).get(url, params),
-  post: async (url, params ) => (await server()).post(url, params),
-  delete: async (url) => (await server()).delete(url),
+  get: async (url, params ) => {
+    try {
+      const res = await (await server()).get(url, params)
+      const message = res.data.message
+      if (message){
+        toast.success(message)
+      }
+      return res
+    } catch (error) {
+      toast.error(error.message)
+      throw new Error(error.message)
+    }
+  },
+  post: async (url, params ) => {
+    try {
+      const res = await (await server()).post(url, params)
+      const message = res.data.message
+      if (message){
+        toast.success(message)
+      }
+      return res
+    } catch (error) {
+      toast.error(error.message)
+      throw new Error(error.message)
+    }
+  },
+  delete: async (url) => {
+    try {
+      const res = await (await server()).delete(url)
+      const message = res.data.message
+      if (message){
+        toast.success(message)
+      }
+      return res
+    } catch (error) {
+      toast.error(error.message)
+      throw new Error(error.message)
+    }
+  },
 };
 

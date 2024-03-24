@@ -27,5 +27,8 @@ export default false ? {message: "You are Offline. Please! turn on the internet"
     updateQuanity: (data) => {
         return Api.post("cart/update/quantity", data)
     },
+    updateAddressCart: (data) => {
+        return Api.post("cart/update/address", data)
+    },
 
 }

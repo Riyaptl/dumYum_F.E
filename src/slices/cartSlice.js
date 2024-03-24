@@ -67,13 +67,13 @@ export const removeProduct = createAsyncThunk(
     }
 )
 
-// export const removeQuantity = createAsyncThunk(
-//     "cart/removeQuantity",
-//     async (subCategoryId) => {
-//         const res = await cartService.removeQuanity(subCategoryId);
-//         return res.data;
-//     }
-// )
+export const updateAddressCart = createAsyncThunk(
+    "cart/updateAddressCart",
+    async (data) => {
+        const res = await cartService.updateAddressCart(data);
+        return res.data;
+    }
+)
 
 const cartSlice = createSlice({
     name: "cart",
@@ -191,20 +191,21 @@ const cartSlice = createSlice({
             state.error = action.error.message ;
             console.log(state.error);
         })
-        // .addCase(removeQuantity.pending, (state) => {
-        //     state.loading = true;
-        //     state.message = null;
-        // })
-        // .addCase(removeQuantity.fulfilled, (state, action) => {
-        //     state.loading = false;
-        //     state.message = action.payload.message;
-        //     state.error = null;
-        // })
-        // .addCase(removeQuantity.rejected, (state, action) => {
-        //     state.loading = false;
-        //     state.message = null;
-        //     state.error = action.error.message ;
-        // })
+        .addCase(updateAddressCart.pending, (state) => {
+            state.loading = true;
+            state.message = null;
+        })
+        .addCase(updateAddressCart.fulfilled, (state, action) => {
+            state.loading = false;
+            state.message = action.payload.message;
+            state.cart = action.payload.cart;
+            state.error = null;
+        })
+        .addCase(updateAddressCart.rejected, (state, action) => {
+            state.loading = false;
+            state.message = null;
+            state.error = action.error.message ;
+        })
     }
 })
 
