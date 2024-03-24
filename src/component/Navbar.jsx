@@ -45,6 +45,10 @@ const Navbar = () => {
     dispatch(logOut())
     navigate("/")
   }
+  
+  const handleLogin = () => {
+    navigate("/auth")
+  }
 
   return (
     <nav className="relative">
@@ -109,7 +113,8 @@ const Navbar = () => {
           <a href='/cart'>Cart</a>
         </>
         :
-          <a href='/auth'>Login</a>
+          <button onClick={handleLogin}>Login</button>
+          // <a href='/auth'>Login</a>
         }
       </div>
     </nav>
