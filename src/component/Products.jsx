@@ -110,7 +110,7 @@ const Products = () => {
   const {singleCategory} = useSelector((state) => state.category)
   const {singleSpecial} = useSelector((state) => state.special)
   const {cartProducts, error} = useSelector((state) => state.cart)
-  const subCategoryImages = "http://localhost:8000/uploads/subCategory/"
+  const subCategoryImages = "https://dumyum.onrender.com/uploads/subCategory/"
 
   // useEffect(() => {
   //   dispatch(getCartProducts())

@@ -12,7 +12,7 @@ function FooterBanner(props) {
   const page = location.search.split('=')[1]
   const {singleCategory} = useSelector((state) => state.category)
   const {singleSpecial} = useSelector((state) => state.special)
-  const pageImages = `http://localhost:8000/uploads/${page}/`
+  const pageImages = `https://dumyum.onrender.com/uploads/${page}/`
   // console.log(id, page);
 
   useEffect(() => {

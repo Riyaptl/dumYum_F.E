@@ -20,6 +20,8 @@ const Navbar = () => {
       { title: 'Products', url: '#', isMegaMenu: true },
       { title: 'About', url: '/' },
       { title: 'B2B Connect', url: '/' },
+      { title: 'Policy', url: '/policy' },
+      { title: 'Terms & Conditions', url: '/t&c' },
     ],
     megaMenu: {
       imageUrl: 'https://fadzrinmadu.github.io/hosted-assets/responsive-mega-menu-and-dropdown-menu-using-only-html-and-css/img.jpg',
@@ -101,8 +103,15 @@ const Navbar = () => {
             </div>
           </li>
         </ul>
-        {isLoggedIn &&
-          <button onClick={handleLogout}>logout</button>
+        {isLoggedIn ?
+        <>
+          <button onClick={handleLogout}>Logout</button>
+          {/* <button onClick={() => navigate("/cart")}>Cart</button> */}
+          <Link to='/cart'>Cart</Link>
+        </>
+        :
+          // <button onClick={() => navigate("/auth")}>Login</button>
+          <Link to='/auth'>Login</Link>
         }
       </div>
     </nav>

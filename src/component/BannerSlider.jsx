@@ -13,7 +13,7 @@ const BannerSlider = () => {
   const sliderRef = useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate(); 
-  const specialImages = "http://localhost:8000/uploads/special/"
+  const specialImages = "https://dumyum.onrender.com/uploads/special/"
   const {animationLoading, animationSpecials} = useSelector((state) => state.animation)
 
 

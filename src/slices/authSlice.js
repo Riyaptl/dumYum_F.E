@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import authService from "../services/authService"
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const initialState = {
@@ -61,6 +63,7 @@ const authSlice = createSlice({
             console.log('logout called');
             localStorage.clear();
             state.isLoggedIn = false;
+            toast.success("Logged out succesfully")
         },
         setUserData: (state, action) => {
             state.username = action.payload.name;
