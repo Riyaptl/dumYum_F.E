@@ -21,14 +21,11 @@ export default false ? {message: "You are Offline. Please! turn on the internet"
     deleteCart: () => {
         return Api.post("cart/delete");
     },
-    removeCart: () => {
-        return Api.post("cart/remove");
+    removeProduct: (data) => {
+        return Api.post("cart/product/remove", data);
     },
-    addQuanity: (subCategoryId) => {
-        return Api.post("cart/add/quantity", {subCategoryId})
+    updateQuanity: (data) => {
+        return Api.post("cart/update/quantity", data)
     },
-    removeQuanity: (subCategoryId) => {
-        return Api.post("cart/remove/quantity", {subCategoryId})
-    }
 
 }

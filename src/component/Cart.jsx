@@ -1,60 +1,77 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaEdit, FaTruck } from 'react-icons/fa'
 import { AiOutlineCheck } from 'react-icons/ai'
+import { useDispatch, useSelector } from 'react-redux'
+import { getCart, updateQuantity, removeProduct } from '../slices/cartSlice'
+import { addAddress, updateAddress, getAddress } from '../slices/customerSlice'
+import { ImCross } from "react-icons/im";
+import { getLocationCart, whetherDeliver } from '../slices/locationSlice'
 
 const Cart = () => {
-  const [products, setProducts] = useState([
-    {
-      id: 1,
-      name: 'Iphone 6S',
-      brand: 'Apple',
-      image:
-        'https://www.lindt.co.za/media/catalog/product/l/i/lindt_-_00733_copy.png?quality=80&fit=bounds&height=700&width=700&canvas=700:700',
-      quantity: 1,
-      price: 400.0,
-    },
-    {
-      id: 2,
-      name: 'Xiaomi Mi 20000mAh',
-      brand: 'Xiaomi',
-      image:
-        'https://www.lindt.co.za/media/catalog/product/l/i/lindt_-_00737_copy.png?quality=80&fit=bounds&height=700&width=700&canvas=700:700',
-      quantity: 1,
-      price: 40.0,
-    },
-    {
-      id: 3,
-      name: 'Airpods',
-      brand: 'Apple',
-      image:
-        'https://www.lindt.co.za/media/catalog/product/l/i/lindt_-_00729_copy.png?quality=80&fit=bounds&height=700&width=700&canvas=700:700',
-      quantity: 1,
-      price: 150.0,
-    },
-  ])
+  const [pincode, setPincode] = useState("")
+  const [checkPincode, setCheckPincode] = useState("")
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [saveAddress, setSaveAddress] = useState(false)
+  const [addressDetails, setAddressDetails] = useState({
+    houseNumber: '',
+    street: '',
+    nearby: '',
+    city: '',
+    pincode: '',
+    state: ''
+  });
+  const dispatch = useDispatch()
+  const {cart} = useSelector(state => state.cart)
+  const {address} = useSelector(state => state.customer)
+  const {location, error, deliverMessage} = useSelector(state => state.location)
+  const productImages = `http://localhost:8000/uploads/subCategory/`
 
-  const [shippingAddress, setShippingAddress] = useState({
-    street: '123 Main St',
-    city: 'Anytown',
-    state: 'CA',
-    zip: '12345',
-  })
+  useEffect(() => {
+    dispatch(getCart())
+    dispatch(getAddress())
+  }, [])
 
-  const [pincode, setPincode] = useState('')
-  const [shippingAvailable, setShippingAvailable] = useState(false)
+  useEffect(() => {
+    setAddressDetails({...address})
+  }, [address])
 
-  const removeProduct = (id) => {
-    setProducts(products.filter((product) => product.id !== id))
+  useEffect(() => {
+    const addressCart = cart?.addressDetails
+    if (addressCart){
+      setPincode(addressCart.pincode)
+    }
+  }, [cart])
+    
+  useEffect(() => {
+    if (pincode){
+      dispatch(getLocationCart({pincode}))
+    }
+  }, [pincode])
+
+  const handleChange = (e) => {
+    const {name, value} = e.target
+    setAddressDetails({
+      ...addressDetails,
+      [name]: value
+    })
   }
 
-  const changeQuantity = (id, value) => {
-    const updatedProducts = products.map((product) => {
-      if (product.id === id) {
-        return { ...product, quantity: Math.max(1, product.quantity + value) }
-      }
-      return product
-    })
-    setProducts(updatedProducts)
+
+  const remove = async (subCategoryId) => {
+    await dispatch(removeProduct({subCategoryId}))
+  }
+
+  const changeQuantity = async (subCategoryId, quantity) => {
+    if (quantity > 0){
+      await dispatch(updateQuantity({subCategoryId, quantity}))
+    }
+  };
+  
+  const checkShippingAvailability = async () => {
+    if (checkPincode === ''){
+      return
+    }
+    await dispatch(whetherDeliver({pincode: checkPincode}))
   }
 
   const totalProductPrice = products.reduce(
@@ -69,11 +86,34 @@ const Cart = () => {
      shippingCharge
 
   const editAddress = () => {
+    setShowOverlay(true);
     console.log('Edit address')
 
   }
-  const checkShippingAvailability = () => {
-    setShippingAvailable(pincode === '12345')
+
+  const closeOverlay = () => {
+    setShowOverlay(false);
+  };
+
+  const handleSubmitAddress = async () => {
+    await dispatch(getLocationCart({pincode: addressDetails.pincode}))
+    setCheckPincode("")
+    setShowOverlay(false);
+  };
+
+  const handleSaveAddress = async () => {
+    if (addressDetails.pincode === pincode){
+      console.log('hit');
+      await dispatch(updateAddress({...addressDetails}))
+    }else{
+      await dispatch(addAddress({...addressDetails}))
+      setPincode(addressDetails.pincode)
+    }
+    await dispatch(getLocationCart({pincode: addressDetails.pincode}))
+  }
+
+  const handleCheckout = () => {
+    cart.addressDetails = {...addressDetails}
   }
 
   return (
@@ -82,7 +122,7 @@ const Cart = () => {
         <div className="w-3/4 bg-white px-10 py-10 ">
           <div className="flex justify-between border-b pb-8">
             <h1 className="font-semibold text-2xl">Shopping Cart</h1>
-            <h2 className="font-semibold text-2xl">{products.length} Items</h2>
+            <h2 className="font-semibold text-2xl">{cart?.predefinedOrder.length} Items</h2>
           </div>
           <div className="flex mt-10 mb-5">
             <h3 className="font-semibold text-gray-600 text-xs uppercase w-2/5">
@@ -98,24 +138,24 @@ const Cart = () => {
               Total
             </h3>
           </div>
-          {products.map((product) => (
+          {cart?.predefinedOrder.map((product) => (
             <div
-              key={product.id}
-              className="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5"
+            key={product.subCategoryId}
+            className="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5"
             >
               <div className="flex w-2/5">
                 <div className="w-20">
                   <img
                     className="h-24"
-                    src={product.image}
-                    alt={product.name}
+                    src={productImages+product.image}
+                    alt={product.subCategory}
                   />
                 </div>
                 <div className="flex flex-col justify-between ml-4 flex-grow">
-                  <span className="font-bold text-sm">{product.name}</span>
-                  <span className="text-red-500 text-xs">{product.brand}</span>
+                  <span className="font-bold text-sm">{product.subCategory}</span>
+                  <span className="text-red-500 text-xs">{product.category}</span>
                   <button
-                    onClick={() => removeProduct(product.id)}
+                    onClick={() => remove(product.subCategoryId)}
                     className="font-semibold hover:text-red-500 text-gray-500 text-xs"
                   >
                     Remove
@@ -124,7 +164,7 @@ const Cart = () => {
               </div>
               <div className="flex justify-center w-1/5">
                 <button
-                  onClick={() => changeQuantity(product.id, -1)}
+                  onClick={() => changeQuantity(product.subCategoryId, product.quantity-1)}
                   className="fill-current text-gray-600 w-3"
                 >
                   <svg
@@ -138,10 +178,11 @@ const Cart = () => {
                   className="mx-2 border text-center w-8"
                   type="text"
                   value={product.quantity}
+                  // value={product.quantity}
                   readOnly
                 />
                 <button
-                  onClick={() => changeQuantity(product.id, 1)}
+                  onClick={() => changeQuantity(product.subCategoryId, product.quantity+1)}
                   className="fill-current text-gray-600 w-3"
                 >
                   <svg
@@ -153,21 +194,21 @@ const Cart = () => {
                 </button>
               </div>
               <span className="text-center w-1/5 font-semibold text-sm">
-                ${product.price.toFixed(2)}
+                ${(+product.price).toFixed(0)}
               </span>
               <span className="text-center w-1/5 font-semibold text-sm">
-                ${(product.quantity * product.price).toFixed(2)}
+                ${(product.quantity * +product.price).toFixed(0)}
               </span>
             </div>
           ))}
           <div className="border-t mt-8">
             <div className="flex font-semibold justify-between py-6 text-sm uppercase">
               <span>Total cost</span>
-              <span>${totalCost.toFixed(2)}</span>
+              {cart?.finalPrice}
             </div>
           </div>
           <a
-            href="#"
+            href="/"
             className="flex font-semibold text-indigo-600 text-sm mt-10"
           >
             <svg
@@ -186,50 +227,78 @@ const Cart = () => {
           </h1>
           <div className="flex justify-between mt-10 mb-5">
             <span className="font-semibold text-sm uppercase">
-              Items {products.length}
+              Items {cart?.predefinedOrder.length}
+            </span>
+            <span className="font-semibold text-sm uppercase">
+              Total Quantity {cart?.totalQuantity}
             </span>
             <span className="font-semibold text-sm">
-              ${totalProductPrice.toFixed(2)}
+              ${cart?.finalPrice.toFixed(0)}
             </span>
           </div>
-          <div className="border-t mt-4 pt-4">
-            <div className="flex justify-between">
-              <span className="font-semibold text-sm uppercase">
-                Shipping Charge
-              </span>
-              <span className="font-semibold text-sm">
-                ${shippingCharge.toFixed(2)}
-              </span>
-            </div>
-            <div className="flex justify-between mt-2">
-              <span className="font-semibold text-sm uppercase">
+          {location &&
+          <>
+            <div className="border-t mt-4 pt-4">
+                <div className="flex justify-between">
+                  <span className="font-semibold text-sm uppercase">
+                    Shipping Charge
+                  </span>
+                  <span className="font-semibold text-sm">
+                    ${(+location?.ecd).toFixed(0)}
+                  </span>
+                </div>
+                {location.priceLimit && +location.priceLimit < +cart?.finalPrice &&
+                  <div className="flex justify-between">
+                    <span className="font-semibold text-sm uppercase">
+                      Shipping Charge Discount
+                    </span>
+                    <span className="font-semibold text-sm">
+                      -${(+location?.ecd).toFixed(0)}
+                    </span>
+                  </div>
+                }
+              {/* <div className="flex justify-between mt-2">
+                <span className="font-semibold text-sm uppercase">
                 Tax ({taxPercentage}%)
-              </span>
-              <span className="font-semibold text-sm">
-                ${(totalProductPrice * (taxPercentage / 100)).toFixed(2)}
-              </span>
+                </span>
+                <span className="font-semibold text-sm">
+                  ${(totalProductPrice * (taxPercentage / 100)).toFixed(2)}
+                  </span>
+                </div> */}
+              <div className="flex justify-between mt-2">
+                <span className="font-semibold text-sm uppercase">
+                  Total Cost
+                </span>
+                {location?.priceLimit && +location?.priceLimit < +cart?.finalPrice ?
+                  <span className="font-semibold text-sm">
+                    ${cart?.finalPrice.toFixed(0)}
+                  </span>
+                  :
+                  <span className="font-semibold text-sm">
+                    ${+(cart?.finalPrice.toFixed(0)) + +(+location?.ecd).toFixed(0)}
+                  </span>
+
+                }
+                
+              </div>
+              <div className="flex justify-between">
+                <span className="font-semibold text-sm uppercase">
+                  Estimated Delivery in
+                </span>
+                <span className="font-semibold text-sm">
+                  {Math.ceil(cart?.etp)} days
+                </span>
+              </div>
+
+              {location?.priceLimit && 
+                <div>
+                  Shop above ${location.priceLimit} to get free shipping
+                </div>
+              }
             </div>
-            <div className="flex justify-between mt-2">
-              <span className="font-semibold text-sm uppercase">
-                Total Cost
-              </span>
-              <span className="font-semibold text-sm">
-                ${totalCost.toFixed(2)}
-              </span>
-            </div>
-          </div>
-          <div className="mt-6 flex justify-between">
-            <span className='flex items-center'>
-            <FaTruck className="mr-2" />
-            <h2 className="font-semibold text-lg">Shipping Address</h2></span>
-            <button onClick={editAddress} className="ml-2 ">
-              <FaEdit />
-            </button>
-          </div>
-          <p className="mt-2">
-            {shippingAddress.street}, {shippingAddress.city},{' '}
-            {shippingAddress.state} {shippingAddress.zip}
-          </p>
+          </>
+          }
+
           <div className="mt-6 flex items-center">
             <FaTruck className="mr-2" />
             <h2 className="font-semibold text-lg">
@@ -241,8 +310,8 @@ const Cart = () => {
               type="text"
               className="border-none focus:outline-none w-full"
               placeholder="Enter Pincode"
-              value={pincode}
-              onChange={(e) => setPincode(e.target.value)}
+              value={checkPincode}
+              onChange={(e) => setCheckPincode(e.target.value)}
             />
             <button
               onClick={checkShippingAvailability}
@@ -251,12 +320,113 @@ const Cart = () => {
               <AiOutlineCheck />
             </button>
           </div>
-          {shippingAvailable && (
-            <p className="mt-2 text-green-600">Shipping Available!</p>
+
+
+            <div className="mt-6 flex justify-between">
+              <span className='flex items-center'>
+              <FaTruck className="mr-2" />
+              <h2 className="font-semibold text-lg">Shipping Address</h2></span>
+              <button onClick={editAddress} className="ml-2 ">
+                <FaEdit />
+              </button>
+            </div>
+            <div className="mt-2">
+              {cart?.addressDetails.houseNumber && 
+                <p>houseNumber - {addressDetails.houseNumber} </p>
+              }
+              {cart?.addressDetails.street && 
+                <p>street - {addressDetails.street} </p>
+              }
+              {cart?.addressDetails.nearby && 
+                <p>nearby - {addressDetails.nearby} </p>
+              }
+              {cart?.addressDetails.city && 
+                <p>city - {addressDetails.city} </p>
+              }
+              {cart?.addressDetails.state && 
+                <p>state - {addressDetails.state} </p>
+              }
+              {cart?.addressDetails.pincode && 
+                <p>pincode - {addressDetails.pincode} </p>
+              }
+            </div>
+
+            {showOverlay && (
+              <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
+              <div className="w-72 h-60 md:w-1/2 lg:w-2/6 lg:h-1/2 bg-white flex justify-center rounded shadow-lg relative">
+                <div className="absolute top-4 right-4 text-lg text-red-600">
+                  <ImCross onClick={closeOverlay} />
+                </div>
+                <div className="w-64 md: xl:w-96 flex flex-col justify-center">
+                  <input
+                    value={addressDetails.houseNumber}
+                    onChange={handleChange}
+                    type="text"
+                    name="houseNumber"
+                    className="w-full border border-grey-300 mb-5 px-2 py-2"
+                    placeholder="Enter your house number"
+                    required
+                  />
+                  <input 
+                    value={addressDetails.street}
+                    onChange={handleChange}
+                    type="text"
+                    name="street"
+                    className="w-full border border-grey-300 mb-5 px-2 py-2"
+                    placeholder="Enter your street"
+                    required
+                  />
+                  <input 
+                    className="w-full border border-grey-300 mb-5 px-2 py-2"
+                    value={addressDetails.nearby}
+                    onChange={handleChange}
+                    type="text"
+                    name="nearby"
+                    placeholder="Enter your nearby"
+                    required
+                  />
+                  <input 
+                    className="w-full border border-grey-300 mb-5 px-2 py-2"
+                    value={addressDetails.pincode}
+                    onChange={handleChange}
+                    type="text"
+                    name="pincode"
+                    placeholder="Enter your pincode"
+                    required
+                  />      
+                  <input 
+                    className="w-full border border-grey-300 mb-5 px-2 py-2"
+                    value={addressDetails.city}
+                    onChange={handleChange}
+                    type="text"
+                    name="city"
+                    placeholder="Enter your city"
+                    required
+                  />      
+                  <input 
+                    className="w-full border border-grey-300 mb-5 px-2 py-2"
+                    value={addressDetails.state}
+                    onChange={handleChange}
+                    type="text"
+                    name="state"
+                    placeholder="Enter your state"
+                    required
+                  />  
+                  <div> 
+                    <input type="checkbox" onChange={handleSaveAddress}/> Save for future orders
+                  </div>
+                  <button
+                      onClick={handleSubmitAddress}
+                      className="bg-blue-500 text-white py-2 px-4 hover:bg-blue-600"
+                    >
+                      Submit
+                  </button>     
+                </div>
+              </div>
+            </div>
           )}
-          {!shippingAvailable && (
-            <p className="mt-2 text-red-600">Shipping Not Available!</p>
-          )}
+          <p className="mt-2 text-green-600">{error}</p>
+          <p className="mt-2 text-green-600">{deliverMessage}</p>
           <button className="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full mt-6">
             Checkout
           </button>

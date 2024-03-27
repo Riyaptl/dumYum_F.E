@@ -9,6 +9,9 @@ export default false ? {message: "You are Offline. Please! turn on the internet"
     signUp: (formData) => {
         return Api.post("auth/signup", formData)
     },
+    checkEmail: (formData) => {
+        return Api.post("auth/email", formData)
+    },
     sendOTP: (email) => {
         return Api.post("password/send/OTP", {email})
     },
