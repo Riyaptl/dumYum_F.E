@@ -39,7 +39,7 @@ const SingleProduct = () => {
   const id = location.pathname.split('/')[2]
   const {cartQuantity, error, deliveryStatus} = useSelector((state) => state.cart)
   const {rating} = useSelector((state) => state.rating)
-  const pageImages = `https://dumyum.onrender.com/uploads/subCategory/`
+  const pageImages = `http://localhost:8000/uploads/subCategory/`
 
   useEffect(() => {
     dispatch(getSingleSubCategory(id))

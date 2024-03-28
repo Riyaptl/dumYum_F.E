@@ -14,7 +14,7 @@ const SpecialSlider = () => {
   const [hoveredSpecial, setHoveredSpecial] = useState(null);
   const navigate = useNavigate();
   const {specials} = useSelector((state) => state.special)
-  const specialImages = "https://dumyum.onrender.com/uploads/special/"
+  const specialImages = "http://localhost:8000/uploads/special/"
   const [image, setImage] = useState(null)
 
   const settings = {
