@@ -13,6 +13,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import TermConditionsPage from './pages/TermConditionsPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import ProfilePage from './pages/ProfilePage';
 
 
 function App() {
