@@ -29,31 +29,7 @@ const Footer = () => {
   return (
     <footer className="relative bg-white text-black py-5">
       <div className="container mx-auto">
-        <div className="">
-          {/* Footer CTA */}
-          <div className="border-b-[#37363647] border-b border-solid flex justify-between max-w-[85%] m-auto bg-[#fffbf7] py-3">
-            <div className="flex items-center mb-4">
-              <IoLocationSharp className="text-[#5555] text-3xl" />
-              <div className="inline-block pl-[15px]">
-                <h4 className="font-semibold text-black text-xl  mb-0.5">Find us</h4>
-                <span className="text-[#757575] text-[15px]">{footerData.address}</span>
-              </div>
-            </div>
-            <div className="flex items-center mb-4">
-              <IoCall className="text-[#5555] text-4xl float-left mt-2" />
-              <div className="inline-block pl-[15px]">
-                <h4 className="font-semibold text-black text-xl  mb-0.5">Call us</h4>
-                <span className="text-[#757575] text-[15px]">{footerData.phoneNumber}</span>
-              </div>
-            </div>
-            <div className="flex items-center">
-              <IoMail className="text-[#5555] text-3xl" />
-              <div className="inline-block pl-[15px]">
-                <h4 className="font-semibold text-black text-xl  mb-0.5">Mail us</h4>
-                <span className="text-[#757575] text-[15px]">{footerData.email}</span>
-              </div>
-            </div>
-          </div>
+
           <div className='flex justify-between flex-wrap max-w-[85%] m-auto'>
           {/* <div className='grid grid-cols-1 md:grid-cols-4 max-w-[85%] m-auto'> */}
            
@@ -103,7 +79,7 @@ const Footer = () => {
               </div>
             </div> 
           </div>
-        </div>
+        
       </div>
 
       <div className="text-black py-3 mt-8 border-t-[#37363647] border-t border-solid max-w-[85%] m-auto">

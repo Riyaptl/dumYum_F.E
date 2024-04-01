@@ -1,21 +1,19 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import image1 from "../assets/slider1.png";
 import image2 from "../assets/slider2.png";
 import { TiArrowLeftThick, TiArrowRightThick } from "react-icons/ti";
-import {getSpecials} from "../slices/specialSlice"
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const SpecialSlider = () => {
   const sliderRef = useRef(null);
   const [hoveredSpecial, setHoveredSpecial] = useState(null);
   const navigate = useNavigate();
-  const {specials} = useSelector((state) => state.special)
-  const specialImages = "http://localhost:8000/uploads/special/"
-  const [image, setImage] = useState(null)
+  const { specials } = useSelector((state) => state.special);
+  const specialImages = "http://localhost:8000/uploads/special/";
 
   const settings = {
     infinite: true,
@@ -43,20 +41,20 @@ const SpecialSlider = () => {
     sliderRef.current.slickPrev();
   };
 
-  const handleShop = (id) =>{
-    navigate(`/${id}?page=special`)
-  }
+  const handleShop = (id) => {
+    navigate(`/${id}?page=special`);
+  };
 
-  const handleHover = (special) =>{
-    setHoveredSpecial(special)
-  }
+  const handleHover = (special) => {
+    setHoveredSpecial(special);
+  };
 
-  const handleNormal = () =>{
-    setHoveredSpecial(null)
-  }
+  const handleNormal = () => {
+    setHoveredSpecial(null);
+  };
 
   return (
-    (<div className="w-full flex justify-center py-14 relative">
+    <div className="w-full flex justify-center py-14 relative">
       <div className="w-11/12">
         <div className="text-center pb-8">
           <h2 className="text-black font-serif text-center text-3xl ">
@@ -66,22 +64,24 @@ const SpecialSlider = () => {
         <Slider {...settings} ref={sliderRef}>
           {specials.map((special) => {
             return (
-              <div onClick={() => handleShop(special._id)}
+              <div
+                onClick={() => handleShop(special._id)}
                 key={special._id}
                 className="px-5 relative overflow-hidden"
                 onMouseEnter={() => handleHover(special)}
                 onMouseLeave={handleNormal}
-                >
+              >
                 {special.smallImages.length > 1 ? 
-                  <img
-                    src={
-                      hoveredSpecial === special ? specialImages+special.smallImages[1] : specialImages+special.smallImages[0] 
-                    }
-                    alt={special.name}
-                    className="w-full h-72 object-cover transition-transform transform hover:scale-110"
-                    />                 
-                  :
-                  <img
+                <img
+                  src={hoveredSpecial === special ? specialImages + special.smallImages[1] : specialImages + special.smallImages[0]}
+                  alt={special.name}
+                  className="w-full h-72 object-cover transition-transform duration-700 transform hover:scale-110"
+                  style={{
+                    transitionDelay: "0.2s",
+                    transform: hoveredSpecial === special ? "scale(1.1)" : "scale(1)",
+                  }}
+                />
+                 : <img
                   src={image1}
                   alt={special.name}
                   className="w-full h-72 object-cover transition-transform transform hover:scale-110"
@@ -111,7 +111,7 @@ const SpecialSlider = () => {
           <TiArrowRightThick />
         </button>
       </div>
-    </div>)
+    </div>
   );
 };
 

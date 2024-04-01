@@ -32,6 +32,7 @@ function App() {
           <Route exact path="/cart" element={<CartPage/>}/> 
           <Route exact path="/policy" element={<PrivacyPolicyPage />}/> 
           <Route exact path="/t&c" element={<TermConditionsPage />}/> 
+          <Route exact path="/profile" element={<ProfilePage />}/> 
         </Routes>
       </Router>
     </div>

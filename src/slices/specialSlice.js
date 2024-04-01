@@ -48,10 +48,12 @@ const specialSlice = createSlice({
             state.error = null;
         })
         .addCase(getSpecials.rejected, (state, action) => {
+            
             state.loading = false;
             state.specials = [];
             state.message = null;
             state.error = action.payload.message;
+            console.log("-->>>", action.payload)
         })
         .addCase(getSingleSpecial.pending, (state) => {
             state.loading = true;

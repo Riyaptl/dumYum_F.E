@@ -17,6 +17,7 @@ const ExploreSlider = () => {
   const categoryImages = "http://localhost:8000/uploads/category/"
 
 
+
   const settings = {
     infinite: true,
     speed: 1000,
@@ -48,7 +49,7 @@ const ExploreSlider = () => {
   }
 
   return (
-    <div className="w-full flex bg-fuchsia-50 justify-center py-14">
+    <div className="w-full flex bg-gray-50 justify-center py-14">
       <div className="w-11/12">
         <div className="text-center pb-8">
         <h2 className="text-black font-serif text-center text-3xl "> Explore Our Chocolates </h2>

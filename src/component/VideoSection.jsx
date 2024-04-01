@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { IoPlay } from 'react-icons/io5'
+import video from '../assets/video.mp4'
 
 const VideoSection = () => {
   const [isPlaying, setIsPlaying] = useState(false)
@@ -13,7 +14,7 @@ const VideoSection = () => {
   }
 
   return (
-    <div className="relative w-full h-[80vh] flex justify-center items-center">
+    <div className="relative w-full h-[90vh] flex justify-center items-center">
       <div
         className="absolute inset-0 bg-cover bg-center filter backdrop-blur-sm max-w-[90%] m-auto rounded-lg"
         style={{
@@ -51,10 +52,10 @@ const VideoSection = () => {
         )}
       </div>
       {isPlaying && (
-        <div className="absolute inset-0 flex justify-center items-center">
+        <div className="absolute inset-0 flex justify-center">
           <video
-            className="max-w-full max-h-full"
-            src="path_to_your_video.mp4"
+            className="max-w-full w-[90%] max-h-full"
+            src={video}
             controls
             autoPlay
           ></video>

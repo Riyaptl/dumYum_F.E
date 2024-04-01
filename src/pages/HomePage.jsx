@@ -7,6 +7,7 @@ import Footer from '../component/Footer'
 import VideoSection from '../component/VideoSection'
 import ExploreSlider from '../component/ExploreSlider'
 import { useSelector } from 'react-redux'
+import Newsletter from '../component/Newsletter'
 
 const HomePage = () => {
   return (
@@ -16,7 +17,7 @@ const HomePage = () => {
         <ExploreSlider />
         <VideoSection />
         <SpecialSlider />
-        <Testimonial />
+        <Newsletter />
         <Footer /> 
       </div> 
   )
