@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const CartOffline = () => {
   const [products, setProducts] = useState(Cookies.get('cart') ? JSON.parse(Cookies.get('cart')) : [])
-  const productImages = `http://localhost:8000/uploads/subCategory/`
+  const productImages = `https://dumyum.onrender.com/uploads/subCategory/`
   const dispatch = useDispatch()
   const {deliverMessage} = useSelector(state => state.location)
   const [pincode, setPincode] = useState('')

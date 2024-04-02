@@ -24,7 +24,7 @@ const Cart = () => {
   const {cart} = useSelector(state => state.cart)
   const {address} = useSelector(state => state.customer)
   const {location, error, deliverMessage} = useSelector(state => state.location)
-  const productImages = `http://localhost:8000/uploads/subCategory/`
+  const productImages = `https://dumyum.onrender.com/uploads/subCategory/`
 
   useEffect(() => {
     dispatch(getCart())
