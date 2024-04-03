@@ -1,7 +1,7 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const baseURL = "https://dumyum.onrender.com/api/v1";
+const baseURL = "http://localhost:8000/api/v1";
 
 export const server = async () => {
   try {
