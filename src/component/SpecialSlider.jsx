@@ -25,11 +25,23 @@ const SpecialSlider = () => {
     arrows: false,
     responsive: [
       {
-        breakpoint: 420,
+        breakpoint: 1024,
         settings: {
-          slidesToShow: 5,
+          slidesToShow: 3,
         },
       },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 640,
+        settings: {
+          slidesToShow: 1,
+        },
+      },    
     ],
   };
 
@@ -54,7 +66,7 @@ const SpecialSlider = () => {
   };
 
   return (
-    <div className="w-full flex justify-center py-14 relative">
+    <div className="w-full flex justify-center pb-14 relative">
       <div className="w-11/12">
         <div className="text-center pb-8">
           <h2 className="text-black font-serif text-center text-3xl ">
@@ -63,6 +75,7 @@ const SpecialSlider = () => {
         </div>
         <Slider {...settings} ref={sliderRef}>
           {specials.map((special) => {
+            console.log(special._id)
             return (
               <div
                 onClick={() => handleShop(special._id)}
@@ -71,7 +84,7 @@ const SpecialSlider = () => {
                 onMouseEnter={() => handleHover(special)}
                 onMouseLeave={handleNormal}
               >
-                {special.smallImages.length > 1 ? 
+                {special.smallImages.length > 1 ? (
                 <img
                   src={hoveredSpecial === special ? specialImages + special.smallImages[1] : specialImages + special.smallImages[0]}
                   alt={special.name}
@@ -80,13 +93,13 @@ const SpecialSlider = () => {
                     transitionDelay: "0.2s",
                     transform: hoveredSpecial === special ? "scale(1.1)" : "scale(1)",
                   }}
-                />
-                 : <img
+                />):(
+                  <img
                   src={image1}
                   alt={special.name}
                   className="w-full h-72 object-cover transition-transform transform hover:scale-110"
                   />
-                }
+          )}
                 {hoveredSpecial === special && (
                   <div className="absolute inset-0 flex justify-center items-center">
                     <div className="bg-transparent text-white px-4 py-2 rounded">
@@ -100,13 +113,13 @@ const SpecialSlider = () => {
         </Slider>
         <button
           onClick={handlePrev}
-          className=" bg-white border border-slate-200 rounded-full hover:bg-black hover:text-white duration-300 p-4 text-black mr-5 absolute left-14 top-1/2 transform -translate-y-1/2"
+          className=" bg-white border border-slate-200 rounded-full hover:bg-black hover:text-white duration-300 p-4 text-black mr-5 absolute left-14 top-1/2 transform -translate-y-1/2 hidden md:block"
         >
           <TiArrowLeftThick />
         </button>
         <button
           onClick={handleNext}
-          className="border border-slate-200 bg-white rounded-full hover:bg-black hover:text-white duration-300 p-4 text-black ml-5 absolute right-14 top-1/2 transform -translate-y-1/2"
+          className="border border-slate-200 bg-white rounded-full hover:bg-black hover:text-white duration-300 p-4 text-black ml-5 absolute right-14 top-1/2 transform -translate-y-1/2 hidden md:block"
         >
           <TiArrowRightThick />
         </button>

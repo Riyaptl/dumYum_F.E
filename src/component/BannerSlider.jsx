@@ -52,11 +52,11 @@ const BannerSlider = () => {
                 <img src={specialImages+animation.images[0]} alt={`Image ${animation.name}`} className="w-full h-[85vh] object-cover " /> :
                 <img src={image1} alt={`Image ${animation.name}`} className="w-full h-[85vh] object-cover " />
               }
-              <div className="absolute top-1/2 left-10 text-left text-white">
+              <div className="absolute top-1/3 md:top-1/2 left-10 text-left text-white">
                 <h2 className="text-3xl md:text-4xl font-bold mb-4">{animation.name}</h2>
                 <p className="text-lg md:text-xl mb-4">{animation.tagline}</p>
                 <p className="text-lg md:text-xl mb-8">{animation.description}</p>
-                <button onClick={() => handleShop(animation._id)} className="bg-[#FF9933] hover:bg-[#63AB45] duration-300 px-8 py-2 text-white">
+                <button onClick={() => handleShop(animation._id)} className="bg-[#FF9933] hover:bg-[#63AB45] duration-300 px-8 py-2 mb-4 text-white">
                     Explore Now
                 </button>
               </div>
