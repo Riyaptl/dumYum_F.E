@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -13,11 +13,18 @@ const BannerSlider = () => {
   const navigate = useNavigate(); 
   const specialImages = "http://localhost:8000/uploads/special/"
   const {animationLoading, animationSpecials} = useSelector((state) => state.animation)
-
+  const [specials, setSpecials] = useState([])
 
   useEffect(() => {
     dispatch(getAnimationSpecials())
   }, [])
+
+  useEffect(() => {
+    setSpecials([
+      {name: "We are, Handmade", tagline: "Handmade", images: ""},
+      ...animationSpecials
+    ])
+  },[animationSpecials])
 
   const handleNext = () => {
     sliderRef.current.slickNext();
@@ -46,7 +53,7 @@ const BannerSlider = () => {
     <div className="w-full flex flex-col items-center justify-center">
       <div className="w-full overflow-hidden relative">
         <Slider {...settings} ref={sliderRef}>
-          {animationSpecials.map((animation, index) => (
+          {specials.map((animation, index) => (
             <div key={index} className="w-full h-[60vh] md:h-auto flex items-center justify-center relative">
               {animation.images.length > 0 ?
                 <img src={specialImages+animation.images[0]} alt={`Image ${animation.name}`} className="w-full h-[85vh] object-cover " /> :

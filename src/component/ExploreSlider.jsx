@@ -17,9 +17,9 @@ const ExploreSlider = () => {
   const categoryImages = 'http://localhost:8000/uploads/category/'
 
   const settings = {
-    infinite: false,
+    infinite: true,
     speed: 1000,
-    slidesToShow: 3,
+    slidesToShow: 4,
     slidesToScroll: 1,
     autoplay: false,
     arrows: false,
@@ -109,15 +109,7 @@ const ExploreSlider = () => {
                       }}
                     />
                   )}
-                  {hoveredCategory === category && (
-                     <div className="absolute bottom-2 left-0 right-0 flex justify-center items-center">
-                     <div className="bg-white p-1  shadow-sm">
-                       <p className="text-sm font-semibold text-center text-gray-800">
-                         {category.tagline}
-                       </p>
-                     </div>
-                   </div>
-                  )}
+                 
                 </div>
                 <div className="text-center pt-4">
                   <h2 className="text-lg font-semibold">{category.name}</h2>
