@@ -13,6 +13,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import TermConditionsPage from './pages/TermConditionsPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import ProfilePage from './pages/ProfilePage';
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
           <Route exact path="/cart" element={<CartPage/>}/> 
           <Route exact path="/policy" element={<PrivacyPolicyPage />}/> 
           <Route exact path="/t&c" element={<TermConditionsPage />}/> 
+          <Route exact path="/profile" element={<ProfilePage />}/> 
         </Routes>
       </Router>
     </div>

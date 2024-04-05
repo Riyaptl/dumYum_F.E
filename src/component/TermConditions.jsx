@@ -57,6 +57,7 @@ const TermConditions = () => {
   const toggleAccordion = (index) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
+    
 
   return (
     <div className="bg-gray-100 min-h-screen flex justify-center items-center">

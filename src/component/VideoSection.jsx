@@ -1,19 +1,28 @@
-import React, { useState } from 'react'
-import { IoPlay } from 'react-icons/io5'
+import React, { useState, useRef } from 'react';
+import { IoPlay, IoClose } from 'react-icons/io5';
+import video from '../assets/video.mp4';
 
 const VideoSection = () => {
-  const [isPlaying, setIsPlaying] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef(null);
 
   const handleVideoClick = () => {
-    setIsPlaying(true)
-  }
+    setIsPlaying(true);
+    videoRef.current.play();
+  };
 
   const handleCancelClick = () => {
-    setIsPlaying(false)
-  }
+    setIsPlaying(false);
+    videoRef.current.pause();
+    videoRef.current.currentTime = 0;
+  };
+
+  const handleVideoEnd = () => {
+    setIsPlaying(false);
+  };
 
   return (
-    <div className="relative w-full h-[80vh] flex justify-center items-center">
+    <div className="relative w-full h-screen md:h-[90vh] flex justify-center items-center py-8">
       <div
         className="absolute inset-0 bg-cover bg-center filter backdrop-blur-sm max-w-[90%] m-auto rounded-lg"
         style={{
@@ -23,8 +32,8 @@ const VideoSection = () => {
       {/* Light black layer */}
       <div className="absolute inset-0 bg-black opacity-50 max-w-[90%] m-auto"></div>
       <div className="absolute inset-0 flex flex-col justify-center items-center text-white">
-        <h1 className="text-7xl font-serif mb-4">Sweet Story</h1>
-        <p className="text-center mb-4 font-serif">
+        <h1 className="text-3xl md:text-7xl font-serif mb-4">Sweet Story</h1>
+        <p className="text-center mb-4 font-serif text-sm md:text-lg">
           WITH OUR UNIQUE TAKE ON THE PROFESSION OF A PASTRY CHEF, WE
           REVOLUTIONIZE EVEN <br /> THE MOST FIRMLY ENTRENCHED TRADITIONS.
         </p>
@@ -32,36 +41,40 @@ const VideoSection = () => {
         {/* Conditional rendering for the video button or cancel button */}
         {isPlaying ? (
           <button
-            className="bg-white hover:bg-transparent hover:border text-white font-bold py-5 px-5 rounded-full transition-colors duration-300"
+            className="bg-white hover:bg-transparent hover:border text-white font-bold py-3 px-3 md:py-5 md:px-5 rounded-full transition-colors duration-300 absolute top-3 right-3"
             onClick={handleCancelClick}
           >
-            Cancel Video
+            <IoClose className="text-black text-xl md:text-2xl hover:text-white " />
           </button>
         ) : (
           <div>
-            <span className='mr-3'>Watch </span>
+            <span className="mr-1 md:mr-3">Watch </span>
             <button
-              className="bg-white hover:bg-transparent hover:border text-white font-bold py-5 px-5 rounded-full transition-colors duration-300"
+              className="bg-white hover:bg-transparent hover:border text-white font-bold py-3 px-3 md:py-5 md:px-5 rounded-full transition-colors duration-300"
               onClick={handleVideoClick}
             >
-              <IoPlay className="text-black text-2xl hover:text-white " />
+              <IoPlay className="text-black text-xl md:text-2xl hover:text-white " />
             </button>
-            <span className='ml-3'>Video </span>
+            <span className="ml-1 md:ml-3">Video </span>
           </div>
         )}
       </div>
       {isPlaying && (
         <div className="absolute inset-0 flex justify-center items-center">
           <video
+            ref={videoRef}
             className="max-w-full max-h-full"
-            src="path_to_your_video.mp4"
+            src={video}
             controls
             autoPlay
+            onEnded={handleVideoEnd}
+            width="1920"
+            height="1080"
           ></video>
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default VideoSection
+export default VideoSection;
