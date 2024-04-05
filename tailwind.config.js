@@ -36,8 +36,6 @@
 //   plugins: [],
 // };
 
-
-
 // tailwind.config.css
 
 module.exports = {
@@ -58,15 +56,22 @@ module.exports = {
             transform: 'scale(1)',
           },
         },
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
       },
       animation: {
         'fade-in-zoom-out': 'fade-in-zoom-out 500ms ease-out',
+        fadeIn: 'fadeIn 0.5s ease-out',
       },
     },
   },
   variants: {
     display: ['responsive', 'group-hover', 'group-focus'],
-    extend: {},
+    extend: {
+      animation: ['hover'],
+    },
   },
   plugins: [],
-};
+}

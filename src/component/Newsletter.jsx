@@ -1,8 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { motion, useAnimation } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 
 const Newsletter = () => {
+  const controls = useAnimation();
+  const { ref, inView } = useInView({ triggerOnce: false });
+
+  useEffect(() => {
+    controls.start({ opacity: 1, y: 0 });
+  }, [controls]);
+
   return (
-    <div className="font-sans relative w-full h-[50vh] flex justify-center items-center bg-gray-100">
+    <motion.div
+      className="font-sans relative w-full h-[50vh] flex justify-center items-center bg-gray-100"
+      ref={ref}
+      initial={{ opacity: 0, y: 100 }}
+      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 100 }}
+      transition={{ duration: 1 }}
+    >
       <div className="w-full max-w-[640px] mx-5">
         <h1 className="text-center text-5xl font-bold font-serif">Newsletter.</h1>
         <p className="text-center mt-2">Stay up to date with our latest news and products</p>
@@ -15,7 +30,7 @@ const Newsletter = () => {
         </form>
         <p className="text-center">*your email is safe with us, we don't spam</p>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

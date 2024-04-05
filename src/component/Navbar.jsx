@@ -1,28 +1,28 @@
-import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { getCategories } from '../slices/categorySlice'
-import { getSpecials } from '../slices/specialSlice'
-import { logOut } from '../slices/authSlice'
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCategories } from '../slices/categorySlice';
+import { getSpecials } from '../slices/specialSlice';
+import { logOut } from '../slices/authSlice';
 import {
   FaBars,
   FaTimes,
   FaUser,
   FaShoppingCart,
   FaSignOutAlt,
-} from 'react-icons/fa'
-import logo from '../assets/Logo.jpg'
+} from 'react-icons/fa';
+import logo from '../assets/Logo2.png';
 
 const Navbar = () => {
-  const dispatch = useDispatch()
-  const { categories } = useSelector((state) => state.category)
-  const { specials } = useSelector((state) => state.special)
-  const { isLoggedIn } = useSelector((state) => state.auth)
-  const [showMenu, setShowMenu] = useState(false)
-  const [showProductsDropdown, setShowProductsDropdown] = useState(false)
-  const [showMeetTheMasterDropdown, setShowMeetTheMasterDropdown] = useState(
-    false,
-  )
+  const dispatch = useDispatch();
+  const { categories } = useSelector((state) => state.category);
+  const { specials } = useSelector((state) => state.special);
+  const { isLoggedIn } = useSelector((state) => state.auth);
+  const [showMenu, setShowMenu] = useState(false);
+  const [showProductsDropdown, setShowProductsDropdown] = useState(false);
+  const [showMeetTheMasterDropdown, setShowMeetTheMasterDropdown] =
+    useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   const jsonData = {
     menuItems: [
@@ -39,59 +39,92 @@ const Navbar = () => {
     feedback: {
       imageUrl:
         'https://fadzrinmadu.github.io/hosted-assets/responsive-mega-menu-and-dropdown-menu-using-only-html-and-css/img.jpg',
-      story:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+      story: `For the past 5 to 6 years, I've been crafting chocolates,using my friends and family as taste-testers.Their enthusiastic feedback pushed me to refine flavors and turn my passion into a business. Inspired by my grandmother's spirit and supported by my family, especially my husband, I embarked on my journey as a chocolatier, naming my creations "DumYum" in honor of my grandmother - "Mrs.Damyanti Joshi". My hope is that everyone who tries my chocolates enjoys the taste and emotions of hand making in every bite..`,
     },
     offer: {
-      message:
-        'Special Offers: Get 20% off on selected items. Limited time only!',
+      message: 'Special Offers: Get 20% off on selected items. Limited time only!',
     },
-  }
+  };
 
   useEffect(() => {
-    dispatch(getCategories())
-    dispatch(getSpecials())
-  }, [])
+    dispatch(getCategories());
+    dispatch(getSpecials());
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleResize); // Add resize event listener
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize); // Cleanup resize event listener
+    };
+  }, []);
+
+  const handleScroll = () => {
+    if (window.scrollY > 0) {
+      setScrolled(true);
+    } else {
+      setScrolled(false);
+    }
+  };
+
+  const handleResize = () => {
+    // Reset dropdown state on screen size change
+    setShowMenu(false);
+    setShowProductsDropdown(false);
+    setShowMeetTheMasterDropdown(false);
+  };
 
   const handleLogout = () => {
-    dispatch(logOut())
-  }
+    dispatch(logOut());
+  };
 
   const handleMenuClick = () => {
-    setShowMenu(!showMenu)
-    setShowProductsDropdown(false)
-    setShowMeetTheMasterDropdown(false)
-  }
+    setShowMenu(!showMenu);
+    setShowProductsDropdown(false);
+    setShowMeetTheMasterDropdown(false);
+  };
 
-  const handleProductsClick = () => {
-    setShowProductsDropdown(!showProductsDropdown)
-    setShowMeetTheMasterDropdown(false)
-  }
+  const handleProductsHover = () => {
+    setShowProductsDropdown(true);
+    setShowMeetTheMasterDropdown(false);
+  };
 
-  const handleMeetTheMasterClick = () => {
-    setShowMeetTheMasterDropdown(!showMeetTheMasterDropdown)
-    setShowProductsDropdown(false)
-  }
+  const handleMeetTheMasterHover = () => {
+    setShowMeetTheMasterDropdown(true);
+    setShowProductsDropdown(false);
+  };
+
+  const handleDropdownLeave = () => {
+    setShowProductsDropdown(false);
+    setShowMeetTheMasterDropdown(false);
+  };
 
   return (
-    <nav className="relative z-10">
-      <div className="offer-bar bg-gray-100 text-black p-2 text-center">
-        <p>{jsonData.offer.message}</p>
-      </div>
-      <div className="wrapper bg-white text-black px-4 py-2 flex justify-between items-center max-w-[90%] w-full mx-auto max-h-[20vh] h-full">
-        <div className="logo">
+    <nav
+      className={`fixed top-0 left-0 w-full bg-white shadow-md z-50 ${
+        scrolled ? 'scrolled' : ''
+      }`}
+    >
+      {!scrolled && (
+        <div className="offer-bar bg-gray-100 text-black p-2 text-center">
+          <p>{jsonData.offer.message}</p>
+        </div>
+      )}
+      <div
+        className={`wrapper bg-white text-black px-4 py-${
+          scrolled ? '2' : '4'
+        } flex justify-between items-center max-w-[90%] w-full mx-auto h-full`}
+      >
+        <div className="h-16">
           <Link to="/">
-            <img src={logo} alt="logo" className="h-8 md:h-12" />
+            <img src={logo} alt="logo" className="h-full" />
           </Link>
         </div>
         <div className="flex items-center">
-          {showMenu && (
+          {showMenu ? (
             <FaTimes
               onClick={handleMenuClick}
               className="btn close-btn text-gray-700 text-xl lg:hidden"
             />
-          )}
-          {!showMenu && (
+          ) : (
             <FaBars
               onClick={handleMenuClick}
               className="menu-icon cursor-pointer lg:hidden text-gray-700 text-xl"
@@ -109,20 +142,23 @@ const Navbar = () => {
                 <Link
                   to={menuItem.url}
                   className="text-text-black  py-2 px-4 block"
-                  onClick={
-                    menuItem.title === 'Products' ? handleProductsClick : null
-                  }
                   onMouseEnter={
-                    menuItem.title === 'Products' ? handleProductsClick : null
+                    menuItem.title === 'Products'
+                      ? handleProductsHover
+                      : menuItem.title === 'Meet the Master'
+                      ? handleMeetTheMasterHover
+                      : null
                   }
-                  onMouseLeave={
-                    menuItem.title === 'Products' ? handleProductsClick : null
-                  }
+                  onMouseLeave={handleDropdownLeave}
                 >
                   {menuItem.title}
                 </Link>
                 {menuItem.isMegaMenu && showProductsDropdown && (
-                  <div className="mega-box bg-white shadow-lg md:shadow-none absolute top-full left-0 self-center w-full h-[35vh] lg:w-[40vw] p-4 z-20">
+                  <div
+                    className="mega-box bg-white shadow-lg md:shadow-none absolute top-full left-0 right-0 md:transform md:translate-y-1/5 md:-translate-x-1/3 w-full lg:w-[60vw] mx-auto p-4 z-20"
+                    onMouseEnter={handleProductsHover}
+                    onMouseLeave={handleDropdownLeave}
+                  >
                     <div className="content flex flex-row">
                       <div className="hidden md:block md:w-1/2">
                         <img
@@ -174,24 +210,28 @@ const Navbar = () => {
             ))}
             <li className="relative">
               <button
-                onClick={handleMeetTheMasterClick}
+                onClick={handleMeetTheMasterHover}
                 className="text-black  py-2 px-4 block focus:outline-none"
-                onMouseEnter={handleMeetTheMasterClick}
-                onMouseLeave={handleMeetTheMasterClick}
+                onMouseEnter={handleMeetTheMasterHover}
+                onMouseLeave={handleDropdownLeave}
               >
                 Meet the Master
               </button>
               {showMeetTheMasterDropdown && (
-                <div className="meet-chef-dropdown bg-white shadow-lg md:shadow-none absolute top-full right-0 w-full h-[70vh] lg:w-[40vw] md:h-[35vh] p-4 z-20">
+                <div
+                  className="meet-chef-dropdown bg-white shadow-lg md:shadow-none absolute top-full right-5 md:transform md:translate-x-1/4 w-full lg:w-[60vw] mx-auto  p-4 z-20"
+                  onMouseEnter={handleMeetTheMasterHover}
+                  onMouseLeave={handleDropdownLeave}
+                >
                   <div className="content flex flex-wrap justify-between flex-col sm:flex-row">
-                    <div className="row lg:w-1/2 sm:w-1/3 w-full">
+                    <div className="row lg:w-1/2 sm:w-1/3 hidden sm:block">
                       <img
                         src={jsonData.feedback.imageUrl}
                         alt=""
                         className="w-full h-auto"
                       />
                     </div>
-                    <div className="row md:w-1/2 w-full  md:pl-4">
+                    <div className="row md:w-1/2 w-full md:pl-4">
                       <p className="text-gray-900">{jsonData.feedback.story}</p>
                     </div>
                   </div>
@@ -202,21 +242,27 @@ const Navbar = () => {
         </div>
         {isLoggedIn ? (
           <div className="menu-right flex items-center text-black text-lg">
-            <button onClick={handleLogout} className="  py-2 px-4 mr-4">
-              <FaSignOutAlt />
-            </button>
             <Link to="/cart" className=" ">
               <FaShoppingCart />
             </Link>
+            <button onClick={handleLogout} className="  py-2 px-4">
+              <FaSignOutAlt />
+            </button>
           </div>
         ) : (
-          <Link to="/auth" className=" ">
-            <FaUser />
-          </Link>
+          <div className="menu-right flex items-center text-black text-lg">
+            <Link to="/cart" className=" ">
+              <FaShoppingCart />
+            </Link>
+
+            <Link to="/auth" className="py-2 px-4 ">
+              <FaUser />
+            </Link>
+          </div>
         )}
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

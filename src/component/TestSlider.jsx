@@ -730,6 +730,35 @@
 import React, { useState } from 'react';
 
 const HoverEffect = () => {
+
+
+  const jsonData = {
+    menuItems: [
+      { title: 'Home', url: '/' },
+      { title: 'Products', url: '#', isMegaMenu: true },
+      { title: 'About', url: '/' },
+      { title: 'B2B Connect', url: '/' },
+    ],
+    megaMenu: {
+      imageUrl:
+        'https://fadzrinmadu.github.io/hosted-assets/responsive-mega-menu-and-dropdown-menu-using-only-html-and-css/img.jpg',
+      types: [{ title: 'Collections' }, { title: 'Our Specials' }],
+    },
+    feedback: {
+      imageUrl:
+        'https://fadzrinmadu.github.io/hosted-assets/responsive-mega-menu-and-dropdown-menu-using-only-html-and-css/img.jpg',
+      story:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+    },
+    offer: {
+      message:
+        'Special Offers: Get 20% off on selected items. Limited time only!',
+    },
+  };
+
+
+
+
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -755,3 +784,344 @@ const HoverEffect = () => {
 };
 
 export default HoverEffect;
+
+
+
+
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCategories } from '../slices/categorySlice';
+import { getSpecials } from '../slices/specialSlice';
+import { logOut } from '../slices/authSlice';
+import { motion, useAnimation } from 'framer-motion';
+import {
+  FaBars,
+  FaTimes,
+  FaUser,
+  FaShoppingCart,
+  FaSignOutAlt,
+} from 'react-icons/fa';
+import logo from '../assets/Logo.jpg';
+
+const Navbar = () => {
+  const dispatch = useDispatch();
+  const { categories } = useSelector((state) => state.category);
+  const { specials } = useSelector((state) => state.special);
+  const { isLoggedIn } = useSelector((state) => state.auth);
+  const [showMenu, setShowMenu] = useState(false);
+  const [showProductsDropdown, setShowProductsDropdown] = useState(false);
+  const [showMeetTheMasterDropdown, setShowMeetTheMasterDropdown] = useState(false);
+  const [isSticky, setIsSticky] = useState(false);
+
+  const jsonData = {
+    menuItems: [
+      { title: 'Home', url: '/' },
+      { title: 'Products', url: '#', isMegaMenu: true },
+      { title: 'About', url: '/' },
+      { title: 'B2B Connect', url: '/' },
+    ],
+    megaMenu: {
+      imageUrl:
+        'https://fadzrinmadu.github.io/hosted-assets/responsive-mega-menu-and-dropdown-menu-using-only-html-and-css/img.jpg',
+      types: [{ title: 'Collections' }, { title: 'Our Specials' }],
+    },
+    feedback: {
+      imageUrl:
+        'https://fadzrinmadu.github.io/hosted-assets/responsive-mega-menu-and-dropdown-menu-using-only-html-and-css/img.jpg',
+      story:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+    },
+    offer: {
+      message:
+        'Special Offers: Get 20% off on selected items. Limited time only!',
+    },
+  };
+
+  useEffect(() => {
+    dispatch(getCategories());
+    dispatch(getSpecials());
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const handleScroll = () => {
+    const offset = window.scrollY;
+    setIsSticky(offset > 0);
+  };
+
+  const navbarControls = useAnimation();
+
+  useEffect(() => {
+    navbarControls.start({ y: isSticky ? 1 : 1 });
+  }, [isSticky, navbarControls]);
+
+  const handleLogout = () => {
+    dispatch(logOut());
+  };
+
+  const handleMenuClick = () => {
+    setShowMenu(!showMenu);
+    setShowProductsDropdown(false);
+    setShowMeetTheMasterDropdown(false);
+  };
+
+  const handleProductsHover = () => {
+    setShowProductsDropdown(true);
+    setShowMeetTheMasterDropdown(false);
+  };
+
+  const handleMeetTheMasterHover = () => {
+    setShowMeetTheMasterDropdown(true);
+    setShowProductsDropdown(false);
+  };
+
+  const handleDropdownLeave = () => {
+    setShowProductsDropdown(false);
+    setShowMeetTheMasterDropdown(false);
+  };
+
+  return (
+    <motion.nav
+      className={`fixed w-full top-0 z-50 bg-white shadow-md ${isSticky ? 'animate-sticky' : ''}`}
+      style={{ zIndex: 1000 }}
+      animate={navbarControls}
+      transition={{ type: 'tween', duration: 0.3 }}
+    >
+      <div className="offer-bar bg-gray-100 text-black p-2 text-center">
+        <p>{jsonData.offer.message}</p>
+      </div>
+      <div className="wrapper bg-white text-black px-4 py-6 flex justify-between items-center max-w-[90%] w-full mx-auto relative">
+        <div className="logo">
+          <Link to="/">
+            <img src={logo} alt="logo" className="h-8 md:h-12" />
+          </Link>
+        </div>
+        <div className="flex items-center">
+          {showMenu ? (
+            <FaTimes
+              onClick={handleMenuClick}
+              className="btn close-btn text-gray-700 text-xl lg:hidden"
+            />
+          ) : (
+            <FaBars
+              onClick={handleMenuClick}
+              className="menu-icon cursor-pointer lg:hidden text-gray-700 text-xl"
+            />
+          )}
+          <ul className={showMenu ? 'nav-links lg:hidden' : 'nav-links hidden lg:flex'}>
+            {jsonData.menuItems.map((menuItem, index) => (
+              <li key={index} className="relative">
+                <Link
+                  to={menuItem.url}
+                  className="text-text-black py-2 px-4 block"
+                  onMouseEnter={
+                    menuItem.title === 'Products' ? handleProductsHover : 
+                    menuItem.title === 'Meet the Master' ? handleMeetTheMasterHover : 
+                    null
+                  }
+                  onMouseLeave={handleDropdownLeave}
+                >
+                  {menuItem.title}
+                </Link>
+                {menuItem.isMegaMenu && showProductsDropdown && (
+                  <div className="mega-box bg-white shadow-lg md:shadow-none absolute top-full left-0 self-center w-full h-[35vh] lg:w-[40vw] p-4 z-20" onMouseEnter={handleProductsHover} onMouseLeave={handleDropdownLeave}>
+                    <div className="content flex flex-row">
+                      <div className="hidden md:block md:w-1/2">
+                        <img
+                          src={jsonData.megaMenu.imageUrl}
+                          alt="Mega Menu Image"
+                          className="w-full h-auto"
+                        />
+                      </div>
+                      <div className="row w-full lg:w-1/2 flex justify-evenly ml-4">
+                        <div className="">
+                          <ul className="mega-links">
+                            <header className="text-lg font-semibold mb-2">
+                              {jsonData.megaMenu.types[0].title}
+                            </header>
+                            {categories.map((item, itemIndex) => (
+                              <li key={itemIndex}>
+                                <Link
+                                  to={`/${item._id}?page=category`}
+                                  className="text-gray-900 py-1 block"
+                                >
+                                  {item.name}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                        <div className="">
+                          <ul className="mega-links">
+                            <header className="text-lg font-semibold mb-2">
+                              {jsonData.megaMenu.types[1].title}
+                            </header>
+                            {specials.map((item, itemIndex) => (
+                              <li key={itemIndex}>
+                                <Link
+                                  to={`/${item._id}?page=special`}
+                                  className="text-gray-900 hover:text-gray-500 py-1 block"
+                                >
+                                  {item.name}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </li>
+            ))}
+            <li className="relative">
+              <button
+                onClick={handleMeetTheMasterHover}
+                className="text-black py-2 px-4 block focus:outline-none"
+                onMouseEnter={handleMeetTheMasterHover}
+                onMouseLeave={handleDropdownLeave}
+              >
+                Meet the Master
+              </button>
+              {showMeetTheMasterDropdown && (
+                <div className="meet-chef-dropdown bg-white shadow-lg md:shadow-none absolute top-full right-0 w-full h-[70vh] lg:w-[40vw] md:h-[35vh] p-4 z-20" onMouseEnter={handleMeetTheMasterHover} onMouseLeave={handleDropdownLeave}>
+                  <div className="content flex flex-wrap justify-between flex-col sm:flex-row">
+                    <div className="row lg:w-1/2 sm:w-1/3 w-full">
+                      <img
+                        src={jsonData.feedback.imageUrl}
+                        alt=""
+                        className="w-full h-auto"
+                      />
+                    </div>
+                    <div className="row md:w-1/2 w-full  md:pl-4">
+                      <p className="text-gray-900">{jsonData.feedback.story}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </li>
+          </ul>
+        </div>
+        {isLoggedIn ? (
+          <div className="menu-right flex items-center text-black text-lg">
+            <button onClick={handleLogout} className="py-2 px-4 mr-4">
+              <FaSignOutAlt />
+            </button>
+            <Link to="/cart">
+              <FaShoppingCart />
+            </Link>
+          </div>
+        ) : (
+          <Link to="/auth">
+            <FaUser />
+          </Link>
+        )}
+      </div>
+    </motion.nav>
+  );
+};
+
+export default Navbar;
+
+
+import React, { useEffect } from "react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+// import Image from "next/image";
+import image1 from "../assets/slider1.png";
+import image2 from "../assets/slider2.png";
+import image3 from "../assets/slider1.png";
+import image4 from "../assets/slider2.png";
+import image5 from "../assets/slider1.png";
+
+const photos = [
+  {
+    id: 1,
+    image: image1,
+    title: "Discover Paradise...",
+    subtitle: "Your Gateway to Dreams...",
+    text: "Explore dreamy destinations. Your next adventure awaits!",
+  },
+  {
+    id: 2,
+    image: image2,
+    title: "Journey to Serenity...",
+    subtitle: "Where Tranquility Beckons...",
+    text: "Seek tranquil landscapes. Find peace in beauty.",
+  },
+  {
+    id: 3,
+    image: image3,
+    title: "Explore the Extraordinary...",
+    subtitle: "Curated Adventures Await...",
+    text: "Experience curated travel. Every moment is a gem.",
+  },
+  {
+    id: 4,
+    image: image4,
+    title: "Wanderlust Unleashed..",
+    subtitle: "Embark on Your Story...",
+    text: "Unleash your wanderlust. Every journey is a story.",
+  },
+  {
+    id: 5,
+    image: image5,
+    title: "Escape to Bliss...",
+    subtitle: "Discover Blissful Moments...",
+    text: "Find blissful moments. Make travel memories.",
+  },
+  // Add more photos as needed
+];
+
+const settings = {
+  //   dots: true,
+  infinite: true,
+  speed: 2000,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  fade: true,
+  cssEase: "linear",
+  autoplay: true,
+  autoplaySpeed: 2000,
+};
+
+const HomeScreen = () => {
+  return (
+    <div className="h-[100vh] overflow-hidden">
+      <Slider {...settings}>
+        {photos.map((photo) => {
+          return (
+            <div key={photo.id} className="relative w-full h-full">
+              <div className="w-full h-[100vh] relative">
+                <img
+                  src={photo.image}
+                  width={1200}
+                  height={700}
+                  alt={Image}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute top-0 left-0 w-full h-full bg-black opacity-60"></div>
+              </div>
+              <div className="w-10/12 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white">
+                <h2 className="cedarville-cursive-regular text-lg lg:text-3xl text-[#EFC03E] font-cursive font-semibold mb-4">
+                  {photo.title}
+                </h2>
+                <h1 className="text-3xl lg:text-6xl font-bold mb-5">
+                  {photo.subtitle}
+                </h1>
+                <p className="text-lg">{photo.text}</p>
+              </div>
+            </div>
+          );
+        })}
+      </Slider>
+    </div>
+  );
+};
+
+export default HomeScreen;
+

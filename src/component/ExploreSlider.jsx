@@ -12,6 +12,8 @@ import { getCategories } from '../slices/categorySlice'
 const ExploreSlider = () => {
   const sliderRef = useRef(null)
   const [hoveredCategory, setHoveredCategory] = useState(null)
+  const [delayedCategory, setDelayedCategory] = useState(null)
+  const [prevHoveredCategory, setPrevHoveredCategory] = useState(null)
   const navigate = useNavigate()
   const { categories } = useSelector((state) => state.category)
   const categoryImages = 'http://localhost:8000/uploads/category/'
@@ -41,9 +43,18 @@ const ExploreSlider = () => {
         settings: {
           slidesToShow: 1,
         },
-      },     
+      },
     ],
   }
+
+  useEffect(() => {
+    if (hoveredCategory) {
+      const timerId = setTimeout(() => {
+        setDelayedCategory(hoveredCategory)
+      }, 500)
+      return () => clearTimeout(timerId)
+    }
+  }, [hoveredCategory])
 
   const handleShop = (id) => {
     navigate(`/${id}?page=category`)
@@ -52,12 +63,14 @@ const ExploreSlider = () => {
   const handleImageClick = (id) => {
     navigate(`/${id}?page=category`)
   }
+
   const handleHover = (category) => {
+    setPrevHoveredCategory(hoveredCategory)
     setHoveredCategory(category)
   }
 
   const handleNormal = () => {
-    setHoveredCategory(null)
+    setHoveredCategory(prevHoveredCategory)
   }
 
   return (
@@ -81,7 +94,8 @@ const ExploreSlider = () => {
                   {category.smallImages.length > 0 ? (
                     <img
                       src={
-                        hoveredCategory === category
+                        delayedCategory === category &&
+                        category.smallImages.length > 0
                           ? categoryImages + category.smallImages[0]
                           : categoryImages + category.smallImages[1]
                       }
@@ -90,26 +104,36 @@ const ExploreSlider = () => {
                       style={{
                         transitionDelay: '0.2s',
                         transform:
-                          hoveredCategory === category
+                          delayedCategory === category
                             ? 'scale(1.1)'
                             : 'scale(1)',
                       }}
                     />
                   ) : (
                     <img
-                      src={hoveredCategory === category ? image2 : image1}
+                      src={image2}
                       alt={category.name}
                       className="w-full h-80 object-cover  transform transition-transform duration-700 hover:scale-110"
-                      style={{
-                        transitionDelay: '0.2s',
-                        transform:
-                          hoveredCategory === category
-                            ? 'scale(1.1)'
-                            : 'scale(1)',
-                      }}
+                      srcset={image1}
                     />
+                    //   <img
+                    //   src={
+                    //     delayedCategory === category &&
+                    //       category.smallImages.length > 0
+                    //       ? image1
+                    //       : image2
+                    //   }
+                    //   alt={category.name}
+                    //   className="w-full h-80 object-cover  transform transition-transform duration-700 hover:scale-110"
+                    //   style={{
+                    //     transitionDelay: '0.2s',
+                    //     transform:
+                    //       (delayedCategory === category)
+                    //         ? 'scale(1.1)'
+                    //         : 'scale(1)',
+                    //   }}
+                    // />
                   )}
-                 
                 </div>
                 <div className="text-center pt-4">
                   <h2 className="text-lg font-semibold">{category.name}</h2>
