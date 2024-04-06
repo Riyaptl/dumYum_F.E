@@ -86,7 +86,7 @@ const SpecialSlider = () => {
               <div
                 onClick={() => handleShop(special._id)}
                 key={special._id}
-                className="px-5 relative overflow-hidden"
+                className="px-5 relative overflow-hidden cursor-pointer "
                 onMouseEnter={() => handleHover(special)}
                 onMouseLeave={handleNormal}
               >
@@ -101,7 +101,7 @@ const SpecialSlider = () => {
                         : specialImages + special.smallImages[1]
                     }
                     alt={special.name}
-                    className="w-full h-72 object-cover transition-transform duration-700 transform hover:scale-105"
+                    className="w-full h-72 object-cover transition-transform duration-700 transform hover:scale-105  "
                     style={{
                       transitionDelay: '0s',
                       transform:
@@ -112,7 +112,7 @@ const SpecialSlider = () => {
                   <img
                     src={image1}
                     alt={special.name}
-                    className="w-full h-72 object-cover transition-transform duration-700 transform hover:scale-110"
+                    className="w-full h-72 object-cover transition-transform duration-700 transform hover:scale-110  "
                   />
                 )}
                 {hoveredSpecial === special && (

@@ -101,9 +101,9 @@ const ExploreSlider = () => {
                         : categoryImages + category.smallImages[0]
                     }
                     alt={category.name}
-                    className="w-full h-72 object-cover transition-transform duration-700 transform hover:scale-105"
+                    className="w-full h-72 object-cover transition-transform duration-700 transform hover:scale-105 cursor-pointer"
                     style={{
-                      transitionDelay: '0.001s',
+                      transitionDelay: '0s',
                       transform:
                         delayedSpecial === category ? 'scale(1.1)' : 'scale(1)',
                     }}
@@ -112,11 +112,11 @@ const ExploreSlider = () => {
                   <img
                     src={image1}
                     alt={category.name}
-                    className="w-full h-72 object-cover  "
+                    className="w-full h-72 object-cover transition-transform duration-700 transform hover:scale-110 cursor-pointer  "
                     style={{
-                      transitionDelay: '0.001s',
+                      transitionDelay: '0.2s',
                       transform:
-                        delayedSpecial === category ? 'scale(1.1)' : 'scale(1)',
+                        delayedSpecial === category ? 'scale(1)' : 'scale(1)',
                     }}
                   />
                 )}
