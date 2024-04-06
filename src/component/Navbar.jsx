@@ -219,7 +219,7 @@ const Navbar = () => {
               </button>
               {showMeetTheMasterDropdown && (
                 <div
-                  className="meet-chef-dropdown bg-white shadow-lg md:shadow-none absolute top-full right-5 md:transform md:translate-x-1/4 w-full lg:w-[60vw] mx-auto  p-4 z-20"
+                  className="meet-chef-dropdown bg-white shadow-lg md:shadow-none absolute top-full md:right-14 md:transform md:translate-x-1/4 w-full lg:w-[60vw] mx-auto p-4 z-20"
                   onMouseEnter={handleMeetTheMasterHover}
                   onMouseLeave={handleDropdownLeave}
                 >

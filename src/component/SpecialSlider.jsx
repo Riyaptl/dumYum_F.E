@@ -23,7 +23,7 @@ const SpecialSlider = () => {
     slidesToShow: 4,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 1500,
+    // autoplaySpeed: 2000,
     arrows: false,
     responsive: [
       {
@@ -63,7 +63,7 @@ const SpecialSlider = () => {
     setHoveredSpecial(special)
     const timerId = setTimeout(() => {
       setDelayedSpecial(special)
-    }, 500)
+    }, 300)
     return () => clearTimeout(timerId)
   }
 
@@ -101,9 +101,9 @@ const SpecialSlider = () => {
                         : specialImages + special.smallImages[1]
                     }
                     alt={special.name}
-                    className="w-full h-72 object-cover transition-transform duration-700 transform hover:scale-110"
+                    className="w-full h-72 object-cover transition-transform duration-700 transform hover:scale-105"
                     style={{
-                      transitionDelay: '0.2s',
+                      transitionDelay: '0s',
                       transform:
                         delayedSpecial === special ? 'scale(1.1)' : 'scale(1)',
                     }}
@@ -122,8 +122,9 @@ const SpecialSlider = () => {
                       initial={{ y: 20, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
                       transition={{ duration: 0.8 }}
+
                     >
-                      <h2 className="text-lg font-semibold">{special.name}</h2>
+                      <h2 className="text-2xl font-extrabold">{special.name}</h2>
                     </motion.div>
                   </div>
                 )}

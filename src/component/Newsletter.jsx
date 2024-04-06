@@ -4,7 +4,7 @@ import { useInView } from 'react-intersection-observer';
 
 const Newsletter = () => {
   const controls = useAnimation();
-  const { ref, inView } = useInView({ triggerOnce: false });
+  const { ref, inView } = useInView({ triggerOnce: true });
 
   useEffect(() => {
     controls.start({ opacity: 1, y: 0 });
