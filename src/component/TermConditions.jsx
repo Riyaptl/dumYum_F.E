@@ -60,8 +60,8 @@ const TermConditions = () => {
     
 
   return (
-    <div className="bg-gray-100 min-h-screen flex justify-center items-center">
-      <div className="wrapper w-4/5">
+    <div className="bg-white min-h-screen flex justify-center items-center  ">
+      <div className="wrapper w-4/5 ">
         <div className='flex justify-center py-4'><h1 className="text-3xl font-bold mb-8">Terms & Conditions</h1></div>
         
         <div className="container">

@@ -1,12 +1,12 @@
 import React from 'react'
 import Footer from '../component/Footer'
 // import PrivacyPolicy from '../component/PrivacyPolicy'
-import Navbar from '../component/Navbar'
+import Header from '../component/Header'
 
 const PrivacyPolicyPage = () => {
   return (
     <div>
-      <Navbar />
+      <Header />
       {/* <PrivacyPolicy /> */}
       <Footer />
     </div>

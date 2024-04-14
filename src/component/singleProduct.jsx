@@ -159,7 +159,7 @@ const SingleProduct = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 md:pt-44">
       <div className="max-w-[85%] mx-auto">
         <div className="flex flex-col lg:flex-row items-start">
           <div className="lg:w-1/2 relative mb-8 lg:mb-0">
@@ -202,7 +202,7 @@ const SingleProduct = () => {
               <h1 className="text-3xl font-extralight mb-2">
                 {singleSubCategory?.name}
               </h1>
-              <p className="text-lg mb-1">{singleSubCategory?.finalPrice}</p>
+              <p className="text-lg mb-1">Rs. {singleSubCategory?.finalPrice}</p>
               <p className="text-sm text-gray-500 mb-4">
                 {singleSubCategory?.tagline}
               </p>

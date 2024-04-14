@@ -39,9 +39,7 @@ const Cart = () => {
     dispatch(getAddress())
   }, [])
 
-  // useEffect(() => {
-  //   setAddressDetails({...address})
-  // }, [address])
+
 
   useEffect(() => {
     const addressCart = cart?.addressDetails
@@ -124,7 +122,7 @@ const Cart = () => {
   }
 
   return (
-    <div className="bg-gray-100 py-4">
+    <div className="bg-gray-100 py-4 relative">
       <div className="flex flex-col md:flex-row shadow-md my-10 mx-auto max-w-[95%]">
         <div className="md:w-4/5 bg-white px-10 py-10 ">
           <div className="flex justify-between border-b pb-4">
@@ -296,7 +294,7 @@ const Cart = () => {
                     Cost
                   </span>
                   <span className="font-semibold text-sm">
-                  Rs. {cart?.finalPrice.toFixed(0)}
+                  Rs. {cart?.finalPrice}
                   </span>
                 </div>
                 <div className="flex justify-between">

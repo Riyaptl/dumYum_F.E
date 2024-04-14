@@ -14,6 +14,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import TermConditionsPage from './pages/TermConditionsPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import ProfilePage from './pages/ProfilePage';
+import B2BConnectForm from './component/B2BConnectForm';
+import B2BConnectPage from './pages/B2BConnectPage';
 
 
 function App() {
@@ -33,6 +35,7 @@ function App() {
           <Route exact path="/policy" element={<PrivacyPolicyPage />}/> 
           <Route exact path="/t&c" element={<TermConditionsPage />}/> 
           <Route exact path="/profile" element={<ProfilePage />}/> 
+          <Route exact path="/b2b" element={<B2BConnectPage />}/> 
         </Routes>
       </Router>
     </div>

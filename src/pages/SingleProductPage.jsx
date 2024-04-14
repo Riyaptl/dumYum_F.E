@@ -1,16 +1,16 @@
 import React from 'react'
-import Products from '../component/Products'
-import FooterBanner from '../component/FooterBanner'
 import Footer from '../component/Footer'
-import Navbar from '../component/Navbar'
+import Header from '../component/Header'
 import SingleProduct from '../component/singleProduct'
 
 const SingleProductPage = () => {
   return (
-    <div>
-      <Navbar />
-      <SingleProduct />
-      <Footer />
+    <div className="min-h-screen">
+      <Header />
+      <div className="sm:pt-32 pt-3">
+        <SingleProduct />
+        <Footer />
+      </div>
     </div>
   )
 }

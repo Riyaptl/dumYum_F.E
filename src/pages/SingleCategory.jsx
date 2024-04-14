@@ -8,9 +8,11 @@ const SingleCategory = () => {
   return (
     <div>
       <Navbar />
-      <FooterBanner />
-      <CategoryProduct />
-      <Footer />
+      <div className="sm:pt-32 pt-3">
+        <FooterBanner />
+        <CategoryProduct />
+        <Footer />
+      </div>
     </div>
   )
 }
