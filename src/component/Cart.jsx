@@ -32,6 +32,7 @@ const Cart = () => {
   const { location, error, deliverMessage } = useSelector(
     (state) => state.location,
   )
+  const [selectedAddress, setSelectedAddress] = useState("")
   const productImages = `http://localhost:8000/uploads/subCategory/`
 
   useEffect(() => {
@@ -50,6 +51,7 @@ const Cart = () => {
       setAddressDetails({
         ...addressCart,
       })
+      setSelectedAddress(addressCart._id)
     }
   }, [cart])
 
@@ -84,8 +86,8 @@ const Cart = () => {
     await dispatch(whetherDeliver({ pincode: checkPincode }))
   }
 
-  const selectAddress = async (selectedAddress) => {
-    await dispatch(updateAddressCart(selectedAddress))
+  const selectAddress = async (passedAddress) => {
+    await dispatch(updateAddressCart(passedAddress))
     setCheckPincode('')
   }
 
@@ -422,7 +424,7 @@ const Cart = () => {
                 type="checkbox"
                 className="cursor-pointer"
                 onChange={() => selectAddress(add)}
-                checked={add.pincode === addressDetails.pincode}
+                checked={add._id === selectedAddress}
               />
               <div className="mt-6" key={index}>
                 <p>
