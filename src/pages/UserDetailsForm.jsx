@@ -104,7 +104,6 @@ const UserDetailsForm = () => {
       password,
       phone: formData.contact.phone,
       addressDetails: [address],
-      pincode: address.pincode,
       birthdate: formData.birthday,
       marraigeStatus: formData.maritalStatus,
       kidsStatus: formData.hasKids ? 'yes' : 'no',
