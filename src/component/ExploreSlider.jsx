@@ -1,17 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-import image2 from '../assets/slider2.png'
 import image1 from '../assets/slider1.png'
-
-import { useDispatch, useSelector } from 'react-redux'
+import image2 from '../assets/slider2.png'
+import { TiArrowLeftThick, TiArrowRightThick } from 'react-icons/ti'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { getCategories } from '../slices/categorySlice'
+import { motion } from 'framer-motion';
 
 const ExploreSlider = () => {
   const sliderRef = useRef(null)
-  const [hoveredCategory, setHoveredCategory] = useState(null)
+  const [hoveredSpecial, setHoveredSpecial] = useState(null)
+  const [delayedSpecial, setDelayedSpecial] = useState(null)
   const navigate = useNavigate()
   const { categories } = useSelector((state) => state.category)
   const categoryImages = 'http://localhost:8000/uploads/category/'
@@ -21,13 +22,14 @@ const ExploreSlider = () => {
     speed: 1000,
     slidesToShow: 4,
     slidesToScroll: 1,
-    autoplay: false,
+    autoplay: true,
+    // autoplaySpeed: 2000,
     arrows: false,
     responsive: [
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 3,
         },
       },
       {
@@ -41,83 +43,111 @@ const ExploreSlider = () => {
         settings: {
           slidesToShow: 1,
         },
-      },     
+      },
     ],
+  }
+
+  const handleNext = () => {
+    sliderRef.current.slickNext()
+  }
+
+  const handlePrev = () => {
+    sliderRef.current.slickPrev()
   }
 
   const handleShop = (id) => {
     navigate(`/${id}?page=category`)
   }
 
-  const handleImageClick = (id) => {
-    navigate(`/${id}?page=category`)
-  }
   const handleHover = (category) => {
-    setHoveredCategory(category)
+    setHoveredSpecial(category)
+    const timerId = setTimeout(() => {
+      setDelayedSpecial(category)
+    }, 300)
+    return () => clearTimeout(timerId)
   }
 
   const handleNormal = () => {
-    setHoveredCategory(null)
+    setHoveredSpecial(null)
+    setDelayedSpecial(null)
   }
 
   return (
-    <div className="w-full flex bg-gray-50 justify-center py-14">
+    <div className="w-full flex justify-center pb-14 relative">
       <div className="w-11/12">
         <div className="text-center pb-8">
-          <h2 className="text-black font-serif text-center text-3xl">
-            Explore Our Chocolates
+          <h2 className="text-black font-serif text-center text-3xl ">
+          Explore Our Chocolates
           </h2>
         </div>
         <Slider {...settings} ref={sliderRef}>
-          {categories.map((category) => {
+        {categories.map((category) => {
             return (
-              <div key={category._id} className="px-5 relative">
-                <div
-                  className="cursor-pointer relative overflow-hidden"
-                  onClick={() => handleImageClick(category._id)}
-                  onMouseEnter={() => handleHover(category)}
-                  onMouseLeave={handleNormal}
-                >
-                  {category.smallImages.length > 0 ? (
-                    <img
-                      src={
-                        hoveredCategory === category
-                          ? categoryImages + category.smallImages[0]
-                          : categoryImages + category.smallImages[1]
-                      }
-                      alt={category.name}
-                      className="w-full h-80 object-cover  transform transition-transform duration-700 hover:scale-110"
-                      style={{
-                        transitionDelay: '0.2s',
-                        transform:
-                          hoveredCategory === category
-                            ? 'scale(1.1)'
-                            : 'scale(1)',
-                      }}
-                    />
-                  ) : (
-                    <img
-                      src={hoveredCategory === category ? image2 : image1}
-                      alt={category.name}
-                      className="w-full h-80 object-cover  transform transition-transform duration-700 hover:scale-110"
-                      style={{
-                        transitionDelay: '0.2s',
-                        transform:
-                          hoveredCategory === category
-                            ? 'scale(1.1)'
-                            : 'scale(1)',
-                      }}
-                    />
-                  )}
-                 
-                </div>
-                <div className="text-center pt-4">
-                  <h2 className="text-lg font-semibold">{category.name}</h2>
-                </div>
+              <div
+                onClick={() => handleShop(category._id)}
+                key={category._id}
+                className="px-5 relative overflow-hidden"
+                onMouseEnter={() => handleHover(category)}
+                onMouseLeave={handleNormal}
+              >
+                {category.smallImages.length > 1 ? (
+                  <img
+                    src={
+                      delayedSpecial === category &&
+                      category.smallImages.length > 1
+                        ? categoryImages + category.smallImages[0]
+                        : category.smallImages.length > 0
+                        ? categoryImages + category.smallImages[1]
+                        : categoryImages + category.smallImages[0]
+                    }
+                    alt={category.name}
+                    className="w-full h-72 object-cover transition-transform duration-700 transform hover:scale-105 cursor-pointer"
+                    style={{
+                      transitionDelay: '0s',
+                      transform:
+                        delayedSpecial === category ? 'scale(1.1)' : 'scale(1)',
+                    }}
+                  />
+                ) : (
+                  <img
+                    src={image1}
+                    alt={category.name}
+                    className="w-full h-72 object-cover transition-transform duration-700 transform hover:scale-110 cursor-pointer  "
+                    style={{
+                      transitionDelay: '0.2s',
+                      transform:
+                        delayedSpecial === category ? 'scale(1)' : 'scale(1)',
+                    }}
+                  />
+                )}
+                {/* {hoveredSpecial === category && (
+                  <div className="absolute inset-0 flex justify-center items-center">
+                    <motion.div
+                      className="bg-transparent text-white font-extrabold px-4 py-2 rounded"
+                      initial={{ y: 20, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ duration: 0.8 }}
+                    >
+                      <h2 className="text-2xl font-extrabold">{category.name}</h2>
+                    </motion.div>
+                  </div>
+                )} */}
               </div>
             )
           })}
         </Slider>
+        <button
+          onClick={handlePrev}
+          className=" bg-white border border-slate-200 rounded-full hover:bg-black hover:text-white duration-300 p-4 text-black mr-5 absolute left-14 top-1/2 transform -translate-y-1/2 hidden md:block"
+        >
+          <TiArrowLeftThick />
+        </button>
+        <button
+          onClick={handleNext}
+          className="border border-slate-200 bg-white rounded-full hover:bg-black hover:text-white duration-300 p-4 text-black ml-5 absolute right-14 top-1/2 transform -translate-y-1/2 hidden md:block"
+        >
+          <TiArrowRightThick />
+        </button>
       </div>
     </div>
   )

@@ -1,10 +1,13 @@
 import React, { useState, useRef } from 'react';
 import { IoPlay, IoClose } from 'react-icons/io5';
 import video from '../assets/video.mp4';
+import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 
 const VideoSection = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef(null);
+  const { ref, inView } = useInView({ triggerOnce: false });
 
   const handleVideoClick = () => {
     setIsPlaying(true);
@@ -22,7 +25,13 @@ const VideoSection = () => {
   };
 
   return (
-    <div className="relative w-full h-screen md:h-[90vh] flex justify-center items-center py-8">
+    <motion.div
+      className="relative w-full h-screen md:h-[90vh] flex justify-center items-center py-8"
+      ref={ref}
+      initial={{ opacity: 0, y: 100 }}
+      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 100 }}
+      transition={{ duration: 1 }}
+    >
       <div
         className="absolute inset-0 bg-cover bg-center filter backdrop-blur-sm max-w-[90%] m-auto rounded-lg"
         style={{
@@ -73,7 +82,7 @@ const VideoSection = () => {
           ></video>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };
 
