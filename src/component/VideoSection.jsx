@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { IoPlay, IoClose } from 'react-icons/io5';
-import video from '../assets/video.mp4';
+// import video from '../assets/video.mp4';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
