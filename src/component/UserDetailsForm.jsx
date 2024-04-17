@@ -125,7 +125,7 @@ const UserDetailsForm = () => {
 
   return (
     <div className="flex justify-center items-center h-full bg-gray-100">
-      <div className="max-w-screen-lg w-full bg-white shadow-md rounded p-8">
+      <div className="max-w-screen-lg w-full bg-white  my-2 p-8">
         <h2 className="text-2xl font-semibold mb-4 text-center">User Details</h2>
         <form onSubmit={handleSubmit}>
 
@@ -344,7 +344,7 @@ const UserDetailsForm = () => {
           </div>
           {error}
           <div className='flex justify-center'>
-          <button type="submit" className="bg-fuchsia-50 hover:bg-fuchsia-100 text-black px-4 py-2 mt-4  border border-chocolate shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+          <button type="submit" className="border border-black text-black px-4 py-2 rounded hover:bg-black hover:text-white focus:outline-none">
               Submit
           </button></div>
         </form>

@@ -686,6 +686,7 @@ import MyAddress from './MyAddress';
 import MyOrders from './MyOrders';
 import MyQueries from './MyQueries';
 import RaiseQueries from './RaiseQueries';
+import { DiVim } from 'react-icons/di';
 
 const Profile = () => {
   const [selectedTab, setSelectedTab] = useState('basicDetails');
@@ -716,50 +717,50 @@ const Profile = () => {
   };
 
   return (
-    <div className="flex">
-      <aside className="w-1/4 bg-gray-200 p-4">
+    <div className="flex flex-col lg:flex-row max-w-7xl mx-auto h-full min-h-dvh">
+      <aside className="w-full lg:w-1/4 p-4 overflow-y-auto border-r">
         <ul className="space-y-4">
           <li
-            className={`cursor-pointer ${
-              selectedTab === 'basicDetails' && 'font-bold'
+            className={`cursor-pointer px-4 py-2 rounded-md ${
+              selectedTab === 'basicDetails' && 'border text-black font-semibold'
             }`}
             onClick={() => handleTabClick('basicDetails')}
           >
             Basic Details
           </li>
           <li
-            className={`cursor-pointer ${
-              selectedTab === 'myOrders' && 'font-bold'
+            className={`cursor-pointer px-4 py-2 rounded-md ${
+              selectedTab === 'myOrders' && 'border text-black font-semibold'
             }`}
             onClick={() => handleTabClick('myOrders')}
           >
             My Orders
           </li>
           <li
-            className={`cursor-pointer ${
-              selectedTab === 'myQueries' && 'font-bold'
+            className={`cursor-pointer px-4 py-2 rounded-md ${
+              selectedTab === 'myQueries' && 'border text-black font-semibold'
             }`}
             onClick={() => handleTabClick('myQueries')}
           >
             My Queries
           </li>
           <li
-            className={`cursor-pointer ${
-              selectedTab === 'raiseQueries' && 'font-bold'
+            className={`cursor-pointer px-4 py-2 rounded-md ${
+              selectedTab === 'raiseQueries' && 'border text-black font-semibold'
             }`}
             onClick={() => handleTabClick('raiseQueries')}
           >
             Raise Queries
           </li>
           <li
-            className={`cursor-pointer ${
-              selectedTab === 'myAddress' && 'font-bold'
+            className={`cursor-pointer px-4 py-2 rounded-md ${
+              selectedTab === 'myAddress' && 'border text-black font-semibold'
             }`}
             onClick={() => handleTabClick('myAddress')}
           >
             My Address
           </li>
-          <li className="cursor-pointer" onClick={logout}>
+          <li className="cursor-pointer  px-4 py-2 rounded-md hover:bg-gray-300" onClick={logout}>
             Logout
           </li>
         </ul>

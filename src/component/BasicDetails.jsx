@@ -1,116 +1,106 @@
-import React, { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { getCustomer, updateCustomer } from '../slices/customerSlice';
-import { AiOutlineEdit, AiOutlineClose, AiOutlineDelete } from 'react-icons/ai'
-import EditCustOverlay from './EditCustOverlay'
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getCustomer } from '../slices/customerSlice';
+import { AiOutlineEdit, AiOutlineMail, AiOutlinePhone, AiOutlineUser, AiOutlineCalendar, AiOutlineHeart, AiOutlineTeam, AiOutlineShoppingCart, AiOutlineDollarCircle, AiOutlineClockCircle } from 'react-icons/ai';
+import EditCustOverlay from './EditCustOverlay';
 
 const BasicDetails = () => {
-  const dispatch = useDispatch()
-  const [editCustOverlay, setEditCustOverlay] = useState(false)
-  const { customer } = useSelector((state) => state.customer)
+  const dispatch = useDispatch();
+  const [editCustOverlay, setEditCustOverlay] = useState(false);
+  const { customer } = useSelector((state) => state.customer);
 
   const handleEditCustomer = () => {
-    setEditCustOverlay(true)
-  }
+    setEditCustOverlay(true);
+  };
 
   const handleCloseEditForm = () => {
-    setEditCustOverlay(false)
-  }
-
-  const handleSubmitEditForm = (editedData) => {
-    dispatch(updateCustomer(editedData))
-    handleCloseEditForm()
-  }
+    setEditCustOverlay(false);
+  };
 
   useEffect(() => {
-    dispatch(getCustomer())
-  }, [dispatch])
+    dispatch(getCustomer());
+  }, [dispatch]);
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold mb-4">Basic Details</h2>
-      {customer && (
-        <>
-          <button
-            className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 focus:outline-none ml-2"
-            onClick={handleEditCustomer}
-          >
-            <AiOutlineEdit />
-          </button>
-          <div className="mb-6">
-            <p>
-              <span className="font-semibold">First Name:</span>{' '}
-              {customer.name.split(' ')[0]}
-            </p>
-            <p>
-              <span className="font-semibold">Last Name:</span>{' '}
-              {customer.name.split(' ')[1]}
-            </p>
-            <p>
-              <span className="font-semibold">Email:</span> {customer.email}
-            </p>
-            <p>
-              <span className="font-semibold">Phone:</span>{' '}
-              {customer.phone || 'NA'}
-            </p>
-            <p>
-              <span className="font-semibold">Gender:</span>{' '}
-              {customer.gender || 'NA'}
-            </p>
-            <p>
-              <span className="font-semibold">Birthdate:</span>{' '}
-              {customer.birthdate || 'NA'}
-            </p>
-            <p>
-              <span className="font-semibold">Marital Status:</span>{' '}
-              {customer.marraigeStatus || 'NA'}
-            </p>
-            <p>
-              <span className="font-semibold">Having Kids:</span>{' '}
-              {customer.kidsStatus || 'NA'}
-            </p>
-            <p>
-              <span className="font-semibold">Anniversary:</span>{' '}
-              {customer.anniversary || 'NA'}
-            </p>
-            <p>
-              <span className="font-semibold">Kids Birthdate:</span>{' '}
-              {customer.kidsBirthdate.length > 0
-                ? customer.kidsBirthdate
-                : 'NA'}
-            </p>
-            <p>
-              <span className="font-semibold">
-                Total Amount of Products Purchase:
-              </span>{' '}
-              {customer.totalAmount}
-            </p>
-            <p>
-              <span className="font-semibold">
-                Total Number of Products Purchase:
-              </span>{' '}
-              {customer.totalNumber}
-            </p>
-            <p>
-              <span className="font-semibold">Signed Up At:</span>{' '}
-              {
-                new Date(customer.createdAt)
-                  .toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
-                  .split(',')[0]
-              }
-            </p>
+    <div className="bg-white shadow rounded-lg overflow-hidden  h-full">
+      <div className="p-4">
+        <h2 className="text-xl font-semibold mb-4">Basic Details</h2>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div>
+           <p className='flex items-center text-gray-600 font-semibold'> <AiOutlineUser/>   <span className='ml-1'>Name</span> </p>
+            <p className="text-base font-medium">{customer?.name}</p>
           </div>
-        </>
-      )}
+          <div>
+          <p className='flex items-center text-gray-600 font-semibold'> <AiOutlineMail/>  <span className='ml-1'>Email</span> </p>
+            
+            <p className="text-base font-medium">{customer?.email}</p>
+          </div>
+          <div>
+          <p className='flex items-center text-gray-600 font-semibold'><AiOutlinePhone/>   <span className='ml-1'>Phone</span> </p>
+            
+            <p className="text-base font-medium">{customer?.phone || 'NA'}</p>
+          </div>
+          <div>
+          <p className='flex items-center text-gray-600 font-semibold'> <AiOutlineUser/>   <span className='ml-1'>Gender</span> </p>
+           
+            <p className="text-base font-medium">{customer?.gender || 'NA'}</p>
+          </div>
+          <div>
+          <p className='flex items-center text-gray-600 font-semibold'>  <AiOutlineCalendar/>   <span className='ml-1'>Birthdate</span> </p>
+           
+            <p className="text-base font-medium">{customer?.birthdate || 'NA'}</p>
+          </div>
+          <div>
+          <p className='flex items-center text-gray-600 font-semibold'> <AiOutlineTeam/>   <span className='ml-1'>Marital Status</span> </p>
+           
+            <p className="text-base font-medium">{customer?.marraigeStatus || 'NA'}</p>
+          </div>
+          <div>
+          <p className='flex items-center text-gray-600 font-semibold'> <AiOutlineTeam/>   <span className='ml-1'>Having Kids</span></p>
+            
+            <p className="text-base font-medium">{customer?.kidsStatus || 'NA'}</p>
+          </div>
+          <div>
+          <p className='flex items-center text-gray-600 font-semibold'>  <AiOutlineCalendar/>  <span className='ml-1'>Anniversary</span> </p>
+           
+            <p className="text-base font-medium">{customer?.anniversary || 'NA'}</p>
+          </div>
+          <div>
+          <p className='flex items-center text-gray-600 font-semibold'>  <AiOutlineCalendar/> <span className='ml-1'>Kids Birthdate</span> </p>
+           
+            <p className="text-base font-medium">{customer?.kidsBirthdate.length > 0 ? customer?.kidsBirthdate : 'NA'}</p>
+          </div>
+          <div>
+          <p className='flex items-center text-gray-600 font-semibold'>  <AiOutlineDollarCircle/>   <span className='ml-1'>Total Amount of Products Purchase</span> </p>
+           
+            <p className="text-base font-medium">{customer?.totalAmount}</p>
+          </div>
+          <div>
+          <p className='flex items-center text-gray-600 font-semibold'> <AiOutlineShoppingCart/>  <span className='ml-1'>Total Number of Products Purchase</span> </p>
+            
+            <p className="text-base font-medium">{customer?.totalNumber}</p>
+          </div>
+          <div>
+          <p className='flex items-center text-gray-600 font-semibold'> <AiOutlineClockCircle/>   <span className='ml-1'>Signed Up At</span> </p>
+            
+            <p className="text-base font-medium">{new Date(customer?.createdAt).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }).split(',')[0]}</p>
+          </div>
+        </div>
+        <button
+          className="mt-4 border border-black text-black px-4 py-1 rounded hover:bg-black hover:text-white focus:outline-none"
+          onClick={handleEditCustomer}
+        >
+          <AiOutlineEdit className="inline-block mr-2" /> Edit
+        </button>
+      </div>
       {editCustOverlay && (
         <EditCustOverlay
           customer={customer}
           handleCloseEditForm={handleCloseEditForm}
-          handleSubmit={handleSubmitEditForm}
         />
       )}
     </div>
-  )
-}
+  );
+};
 
-export default BasicDetails
+export default BasicDetails;

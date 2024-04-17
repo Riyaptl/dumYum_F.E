@@ -23,20 +23,25 @@ const HomePage = () => {
   })
 
   useEffect(() => {
+    let timeoutId; 
+  
     const handleScroll = () => {
       if (window.scrollY === 0) {
         setSelectedPage('home')
       }
-      setIsVisible(true)
-      clearTimeout(timeoutId)
-      const timeoutId = setTimeout(() => {
-        setIsVisible(false)
-      }, 5000)
+      setIsVisible(true);
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setIsVisible(false);
+      }, 5000);
     }
-
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(timeoutId); 
+    }
+  }, []);
 
   useEffect(() => {
     if (isVisible) {

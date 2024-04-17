@@ -98,13 +98,13 @@ const MyAddress = () => {
   }
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold mb-4">My Address</h2>
+    <div className="bg-white shadow rounded-lg overflow-hidden h-full px-1">
+      <h2 className="text-xl font-semibold mb-4">My Address</h2>
       <div className="flex justify-between flex-wrap">
         {address?.map((addressItem) => (
           <div
             key={addressItem._id}
-            className="address-box bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 w-full max-w-md mb-4 relative"
+            className="address-box bg-white rounded-lg  overflow-hidden border border-gray-200 w-full max-w-md mb-4 relative"
           >
             <div className="address-info p-4">
               <p className="font-semibold mb-4">
@@ -120,7 +120,7 @@ const MyAddress = () => {
                 <span className="text-green-500 font-semibold">Default</span>
               ) : (
                 <button
-                  className="default-button rounded px-3 py-1 bg-gray-200 text-gray-800 hover:bg-gray-300 focus:outline-none"
+                  className="border border-black  text-black px-4 py-1 rounded hover:bg-black hover:text-white focus:outline-none"
                   onClick={() => handleSetDefaultAddress(addressItem._id)}
                 >
                   Set as Default
@@ -145,10 +145,10 @@ const MyAddress = () => {
         ))}
       </div>
       <button
-        className="add-address-button bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 focus:outline-none"
+        className=" border border-black  text-black px-4 py-1 rounded hover:bg-black hover:text-white focus:outline-none"
         onClick={handleAddNewAddress}
       >
-        Add New Address
+        New Address
       </button>
 
       {/* Address Overlay */}

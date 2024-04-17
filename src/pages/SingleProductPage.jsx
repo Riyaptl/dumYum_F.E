@@ -9,7 +9,7 @@ const SingleProductPage = () => {
   return (
 
     <div>
-      <Navbar />
+      <Header />
       <SingleProduct />
       <ExploreSlider />
       <SpecialSlider />
