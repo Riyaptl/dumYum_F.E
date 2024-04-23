@@ -62,6 +62,14 @@ export const getCustomer = createAsyncThunk(
     }
 )
 
+export const updateCustomer = createAsyncThunk(
+    "customer/updateCustomer",
+    async ({id, body}) => {
+        const res = await customerService.updateCustomer({id, body})
+        return res.data
+    }
+)
+
 export const getOrders = createAsyncThunk (
     "auth/getOrders",
     async () => {
@@ -188,6 +196,20 @@ const authSlice = createSlice({
             state.error = null;
         })
         .addCase(getCustomer.rejected, (state, action) => {
+            state.loading = true;
+            state.customer = null;
+            state.error = action.error.message;
+        })
+        .addCase(updateCustomer.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        })
+        .addCase(updateCustomer.fulfilled, (state, action) => {
+            state.loading = true;
+            state.customer = action.payload.customer;
+            state.error = null;
+        })
+        .addCase(updateCustomer.rejected, (state, action) => {
             state.loading = true;
             state.customer = null;
             state.error = action.error.message;

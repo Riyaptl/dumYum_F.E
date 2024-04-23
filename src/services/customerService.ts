@@ -21,6 +21,9 @@ export default false ? {message: "You are Offline. Please! turn on the internet"
     getCustomer: () => {
         return Api.get("customer/info/profile")
     },
+    updateCustomer: ({id, body}) => {
+        return Api.post(`customer/${id}`, body)
+    },
     getOrders: () => {
         return Api.get("order/customer")
     },
