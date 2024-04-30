@@ -10,6 +10,7 @@
   import { logOut } from '../slices/authSlice';
   import { useDispatch , useSelector } from 'react-redux'
   import { useNavigate } from "react-router-dom";
+import ResetPassword from './ResetPassword';
   
 const Profile = () => {
   const [selectedTab, setSelectedTab] = useState('basicDetails');
@@ -37,6 +38,8 @@ const Profile = () => {
         return <MyQueries />;
       case 'raiseQueries':
         return <RaiseQueries />;
+      case 'resetPassword':
+        return <ResetPassword />;
       default:
         return null;
     }
@@ -85,6 +88,14 @@ const Profile = () => {
             onClick={() => handleTabClick('myAddress')}
           >
             My Address
+          </li>
+          <li
+            className={`cursor-pointer px-4 py-2 rounded-md ${
+              selectedTab === 'resetPassword' && 'border text-black font-semibold'
+            }`}
+            onClick={() => handleTabClick('resetPassword')}
+          >
+            Reset Password
           </li>
           <li className="cursor-pointer  px-4 py-2 rounded-md hover:bg-gray-300" onClick={logout}>
             Logout

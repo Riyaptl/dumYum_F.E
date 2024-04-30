@@ -55,6 +55,14 @@ export const checkEmail = createAsyncThunk (
     }
 )
 
+export const resetPassword = createAsyncThunk (
+    "auth/resetPassword",
+    async (formData) => {
+        const res = await authService.resetPassword(formData)
+        return res.data
+    }
+)
+
 const authSlice = createSlice({
     name: "cart",
     initialState,
@@ -153,6 +161,21 @@ const authSlice = createSlice({
             console.log(state.message);
         })
         .addCase(forgotPass.rejected, (state, action) => {
+            state.loading = false;
+            state.message = null;
+            state.authError = action.error.message;
+        })
+        .addCase(resetPassword.pending, (state) => {
+            state.loading = true;
+            state.authError = null;
+            state.message = null;
+        })
+        .addCase(resetPassword.fulfilled, (state, action) => {
+            state.loading = false;
+            state.message = action.payload.message;
+            state.authError = null;
+        })
+        .addCase(resetPassword.rejected, (state, action) => {
             state.loading = false;
             state.message = null;
             state.authError = action.error.message;
