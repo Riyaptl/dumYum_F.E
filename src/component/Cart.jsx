@@ -171,12 +171,12 @@ const Cart = () => {
                         <img
                           className="h-40"
                           src={productImages + product.image}
-                          alt={product.subCategory}
+                          alt={product.subCategory.split('|')[0]}
                         />
                       </div>
                       <div className="flex flex-col ml-4">
                         <span className="font-bold ">
-                          {product.subCategory}
+                          {product.subCategory.split('|')[0]}
                         </span>
                         <span className="text-gray-500 text-xs">
                           {product.category}
@@ -239,10 +239,10 @@ const Cart = () => {
                     <img
                       className="h-full"
                       src={productImages + product.image}
-                      alt={product.subCategory}
+                      alt={product.subCategory.split('|')[0]}
                     />
                     <div className="flex flex-col items-center">
-                      <span className="font-bold">{product.subCategory}</span>
+                      <span className="font-bold">{product.subCategory.split('|')[0]}</span>
                       <span className="text-gray-500 text-xs">
                         {product.category}
                       </span>
