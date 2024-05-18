@@ -3,7 +3,8 @@ import { AiOutlineClose } from 'react-icons/ai'
 
 const EditCustOverlay = ({ customer, handleCloseEditForm, handleSubmit }) => {
   const [formData, setFormData] = useState({
-    name: customer.name,
+    firstName: customer.firstName,
+    lastName: customer.lastName,
     email: customer.email,
     phone: customer.phone || '',
     gender: customer.gender || '',
@@ -35,7 +36,7 @@ const EditCustOverlay = ({ customer, handleCloseEditForm, handleSubmit }) => {
         </div>
         <h2 className="text-xl font-bold mb-4">Edit Details</h2>
         <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-2">
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label className="block text-sm font-semibold mb-2">
               First Name
             </label>
@@ -46,8 +47,8 @@ const EditCustOverlay = ({ customer, handleCloseEditForm, handleSubmit }) => {
               onChange={handleChange}
               className="border border-gray-300 rounded px-3 py-2 w-full"
             />
-          </div>
-          <div className="mb-4">
+          </div> */}
+          {/* <div className="mb-4">
             <label className="block text-sm font-semibold mb-2">
               Last Name
             </label>
@@ -58,7 +59,7 @@ const EditCustOverlay = ({ customer, handleCloseEditForm, handleSubmit }) => {
               onChange={handleChange}
               className="border border-gray-300 rounded px-3 py-2 w-full"
             />
-          </div>
+          </div> */}
           <div className="mb-4">
             <label className="block text-sm font-semibold mb-2">Phone</label>
             <input

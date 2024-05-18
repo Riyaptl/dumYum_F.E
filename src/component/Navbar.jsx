@@ -249,10 +249,13 @@ const Navbar = () => {
         </div>
         {isLoggedIn ? (
           <div className="menu-right flex items-center text-black text-lg">
-            <Link to="/cart" className=" ">
+            <Link to="/cart" className="py-1 pr-1 md:pr-2">
               <FaShoppingCart />
             </Link>
-            <button onClick={handleLogout} className="py-2 px-2 md:px-4">
+            <Link to="/profile" className="py-1 px-1 md:px-2">
+              <FaUser />
+            </Link>
+            <button onClick={handleLogout} className="py-1 px-1 md:px-2">
               <FaSignOutAlt />
             </button>
           </div>
@@ -262,7 +265,7 @@ const Navbar = () => {
               <FaShoppingCart />
             </Link>
 
-            <Link to="/auth" className="md:py-2 md:px-4 ">
+            <Link to="/auth" className="md:py-1 md:px-2 ">
               <FaUser />
             </Link>
           </div>

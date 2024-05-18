@@ -30,7 +30,7 @@ const Footer = () => {
         links: ['All Products', 'B2B Connect', 'Blogs', 'Contact Us'],
       },
     ],
-    copyrightText: 'Copyright © 2024, All Right Reserved',
+    copyrightText: 'Copyright ©dumYum, All Right Reserved',
     copyrightLink: '',
   }
 

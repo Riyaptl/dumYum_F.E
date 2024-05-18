@@ -16,12 +16,18 @@ import { addCart, getcartQuantity, checkDelivery } from '../slices/cartSlice'
 import { getRating } from '../slices/ratingSlice'
 import { addAddress } from '../slices/customerSlice'
 import Cookies from 'js-cookie'
+import image from '../assets/image5.jpg'
+import image1 from '../assets/image1.jpg'
+import image2 from '../assets/image2.jpg'
+import image3 from '../assets/image3.jpg'
+import image4 from '../assets/image4.jpg'
 
 const SingleProduct = () => {
   const { isLoggedIn } = useSelector((state) => state.auth)
   const [cart, setCart] = useState(
     !isLoggedIn && Cookies.get('cart') ? JSON.parse(Cookies.get('cart')) : [],
   )
+  const [currentSlide, setCurrentSlide] = useState(0)
   const [quantity, setQuantity] = useState(1)
   const [quantInCart, setQuantInCart] = useState(0)
   const [status, setStatus] = useState('')
@@ -47,6 +53,7 @@ const SingleProduct = () => {
   )
   const { rating } = useSelector((state) => state.rating)
   const pageImages = `http://localhost:8000/uploads/subCategory/`
+  console.log(pageImages)
 
   useEffect(() => {
     dispatch(getSingleSubCategory(id))
@@ -100,7 +107,7 @@ const SingleProduct = () => {
       let total = quantity
       if (itemIndex !== -1) {
         total += updatedCart[itemIndex].quantity
-        updatedCart.splice(itemIndex, 1) // Remove existing item
+        updatedCart.splice(itemIndex, 1)
       }
 
       updatedCart.push({
@@ -132,6 +139,9 @@ const SingleProduct = () => {
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
+    arrows: true,
+    adaptiveHeight: true,
+    initialSlide: currentSlide,
     afterChange: (index) => {
       setCurrentImage(index)
     },
@@ -163,7 +173,7 @@ const SingleProduct = () => {
       <div className="max-w-[85%] mx-auto">
         <div className="flex flex-col lg:flex-row items-start">
           <div className="lg:w-1/2 relative mb-8 lg:mb-0">
-            <div className="w-full h-[400px] lg:mb-4">
+            <div className="w-full h-[400px] lg:mb-4 ">
               <img
                 src={pageImages + singleSubCategory?.images[currentImage]}
                 alt={singleSubCategory?.name}
@@ -172,11 +182,15 @@ const SingleProduct = () => {
             </div>
             <Slider {...settings} ref={sliderRef} initialSlide={currentImage}>
               {singleSubCategory?.smallImages.map((image, index) => (
-                <div key={index} onClick={() => handleImageClick(index)}>
+                <div
+                  className="px-2"
+                  key={index}
+                  onClick={() => handleImageClick(index)}
+                >
                   <img
                     src={pageImages + image}
                     alt={singleSubCategory?.name}
-                    className="w-full  mb-2"
+                    className="w-full max-h-28"
                   />
                 </div>
               ))}
@@ -197,12 +211,14 @@ const SingleProduct = () => {
             </div>
           </div>
           <div className="lg:w-1/2 lg:pl-8">
-              <div>dumyum</div>
+            <div>dumyum</div>
             <div className="mb-6">
               <h1 className="text-3xl font-extralight mb-2">
                 {singleSubCategory?.name}
               </h1>
-              <p className="text-lg mb-1">Rs. {singleSubCategory?.finalPrice}</p>
+              <p className="text-lg mb-1">
+                Rs. {singleSubCategory?.finalPrice}
+              </p>
               <p className="text-sm text-gray-500 mb-4">
                 {singleSubCategory?.tagline}
               </p>
