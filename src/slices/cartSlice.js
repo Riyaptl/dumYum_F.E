@@ -19,6 +19,14 @@ export const addCart = createAsyncThunk(
     }
 )
 
+export const addMessage = createAsyncThunk(
+    "cart/addMessage",
+    async ({orderFor, message}) => {
+        const res = await cartService.addMessage({orderFor, message});
+        return res.data;
+    }
+)
+
 export const addBucketCart = createAsyncThunk(
     "cart/addBucketCart",
     async (bucket) => {
@@ -96,6 +104,21 @@ const cartSlice = createSlice({
             state.error = null;
         })
         .addCase(addCart.rejected, (state, action) => {
+            state.loading = false;
+            state.message = null;
+            state.error = action.error.message ;
+        })
+        .addCase(addMessage.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        })
+        .addCase(addMessage.fulfilled, (state, action) => {
+            state.loading = false;
+            state.message = action.payload.message;
+            state.cart = action.payload.cart
+            state.error = null;
+        })
+        .addCase(addMessage.rejected, (state, action) => {
             state.loading = false;
             state.message = null;
             state.error = action.error.message ;

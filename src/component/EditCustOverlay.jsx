@@ -140,7 +140,7 @@ const EditCustOverlay = ({ handleCloseEditForm }) => {
                 id="married"
                 name="marraigeStatus"
                 value="Married"
-                checked={formData.marraigeStatus === 'married'}
+                checked={formData.marraigeStatus === 'Married'}
                 onChange={handleChange}
                 className="form-radio"
               />
@@ -152,7 +152,7 @@ const EditCustOverlay = ({ handleCloseEditForm }) => {
                 id="unmarried"
                 name="marraigeStatus"
                 value="Unmarried"
-                checked={formData.marraigeStatus === 'unmarried'}
+                checked={formData.marraigeStatus === 'Unmarried'}
                 onChange={handleChange}
                 className="form-radio"
               />
@@ -162,7 +162,7 @@ const EditCustOverlay = ({ handleCloseEditForm }) => {
             </div>
           </div>
           {/* Anniversary */}
-          <div className="mb-4">
+          {formData.marraigeStatus === 'Married' && <div className="mb-4">
             <label className="block text-sm font-semibold mb-2">
               Anniversary
             </label>
@@ -173,8 +173,8 @@ const EditCustOverlay = ({ handleCloseEditForm }) => {
               onChange={handleChange}
               className="border border-gray-300 rounded px-3 py-2 w-full"
             />
-          </div>
-          {formData.marraigeStatus === 'married' &&
+          </div>}
+          {formData.marraigeStatus === 'Married' &&
             <>
               {/* Has Kids */}
             <div className="mb-4">

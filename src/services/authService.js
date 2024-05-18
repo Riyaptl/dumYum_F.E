@@ -16,6 +16,7 @@ export default false ? {message: "You are Offline. Please! turn on the internet"
         return Api.post("password/send/OTP", {email})
     },
     forgotPass: (formData) => {
+        console.log(formData);
         return Api.post("password/forgot/pass", formData)
     },
     resetPassword: (formData) => {

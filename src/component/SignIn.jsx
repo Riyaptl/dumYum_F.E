@@ -20,6 +20,7 @@ function SignIn(props) {
   });
 
   const [forgotPassData, setForgotPassData] = useState({
+    email: "",
     otp: "",
     newPassword: "",
     confirmPassword: ""
@@ -53,6 +54,13 @@ function SignIn(props) {
 
   const closeOverlay = () => {
     setShowOverlay(false);
+    setForgotPassData({
+      email: "",
+      otp: "",
+      newPassword: "",
+      confirmPassword: ""
+    })
+    setOtpSent(false)
   };
 
   useEffect(() => {
@@ -62,7 +70,7 @@ function SignIn(props) {
 
   const handleSendOTP = async () => {
     if (formData.email != ""){
-      const res = await dispatch(sendOTP(formData.email))
+      const res = await dispatch(sendOTP(forgotPassData.email))
       !res.error && setOtpSent(true)
     }else {
       setError("Enter email id")
@@ -70,8 +78,15 @@ function SignIn(props) {
   }
 
   const handleResetPassword = () => {
-    dispatch(forgotPass({...forgotPassData, email: formData.email}))
+    dispatch(forgotPass({...forgotPassData}))
     setShowOverlay(false);
+    setForgotPassData({
+      email: "",
+      otp: "",
+      newPassword: "",
+      confirmPassword: ""
+    })
+    setOtpSent(false)
   }
 
   const handleSubmit = async (e) => {
@@ -135,7 +150,6 @@ function SignIn(props) {
               Forgot password
             </Link>
           </div>
-          {error}
           <div className="flex items-center justify-center mt-6">
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -163,16 +177,17 @@ function SignIn(props) {
                 <ImCross onClick={closeOverlay} />
               </div>
               <div className="w-64 md: xl:w-96 flex flex-col justify-center">
-                <input
-                  value={formData.email}
-                  onChange={handleInputChange}
+                {!otpSent ? 
+                  <input
+                  value={forgotPassData.email}
+                  onChange={handleChange}
                   type="email"
                   name="email"
                   className="w-full border border-grey-300 mb-5 px-2 py-2"
                   placeholder="Enter Your Email"
                   required
-                />
-                {otpSent &&
+                  />
+                :
                 <>
                   <input 
                     value={forgotPassData.otp}
@@ -219,7 +234,6 @@ function SignIn(props) {
                   </div>                
                 </>
                 }
-                {error}
                 {!otpSent ? 
                   <button
                     onClick={handleSendOTP}

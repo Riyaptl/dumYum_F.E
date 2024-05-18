@@ -115,6 +115,7 @@ const authSlice = createSlice({
         .addCase(addAddress.fulfilled, (state, action) => {
             state.loading = true;
             state.message = action.payload.message;
+            state.address = action.payload.address;
             state.error = null;
         })
         .addCase(addAddress.rejected, (state, action) => {

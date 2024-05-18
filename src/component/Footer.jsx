@@ -12,22 +12,22 @@ const Footer = () => {
       {
         title: 'Support',
         links: [
-          "FAQ's",
-          'Privacy Policy',
-          'Shipping Policy',
-          'Refund/Return Policy',
-          'Terms And Conditions',
-          'My Account',
-          'My Orders',
+          ["FAQ's", '/faq'],
+          ['Privacy Policy', '/policy'],
+          ['Shipping Policy', '/policy'],
+          ['Refund/Return Policy', '/policy'],
+          ['Terms And Conditions', '/t&c'],
+          ['My Account', '/profile'],
+          ['My Orders', '/profile'],
         ],
       },
       {
         title: 'Explore Us',
-        links: ['About', 'Meet the Pioneers'],
+        links: [['About', '#'], ['Meet the Pioneers', '#']],
       },
       {
         title: 'Quick Links',
-        links: ['All Products', 'B2B Connect', 'Blogs', 'Contact Us'],
+        links: [['All Products', '#'], ['B2B Connect', '/b2b'], ['Blogs', '#'], ['Contact Us', '#']],
       },
     ],
     copyrightText: 'Copyright © 2024, All Right Reserved',
@@ -44,8 +44,8 @@ const Footer = () => {
               <ul className="space-y-2">
                 {section.links.map((link, index) => (
                   <li key={index}>
-                    <a href="#" className="text-gray-500 hover:text-gray-900">
-                      {link}
+                    <a href={link[1]} className="text-gray-500 hover:text-gray-900">
+                      {link[0]}
                     </a>
                   </li>
                 ))}
