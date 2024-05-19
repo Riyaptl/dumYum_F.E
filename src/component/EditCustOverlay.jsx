@@ -10,6 +10,7 @@ const EditCustOverlay = ({ handleCloseEditForm }) => {
   const {customer} = useSelector((state) => state.customer)
 
   const [formData, setFormData] = useState({
+<<<<<<< HEAD
     name: customer?.name,
     email: customer?.email,
     phone: customer?.phone || '',
@@ -19,6 +20,20 @@ const EditCustOverlay = ({ handleCloseEditForm }) => {
     kidsStatus: customer?.kidsStatus || '',
     anniversary: customer?.anniversary || '',
     kidsBirthdate: customer?.kidsBirthdate || ''
+=======
+    firstName: customer.firstName,
+    lastName: customer.lastName,
+    email: customer.email,
+    phone: customer.phone || '',
+    gender: customer.gender || '',
+    birthdate: customer.birthdate || '',
+    maritalStatus: customer.maritalStatus || '',
+    kidsStatus: customer.kidsStatus || '',
+    anniversary: customer.anniversary || '',
+    kidsBirthdate: customer.kidsBirthdate || '',
+    totalAmount: customer.totalAmount || '',
+    totalNumber: customer.totalNumber || '',
+>>>>>>> ea778517a5b001b46264191355d500bf13f95c14
   })
 
   const handleChange = (e) => {
@@ -73,7 +88,7 @@ const EditCustOverlay = ({ handleCloseEditForm }) => {
         </div>
         <h2 className="text-xl font-bold mb-4">Edit Details</h2>
         <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-2">
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label className="block text-sm font-semibold mb-2">
               First Name
             </label>
@@ -84,8 +99,8 @@ const EditCustOverlay = ({ handleCloseEditForm }) => {
               onChange={handleChange}
               className="border border-gray-300 rounded px-3 py-2 w-full"
             />
-          </div>
-          <div className="mb-4">
+          </div> */}
+          {/* <div className="mb-4">
             <label className="block text-sm font-semibold mb-2">
               Last Name
             </label>
@@ -96,7 +111,7 @@ const EditCustOverlay = ({ handleCloseEditForm }) => {
               onChange={handleChange}
               className="border border-gray-300 rounded px-3 py-2 w-full"
             />
-          </div>
+          </div> */}
           <div className="mb-4">
             <label className="block text-sm font-semibold mb-2">Phone</label>
             <input

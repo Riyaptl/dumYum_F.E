@@ -139,7 +139,7 @@ const Products = () => {
               onClick={() => handleShop(product._id)}
               src={image1}
               alt={product.name}
-              className="w-full  object-cover transition duration-300 transform hover:scale-105"
+              className="w-full h-72  object-cover transition duration-300 transform hover:scale-105"
               whileHover={{ scale: 1.05 }}
             />
           )}

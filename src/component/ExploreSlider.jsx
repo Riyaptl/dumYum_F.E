@@ -120,7 +120,7 @@ const ExploreSlider = () => {
                     }}
                   />
                 )}
-                {/* {hoveredSpecial === category && (
+                {hoveredSpecial === category && (
                   <div className="absolute inset-0 flex justify-center items-center">
                     <motion.div
                       className="bg-transparent text-white font-extrabold px-4 py-2 rounded"
@@ -131,7 +131,7 @@ const ExploreSlider = () => {
                       <h2 className="text-2xl font-extrabold">{category.name}</h2>
                     </motion.div>
                   </div>
-                )} */}
+                )}
               </div>
             )
           })}
