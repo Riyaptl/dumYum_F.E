@@ -17,6 +17,7 @@ function SignUp(props) {
   });
 
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfPassword, setShowConfPassword] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -54,6 +55,9 @@ function SignUp(props) {
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+  const toggleConfPasswordVisibility = () => {
+    setShowConfPassword(!showConfPassword);
   };
 
   return (
@@ -129,9 +133,9 @@ function SignUp(props) {
             />
                  <div
               className="absolute top-3 right-3 cursor-pointer"
-              onClick={togglePasswordVisibility}
+              onClick={toggleConfPasswordVisibility}
             >
-              {showPassword ? <BiHide /> : <BiShow />}
+              {showConfPassword ? <BiHide /> : <BiShow />}
             </div>
           </div>
         </div>
