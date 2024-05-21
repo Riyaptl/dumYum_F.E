@@ -123,7 +123,7 @@ function SignUp(props) {
           </div>
           <div className="w-full relative">
             <input
-              type="password"
+             type={showConfPassword ? 'text' : 'password'}
               name="password_confirmation"
               placeholder="Repeat Password"
               className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -143,7 +143,7 @@ function SignUp(props) {
         <div className="w-full py-8">
           <button
             onClick={handleSubmit}
-            className="text-md font-semibold w-full rounded-lg bg-blue-500 text-white hover:bg-blue-600 pt-3 pb-3"
+            className="text-md font-semibold w-full rounded hover:bg-black  hover:text-white border border-black text-black  pt-3 pb-3 focus:outline-none transition duration-300 ease-in-out"
           >
             CREATE NEW ACCOUNT
           </button>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { FaEdit, FaTruck } from 'react-icons/fa'
-import { AiOutlineCheck } from 'react-icons/ai'
+import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   getCart,
@@ -53,7 +53,7 @@ const Cart = () => {
     setOrderFor(cart?.orderFor)
     setNote(cart?.message)
   }, [cart])
-  
+
   useEffect(() => {
     if (pincode) {
       dispatch(getLocationCart({ pincode }))
@@ -104,7 +104,11 @@ const Cart = () => {
 
   const handleSubmitAddress = async () => {
     const res = await dispatch(addAddress({ ...addressDetails }))
-    await dispatch(updateAddressCart({ ...res.payload.address[res.payload.address.length - 1] }))
+    await dispatch(
+      updateAddressCart({
+        ...res.payload.address[res.payload.address.length - 1],
+      }),
+    )
     setCheckPincode('')
     setShowOverlay(false)
   }
@@ -128,7 +132,7 @@ const Cart = () => {
   }
 
   const handleSave = () => {
-    dispatch(addMessage({orderFor, message:note}))
+    dispatch(addMessage({ orderFor, message: note }))
   }
 
   return (
@@ -146,7 +150,7 @@ const Cart = () => {
               <thead>
                 <tr>
                   <th className="font-semibold text-gray-600 text-xs uppercase text-center">
-                    Product 
+                    Product
                   </th>
                   <th className="font-semibold text-gray-600 text-xs uppercase text-center">
                     Price
@@ -242,7 +246,9 @@ const Cart = () => {
                       alt={product.subCategory.split('|')[0]}
                     />
                     <div className="flex flex-col items-center">
-                      <span className="font-bold">{product.subCategory.split('|')[0]}</span>
+                      <span className="font-bold">
+                        {product.subCategory.split('|')[0]}
+                      </span>
                       <span className="text-gray-500 text-xs">
                         {product.category}
                       </span>
@@ -300,11 +306,9 @@ const Cart = () => {
             <div>
               <div className="flex flex-col space-y-4">
                 <div className="flex justify-between">
-                  <span className="font-semibold text-sm uppercase">
-                    Cost
-                  </span>
+                  <span className="font-semibold text-sm uppercase">Cost</span>
                   <span className="font-semibold text-sm">
-                  Rs. {cart?.finalPrice}
+                    Rs. {cart?.finalPrice}
                   </span>
                 </div>
                 <div className="flex justify-between">
@@ -312,7 +316,7 @@ const Cart = () => {
                     Shipping Charge:
                   </span>
                   <span className="font-semibold text-sm">
-                  Rs. {(+location?.ecd).toFixed(0)}
+                    Rs. {(+location?.ecd).toFixed(0)}
                   </span>
                 </div>
                 {location.priceLimit &&
@@ -337,7 +341,7 @@ const Cart = () => {
                     </span>
                   ) : (
                     <span className="font-semibold text-sm">
-                      Rs. 
+                      Rs.
                       {+cart?.finalPrice.toFixed(0) +
                         +(+location?.ecd).toFixed(0)}
                     </span>
@@ -401,7 +405,7 @@ const Cart = () => {
               <AiOutlineCheck />
             </button>
           </div>
-            <p className="mt-2 text-green-600">{deliverMessage}</p>
+          <p className="mt-2 text-green-600">{deliverMessage}</p>
 
           <div className="mt-6">
             <label htmlFor="orderNote" className="font-semibold text-lg">
@@ -412,21 +416,49 @@ const Cart = () => {
               name="orderNote"
               rows="3"
               className="block w-full  border-gray-300 mt-2 p-2 border focus:outline-none "
-              placeholder= {"Add any notes to your order..."}
+              placeholder={'Add any notes to your order...'}
               value={note}
               onChange={handleMessage}
             ></textarea>
-            
-            <p className="font-semibold text-lg">Order For</p>
-
-            <input type="radio" id="oneself" name="person" value="oneself" checked={orderFor === 'oneself'} onChange={() => setOrderFor("oneself") }/>
-            <label htmlFor="oneself">Oneself:</label>
-
-            <input type="radio" id="other" name="person" value="other" checked={orderFor === 'other'} onChange={() => setOrderFor("other") }></input>
-            <label htmlFor="other">Other:</label>
-
             <div>
-              <button onClick={handleSave}>Save</button>
+              <div class="flex items-center mb-4">
+                <p class="font-semibold text-lg mr-4">Order For:</p>
+
+                <label for="oneself" class="inline-flex items-center mr-4">
+                  <input
+                    type="radio"
+                    id="oneself"
+                    name="person"
+                    value="oneself"
+                    class="mr-2"
+                    checked={orderFor === 'oneself'}
+                    onChange={() => setOrderFor('oneself')}
+                  />
+                  <span>Oneself</span>
+                </label>
+
+                <label for="other" class="inline-flex items-center">
+                  <input
+                    type="radio"
+                    id="other"
+                    name="person"
+                    value="other"
+                    class="mr-2"
+                    checked={orderFor === 'other'}
+                    onChange={() => setOrderFor('other')}
+                  />
+                  <span>Other</span>
+                </label>
+              </div>
+
+              <div className="flex justify-end">
+                <button
+                  class="ml-auto px-4 py-1 border border-separate text-black hover:border-black "
+                  onClick={handleSave}
+                >
+                  Save
+                </button>
+              </div>
             </div>
           </div>
 
@@ -446,7 +478,7 @@ const Cart = () => {
                 className="cursor-pointer"
                 onChange={() => selectAddress(add)}
                 checked={add._id === cart?.addressDetails._id}
-                />
+              />
               <div className="mt-6" key={index}>
                 <p>
                   {add.houseNumber}, {add.street}, {add.nearby}, {address.city},{' '}
@@ -467,81 +499,84 @@ const Cart = () => {
           </div>
 
           {showOverlay && (
-            <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
-              <div className="w-72 h-60 md:w-1/2 lg:w-2/6 lg:h-1/2 bg-white flex justify-center rounded shadow-lg relative">
-                <div className="absolute top-4 right-4 text-lg text-red-600">
-                  <ImCross onClick={closeOverlay} />
+            <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
+              <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-filter backdrop-blur-sm"></div>
+              <div className="w-full md:w-[50%] bg-white flex flex-col justify-center rounded-lg shadow-lg relative h-[95%] md:h-[65%] ">
+                <div className="absolute top-4 right-4 text-lg text-black cursor-pointer">
+                  <AiOutlineClose onClick={closeOverlay} />
                 </div>
-                <div className="w-64 md: xl:w-96 flex flex-col justify-center">
-                  <input
-                    value={addressDetails.houseNumber}
-                    onChange={handleChange}
-                    type="text"
-                    name="houseNumber"
-                    className="w-full border border-grey-300 mb-5 px-2 py-2"
-                    placeholder="Enter your house number"
-                    required
-                  />
-                  <input
-                    value={addressDetails.street}
-                    onChange={handleChange}
-                    type="text"
-                    name="street"
-                    className="w-full border border-grey-300 mb-5 px-2 py-2"
-                    placeholder="Enter your street"
-                    required
-                  />
-                  <input
-                    className="w-full border border-grey-300 mb-5 px-2 py-2"
-                    value={addressDetails.nearby}
-                    onChange={handleChange}
-                    type="text"
-                    name="nearby"
-                    placeholder="Enter your nearby"
-                    required
-                  />
-                  <input
-                    className="w-full border border-grey-300 mb-5 px-2 py-2"
-                    value={addressDetails.pincode}
-                    onChange={handleChange}
-                    type="text"
-                    name="pincode"
-                    placeholder="Enter your pincode"
-                    required
-                  />
-                  <input
-                    className="w-full border border-grey-300 mb-5 px-2 py-2"
-                    value={addressDetails.city}
-                    onChange={handleChange}
-                    type="text"
-                    name="city"
-                    placeholder="Enter your city"
-                    required
-                  />
-                  <input
-                    className="w-full border border-grey-300 mb-5 px-2 py-2"
-                    value={addressDetails.state}
-                    onChange={handleChange}
-                    type="text"
-                    name="state"
-                    placeholder="Enter your state"
-                    required
-                  />
-                  {/* <div> 
-                    <input type="checkbox" onChange={handleSaveAddress}/> Save for future orders
-                  </div> */}
-                  <button
-                    onClick={handleSubmitAddress}
-                    className="bg-blue-500 text-white py-2 px-4 hover:bg-blue-600"
-                  >
-                    Submit
-                  </button>
+                {/* <div className=""> */}
+                <div className="w-full md:w-72 lg:w-2/3 m-auto">
+                  <div className="p-6">
+                    <input
+                      value={addressDetails.houseNumber}
+                      onChange={handleChange}
+                      type="text"
+                      name="houseNumber"
+                      className="w-full border border-gray-300 mb-3 px-3 py-2 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                      placeholder="Enter your house number"
+                      required
+                    />
+                    <input
+                      value={addressDetails.street}
+                      onChange={handleChange}
+                      type="text"
+                      name="street"
+                      className="w-full border border-gray-300 mb-3 px-3 py-2 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                      placeholder="Enter your street"
+                      required
+                    />
+                    <input
+                      value={addressDetails.nearby}
+                      onChange={handleChange}
+                      type="text"
+                      name="nearby"
+                      className="w-full border border-gray-300 mb-3 px-3 py-2 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                      placeholder="Enter your nearby"
+                      required
+                    />
+                    <input
+                      value={addressDetails.pincode}
+                      onChange={handleChange}
+                      type="text"
+                      name="pincode"
+                      className="w-full border border-gray-300 mb-3 px-3 py-2 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                      placeholder="Enter your pincode"
+                      required
+                    />
+                    <input
+                      value={addressDetails.city}
+                      onChange={handleChange}
+                      type="text"
+                      name="city"
+                      className="w-full border border-gray-300 mb-3 px-3 py-2 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                      placeholder="Enter your city"
+                      required
+                    />
+                    <input
+                      value={addressDetails.state}
+                      onChange={handleChange}
+                      type="text"
+                      name="state"
+                      className="w-full border border-gray-300 mb-3 px-3 py-2 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                      placeholder="Enter your state"
+                      required
+                    />
+
+                    <button
+                      onClick={handleSubmitAddress}
+                      className="w-full hover:border hover:border-black hover:text-black hover:bg-transparent bg-black duration-300 p-2 text-white"
+                    >
+                      Submit
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           )}
+
           <p className="mt-2 text-green-600">{error}</p>
-        
+
           <div className="mt-6 flex">
             <input
               type="checkbox"
@@ -556,7 +591,7 @@ const Cart = () => {
               Returns Policy.
             </label>
           </div>
-          <button className="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full mt-6">
+          <button className=" hover:border hover:border-black hover:text-black hover:bg-transparent bg-black duration-300 p-2 text-white py-3 text-sm  uppercase w-full mt-6">
             Checkout
           </button>
         </div>

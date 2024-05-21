@@ -258,8 +258,8 @@ const Navbar = () => {
               <FaUser />
             </Link>
             <button onClick={handleLogout} className="py-1 px-1 md:px-2">
-              <FaSignOutAlt />
-              {/* LogOut */}
+              {/* <FaSignOutAlt /> */}
+              LogOut
             </button>
           </div>
         ) : (
@@ -269,7 +269,8 @@ const Navbar = () => {
             </Link>
 
             <Link to="/auth" className="md:py-1 md:px-2 ">
-              <FaUser />
+              {/* <FaUser /> */}
+              LogIn
             </Link>
           </div>
         )}

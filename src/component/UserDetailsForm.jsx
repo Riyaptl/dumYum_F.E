@@ -12,6 +12,7 @@ const UserDetailsForm = () => {
   const navigate = useNavigate()
   const {username, email, password, authError} = useSelector((state) => state.auth)
   const [error, setError] = useState("")
+  const currentDate = new Date().toISOString().split('T')[0]
 
   const [formData, setFormData] = useState({
     contact: {
@@ -238,6 +239,7 @@ const UserDetailsForm = () => {
                   type="date"
                   id="birthday"
                   name="birthday"
+                  max={currentDate}
                   value={formData.birthday}
                   onChange={handleChange}
                   className="w-full border border-gray-300 rounded px-3 py-2"
@@ -284,6 +286,7 @@ const UserDetailsForm = () => {
                     type="date"
                     id="anniversary"
                     name="anniversary"
+                    max={currentDate}
                     value={formData.anniversary}
                     onChange={handleChange}
                     className="w-full border border-gray-300 rounded px-3 py-2"
@@ -334,6 +337,7 @@ const UserDetailsForm = () => {
                               type="date"
                               id={`kidBirthday${index}`}
                               name={`kid.${index}`}
+                              max={currentDate}
                               value={kid}
                               onChange={handleChange}
                               className="w-full border border-gray-300 rounded px-3 py-2"

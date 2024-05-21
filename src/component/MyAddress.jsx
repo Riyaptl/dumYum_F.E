@@ -8,7 +8,7 @@ import {
   getAddress,
   getCustomer,
 } from '../slices/customerSlice'
-import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai'
+import { AiOutlineEdit, AiOutlineDelete, AiOutlineClose } from 'react-icons/ai'
 import { ImCross } from 'react-icons/im'
 
 const MyAddress = () => {
@@ -151,14 +151,15 @@ const MyAddress = () => {
         New Address
       </button>
 
-      {/* Address Overlay */}
+
       {showOverlay && (
-        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
-          <div className="w-full sm:w-96 bg-white flex justify-center rounded shadow-lg relative">
-            <div className="absolute top-4 right-4 text-lg text-red-600">
-              <ImCross onClick={closeOverlay} />
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
+          <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-filter backdrop-blur-sm"></div>
+          <div className="w-full md:w-[50%] bg-white flex flex-col justify-center rounded-lg shadow-lg relative h-[95%] md:h-[65%] ">
+            <div className="absolute top-4 right-4 text-lg text-black cursor-pointer">
+              <AiOutlineClose onClick={closeOverlay} />
             </div>
-            <div className="w-64 md:w-96 flex flex-col justify-center p-4">
+            <div className="w-64 md:w-96 flex flex-col justify-center p-4 m-auto">
               <input
                 value={addressDetails.houseNumber}
                 onChange={handleChange}
@@ -215,7 +216,8 @@ const MyAddress = () => {
               />
               <button
                 onClick={handleSubmitAddress}
-                className="submit-button bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none"
+                className="hover:border hover:border-black hover:text-black hover:bg-transparent bg-black duration-300 text-white px-4 py-2 rounded focus:outline-none"
+                // className="submit-button bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none"
               >
                 {editingAddress ? 'Update' : 'Submit'}
               </button>

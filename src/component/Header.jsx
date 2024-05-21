@@ -239,8 +239,8 @@ const Header = () => {
               <FaUser />
             </Link>
             <button onClick={handleLogout} className="py-1 px-1 md:px-2">
-              <FaSignOutAlt />
-              {/* LogOut */}
+              {/* <FaSignOutAlt /> */}
+              LogOut
             </button>
           </div>
         ) : (
@@ -249,7 +249,8 @@ const Header = () => {
               <FaShoppingCart />
             </Link>
             <Link to="/auth" className=" md:py-2 md:px-4 ">
-              <FaUser />
+              {/* <FaUser /> */}
+              LogIn
             </Link>
           </div>
         )}
