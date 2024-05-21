@@ -257,6 +257,7 @@ const Navbar = () => {
             </Link>
             <button onClick={handleLogout} className="py-1 px-1 md:px-2">
               <FaSignOutAlt />
+              {/* LogOut */}
             </button>
           </div>
         ) : (
