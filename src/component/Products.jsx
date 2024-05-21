@@ -144,8 +144,8 @@ const Products = () => {
             />
           )}
           <div className="p-4 text-center">
-            <h2 className="text-xl font-serif">{product.name}</h2>
-            <p className="text-gray-800 font-bold">{product.finalPrice}</p>
+            <h2 className="text-xl font-serif">{product?.name.split('|')[0]}</h2>
+            <p className="text-gray-800 font-bold">{product?.quantity}</p>
           </div>
         </motion.div>
       ))}

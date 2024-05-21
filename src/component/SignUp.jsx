@@ -39,18 +39,18 @@ function SignUp(props) {
     // }
     
     await dispatch(setUserData({name: `${formData.first_name} ${formData.last_name}`, email: formData.email, password: formData.password}))
-    await dispatch(checkEmail({email: formData.email}))
+    const res = await dispatch(checkEmail({email: formData.email}))
 
-    setFormData({
-      first_name: '',
-      last_name: '',
-      email: '',
-      password: '',
-      password_confirmation: '',
-    });
-
-
-    navigate("/details")
+    if (!res.error){
+      setFormData({
+        first_name: '',
+        last_name: '',
+        email: '',
+        password: '',
+        password_confirmation: '',
+      }); 
+      navigate("/details")
+    }
   };
 
   const togglePasswordVisibility = () => {

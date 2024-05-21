@@ -15,6 +15,8 @@ import PrivacyPolicyPage from './pages/PrivacyPolicyPage'
 import ProfilePage from './pages/ProfilePage'
 import B2BConnectPage from './pages/B2BConnectPage'
 import UserDetailPage from './pages/UserDetailPage'
+import FaqPage from './pages/FaqPage'
+
 
 function App() {
   const { isLoggedIn } = useSelector((state) => state.auth)
@@ -34,6 +36,7 @@ function App() {
           <Route exact path="/t&c" element={<TermConditionsPage />} />
           <Route exact path="/profile" element={<ProfilePage />} />
           <Route exact path="/b2b" element={<B2BConnectPage />} />
+          <Route exact path="/faq" element={<FaqPage/>} />
         </Routes>
       </Router>
     </div>
