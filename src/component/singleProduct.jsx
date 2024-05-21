@@ -53,7 +53,7 @@ const SingleProduct = () => {
   )
   const { rating } = useSelector((state) => state.rating)
   const pageImages = `http://localhost:8000/uploads/subCategory/`
-  console.log(pageImages)
+  const [formattedDescription, setFormattedDescription] = useState("")
 
   useEffect(() => {
     dispatch(getSingleSubCategory(id))
@@ -61,6 +61,10 @@ const SingleProduct = () => {
     setStatus('')
     isLoggedIn && dispatch(getcartQuantity(id))
   }, [id])
+
+  useEffect(() => {
+    setFormattedDescription(singleSubCategory?.description.replace(/\n/g, '<br>'))
+  }, [singleSubCategory])
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -176,7 +180,7 @@ const SingleProduct = () => {
             <div className="w-full h-[400px] lg:mb-4 ">
               <img
                 src={pageImages + singleSubCategory?.images[currentImage]}
-                alt={singleSubCategory?.name}
+                alt={singleSubCategory?.name.split('|')[0]}
                 className="w-full h-full object-cover"
               />
             </div>
@@ -189,8 +193,8 @@ const SingleProduct = () => {
                 >
                   <img
                     src={pageImages + image}
-                    alt={singleSubCategory?.name}
-                    className="w-full max-h-28"
+                    alt={singleSubCategory?.name.split('|')[0]}
+                    className="w-full  mb-2"
                   />
                 </div>
               ))}
@@ -214,7 +218,7 @@ const SingleProduct = () => {
             <div>dumyum</div>
             <div className="mb-6">
               <h1 className="text-3xl font-extralight mb-2">
-                {singleSubCategory?.name}
+                {singleSubCategory?.name.split('|')[0]}
               </h1>
               <p className="text-lg mb-1">
                 Rs. {singleSubCategory?.finalPrice}
@@ -296,13 +300,15 @@ const SingleProduct = () => {
               </div>
               {activeTab === 'description' && (
                 <div className="mt-4">
-                  <h2 className="text-2xl font-semibold mb-2">Description:</h2>
-                  <p>{singleSubCategory?.description}</p>
+                  <h2 className="text-2xl font-semibold mb-5">Description:</h2>
+                  {singleSubCategory?.description.split('\n').map((line, index) => (
+                    <p key={index}>{line}&nbsp;</p>
+                  ))}
                 </div>
               )}
               {activeTab === 'reviews' && (
                 <div className="mt-4">
-                  <h2 className="text-2xl font-semibold mb-2">Reviews:</h2>
+                  <h2 className="text-2xl font-semibold mb-5">Reviews:</h2>
                   {rating?.review.map((rating, index) => (
                     <div
                       key={index}

@@ -6,6 +6,9 @@ export default false ? {message: "You are Offline. Please! turn on the internet"
     addCart: ({subCategoryId, quantity}) => {
         return Api.post("cart/add", {subCategoryId, quantity});
     },
+    addMessage: ({orderFor, message}) => {
+        return Api.post("cart/message", {orderFor, message})
+    },
     addBucketCart: (bucket) => {
         return Api.post("cart/bucket/add", {bucket});
     },

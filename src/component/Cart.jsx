@@ -7,6 +7,7 @@ import {
   updateQuantity,
   removeProduct,
   updateAddressCart,
+  addMessage,
 } from '../slices/cartSlice'
 import { addAddress, updateAddress, getAddress } from '../slices/customerSlice'
 import { ImCross } from 'react-icons/im'
@@ -32,15 +33,14 @@ const Cart = () => {
   const { location, error, deliverMessage } = useSelector(
     (state) => state.location,
   )
-  const [selectedAddress, setSelectedAddress] = useState("")
   const productImages = `http://localhost:8000/uploads/subCategory/`
+  const [note, setNote] = useState('')
+  const [orderFor, setOrderFor] = useState('')
 
   useEffect(() => {
     dispatch(getCart())
     dispatch(getAddress())
   }, [])
-
-
 
   useEffect(() => {
     const addressCart = cart?.addressDetails
@@ -49,10 +49,11 @@ const Cart = () => {
       setAddressDetails({
         ...addressCart,
       })
-      setSelectedAddress(addressCart._id)
     }
+    setOrderFor(cart?.orderFor)
+    setNote(cart?.message)
   }, [cart])
-
+  
   useEffect(() => {
     if (pincode) {
       dispatch(getLocationCart({ pincode }))
@@ -102,9 +103,8 @@ const Cart = () => {
   }
 
   const handleSubmitAddress = async () => {
-    await dispatch(addAddress({ ...addressDetails }))
-    await dispatch(updateAddressCart({ ...addressDetails }))
-    dispatch(getAddress())
+    const res = await dispatch(addAddress({ ...addressDetails }))
+    await dispatch(updateAddressCart({ ...res.payload.address[res.payload.address.length - 1] }))
     setCheckPincode('')
     setShowOverlay(false)
   }
@@ -121,6 +121,14 @@ const Cart = () => {
 
   const handleCheckout = () => {
     cart.addressDetails = { ...addressDetails }
+  }
+
+  const handleMessage = (e) => {
+    setNote(e.target.value)
+  }
+
+  const handleSave = () => {
+    dispatch(addMessage({orderFor, message:note}))
   }
 
   return (
@@ -163,12 +171,12 @@ const Cart = () => {
                         <img
                           className="h-40"
                           src={productImages + product.image}
-                          alt={product.subCategory}
+                          alt={product.subCategory.split('|')[0]}
                         />
                       </div>
                       <div className="flex flex-col ml-4">
                         <span className="font-bold ">
-                          {product.subCategory}
+                          {product.subCategory.split('|')[0]}
                         </span>
                         <span className="text-gray-500 text-xs">
                           {product.category}
@@ -231,10 +239,10 @@ const Cart = () => {
                     <img
                       className="h-full"
                       src={productImages + product.image}
-                      alt={product.subCategory}
+                      alt={product.subCategory.split('|')[0]}
                     />
                     <div className="flex flex-col items-center">
-                      <span className="font-bold">{product.subCategory}</span>
+                      <span className="font-bold">{product.subCategory.split('|')[0]}</span>
                       <span className="text-gray-500 text-xs">
                         {product.category}
                       </span>
@@ -393,6 +401,7 @@ const Cart = () => {
               <AiOutlineCheck />
             </button>
           </div>
+            <p className="mt-2 text-green-600">{deliverMessage}</p>
 
           <div className="mt-6">
             <label htmlFor="orderNote" className="font-semibold text-lg">
@@ -403,8 +412,22 @@ const Cart = () => {
               name="orderNote"
               rows="3"
               className="block w-full  border-gray-300 mt-2 p-2 border focus:outline-none "
-              placeholder="Add any notes to your order..."
+              placeholder= {"Add any notes to your order..."}
+              value={note}
+              onChange={handleMessage}
             ></textarea>
+            
+            <p className="font-semibold text-lg">Order For</p>
+
+            <input type="radio" id="oneself" name="person" value="oneself" checked={orderFor === 'oneself'} onChange={() => setOrderFor("oneself") }/>
+            <label htmlFor="oneself">Oneself:</label>
+
+            <input type="radio" id="other" name="person" value="other" checked={orderFor === 'other'} onChange={() => setOrderFor("other") }></input>
+            <label htmlFor="other">Other:</label>
+
+            <div>
+              <button onClick={handleSave}>Save</button>
+            </div>
           </div>
 
           <div className="mt-6 flex justify-between">
@@ -422,8 +445,8 @@ const Cart = () => {
                 type="checkbox"
                 className="cursor-pointer"
                 onChange={() => selectAddress(add)}
-                checked={add._id === selectedAddress}
-              />
+                checked={add._id === cart?.addressDetails._id}
+                />
               <div className="mt-6" key={index}>
                 <p>
                   {add.houseNumber}, {add.street}, {add.nearby}, {address.city},{' '}
@@ -432,6 +455,7 @@ const Cart = () => {
               </div>
             </div>
           ))}
+
           <div className="mt-6 flex justify-between">
             <span className="flex items-center">
               <FaTruck className="mr-2" />
@@ -517,7 +541,7 @@ const Cart = () => {
             </div>
           )}
           <p className="mt-2 text-green-600">{error}</p>
-          <p className="mt-2 text-green-600">{deliverMessage}</p>
+        
           <div className="mt-6 flex">
             <input
               type="checkbox"

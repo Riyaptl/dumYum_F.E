@@ -67,8 +67,11 @@ const BasicDetails = () => {
           </div>
           <div>
           <p className='flex items-center text-gray-600 font-semibold'>  <AiOutlineCalendar/> <span className='ml-1'>Kids Birthdate</span> </p>
-           
-            <p className="text-base font-medium">{customer?.kidsBirthdate.length > 0 ? customer?.kidsBirthdate : 'NA'}</p>
+            {customer?.kidsBirthdate.map((birthday, index) => (
+              <p key={index} className="text-base font-medium">{birthday}</p>
+            ))}
+            {customer?.kidsBirthdate.length == 0 && <p className="text-base font-medium">NA</p>}
+
           </div>
           <div>
           <p className='flex items-center text-gray-600 font-semibold'>  <AiOutlineDollarCircle/>   <span className='ml-1'>Total Amount of Products Purchase</span> </p>
@@ -95,7 +98,6 @@ const BasicDetails = () => {
       </div>
       {editCustOverlay && (
         <EditCustOverlay
-          customer={customer}
           handleCloseEditForm={handleCloseEditForm}
         />
       )}
