@@ -10,18 +10,15 @@ const EditCustOverlay = ({ handleCloseEditForm }) => {
   const {customer} = useSelector((state) => state.customer)
 
   const [formData, setFormData] = useState({
-    firstName: customer.firstName,
-    lastName: customer.lastName,
-    email: customer.email,
-    phone: customer.phone || '',
-    gender: customer.gender || '',
-    birthdate: customer.birthdate || '',
-    maritalStatus: customer.maritalStatus || '',
-    kidsStatus: customer.kidsStatus || '',
-    anniversary: customer.anniversary || '',
-    kidsBirthdate: customer.kidsBirthdate || '',
-    totalAmount: customer.totalAmount || '',
-    totalNumber: customer.totalNumber || '',
+    name: customer?.name,
+    email: customer?.email,
+    phone: customer?.phone || '',
+    gender: customer?.gender || '',
+    birthdate: customer?.birthdate || '',
+    marraigeStatus: customer?.marraigeStatus || '',
+    kidsStatus: customer?.kidsStatus || '',
+    anniversary: customer?.anniversary || '',
+    kidsBirthdate: customer?.kidsBirthdate || ''
   })
 
   const handleChange = (e) => {
