@@ -53,6 +53,11 @@ const SingleProduct = () => {
   )
   const { rating } = useSelector((state) => state.rating)
   const pageImages = `http://localhost:8000/uploads/subCategory/`
+  const [formattedDescription, setFormattedDescription] = useState("")
+
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to the top of the page
+  }, [location.pathname]); 
 
   useEffect(() => {
     dispatch(getSingleSubCategory(id))
@@ -286,7 +291,7 @@ const SingleProduct = () => {
                 >
                   Description
                 </button>
-                <button
+                { rating && <button
                   onClick={() => handleTabChange('reviews')}
                   className={`${
                     activeTab === 'reviews'
@@ -295,7 +300,7 @@ const SingleProduct = () => {
                   }`}
                 >
                   Reviews
-                </button>
+                </button>}
               </div>
               {activeTab === 'description' && (
                 <div className="mt-4">

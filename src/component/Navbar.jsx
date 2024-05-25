@@ -1,31 +1,29 @@
-import React, { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { getCategories } from '../slices/categorySlice'
-import { getSpecials } from '../slices/specialSlice'
-import { logOut } from '../slices/authSlice'
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCategories } from '../slices/categorySlice';
+import { getSpecials } from '../slices/specialSlice';
+import { logOut } from '../slices/authSlice';
 import {
   FaBars,
   FaTimes,
   FaUser,
   FaShoppingCart,
   FaSignOutAlt,
-} from 'react-icons/fa'
-// import logo from '../assets/Logo2.png';
-import logo from '../assets/final-02.png'
+} from 'react-icons/fa';
+import logo from '../assets/final-02.png';
 
 const Navbar = () => {
-  const dispatch = useDispatch()
-  const { categories } = useSelector((state) => state.category)
-  const { specials } = useSelector((state) => state.special)
-  const { isLoggedIn } = useSelector((state) => state.auth)
-  const [showMenu, setShowMenu] = useState(false)
-  const [showProductsDropdown, setShowProductsDropdown] = useState(false)
-  const [showMeetTheMasterDropdown, setShowMeetTheMasterDropdown] = useState(
-    false,
-  )
-  const [scrolled, setScrolled] = useState(false)
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const { categories } = useSelector((state) => state.category);
+  const { specials } = useSelector((state) => state.special);
+  const { isLoggedIn } = useSelector((state) => state.auth);
+  const [showMenu, setShowMenu] = useState(false);
+  const [showProductsDropdown, setShowProductsDropdown] = useState(false);
+  const [showMeetTheMasterDropdown, setShowMeetTheMasterDropdown] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [showOfferMessage, setShowOfferMessage] = useState(true); // Add state to control offer message visibility
+  const navigate = useNavigate();
 
   const jsonData = {
     menuItems: [
@@ -35,83 +33,90 @@ const Navbar = () => {
       { title: 'B2B Connect', url: '/b2b' },
     ],
     megaMenu: {
-      imageUrl:
-        'https://fadzrinmadu.github.io/hosted-assets/responsive-mega-menu-and-dropdown-menu-using-only-html-and-css/img.jpg',
+      imageUrl: 'https://fadzrinmadu.github.io/hosted-assets/responsive-mega-menu-and-dropdown-menu-using-only-html-and-css/img.jpg',
       types: [{ title: 'Collections' }, { title: 'Our Specials' }],
     },
     feedback: {
-      imageUrl:
-        'https://fadzrinmadu.github.io/hosted-assets/responsive-mega-menu-and-dropdown-menu-using-only-html-and-css/img.jpg',
-      story: `For the past 5 to 6 years, I've been crafting chocolates,using my friends and family as taste-testers.Their enthusiastic feedback pushed me to refine flavors and turn my passion into a business. Inspired by my grandmother's spirit and supported by my family, especially my husband, I embarked on my journey as a chocolatier, naming my creations "DumYum" in honor of my grandmother - "Mrs.Damyanti Joshi". My hope is that everyone who tries my chocolates enjoys the taste and emotions of hand making in every bite..`,
+      imageUrl: 'https://fadzrinmadu.github.io/hosted-assets/responsive-mega-menu-and-dropdown-menu-using-only-html-and-css/img.jpg',
+      story: `For the past 5 to 6 years, I've been crafting chocolates, using my friends and family as taste-testers. Their enthusiastic feedback pushed me to refine flavors and turn my passion into a business. Inspired by my grandmother's spirit and supported by my family, especially my husband, I embarked on my journey as a chocolatier, naming my creations "DumYum" in honor of my grandmother - "Mrs.Damyanti Joshi". My hope is that everyone who tries my chocolates enjoys the taste and emotions of hand making in every bite..`,
     },
     offer: {
-      message:
-        'Special Offers: Get 20% off on selected items. Limited time only!',
+      message: 'Special Offers: Get 20% off on selected items. Limited time only!',
     },
-  }
+  };
 
   useEffect(() => {
-    dispatch(getCategories())
-    dispatch(getSpecials())
-    window.addEventListener('scroll', handleScroll)
-    window.addEventListener('resize', handleResize)
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleResize);
     return () => {
-      window.removeEventListener('scroll', handleScroll)
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [])
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const handleScroll = () => {
     if (window.scrollY > 0) {
-      setScrolled(true)
+      setScrolled(true);
+      setShowOfferMessage(false); // Hide offer message when scrolled
     } else {
-      setScrolled(false)
+      setScrolled(false);
+      setShowOfferMessage(true); // Show offer message when not scrolled
     }
-  }
+  };
 
   const handleResize = () => {
-    setShowMenu(false)
-    setShowProductsDropdown(false)
-    setShowMeetTheMasterDropdown(false)
-  }
+    setShowMenu(false);
+    setShowProductsDropdown(false);
+    setShowMeetTheMasterDropdown(false);
+  };
 
   const handleLogout = () => {
-    dispatch(logOut())
-    navigate('/')
-  }
+    dispatch(logOut());
+    navigate('/');
+  };
 
   const handleMenuClick = () => {
-    setShowMenu(!showMenu)
-    setShowProductsDropdown(false)
-    setShowMeetTheMasterDropdown(false)
-  }
+    setShowMenu(!showMenu);
+    setShowProductsDropdown(false);
+    setShowMeetTheMasterDropdown(false);
+  };
 
   const handleProductsHover = () => {
-    setShowProductsDropdown(true)
-    setShowMeetTheMasterDropdown(false)
-  }
+    setShowProductsDropdown(true);
+    setShowMeetTheMasterDropdown(false);
+  };
 
   const handleMeetTheMasterHover = () => {
-    setShowMeetTheMasterDropdown(true)
-    setShowProductsDropdown(false)
-  }
+    setShowMeetTheMasterDropdown(true);
+    setShowProductsDropdown(false);
+  };
 
   const handleDropdownLeave = () => {
-    setShowProductsDropdown(false)
-    setShowMeetTheMasterDropdown(false)
-  }
+    setShowProductsDropdown(false);
+    setShowMeetTheMasterDropdown(false);
+  };
 
   return (
-    <nav
-      className={`fixed top-0 left-0 w-full bg-white shadow-md z-50  ${
-        scrolled ? 'scrolled' : ''
-      }`}
-    >
-      {!scrolled && (
-        <div className="hidden sm:block bg-gray-100 text-black p-2 text-center">
-          <p>{jsonData.offer.message}</p>
-        </div>
-      )}
+        <nav
+          className={`fixed top-0 left-0 w-full bg-white shadow-md z-50  ${
+            scrolled ? 'scrolled' : ''
+          }`}
+        >
+    {!scrolled && (
+      <div 
+        className="hidden sm:block bg-gray-100 text-black p-2 text-center"
+        style={{
+          opacity: scrolled ? 0 : 1, // Add opacity based on scroll position
+          height: scrolled ? 0 : 'auto', // Set height to 0 when scrolled, otherwise 'auto'
+          overflow: 'hidden', // Hide overflow when collapsed
+          transition: 'opacity 0.5s ease-in-out, height 0.5s ease-in-out' // Smooth transition for both opacity and height
+        }}
+      >
+        <p>{jsonData.offer.message}</p>
+      </div>
+    )}
+
+
       <div
         className={` relative wrapper bg-white text-black md:px-1   md:py-${
           scrolled ? '5' : '5'
