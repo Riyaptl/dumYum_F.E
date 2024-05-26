@@ -8,6 +8,7 @@ import locationReducer from "./slices/locationSlice"
 import ratingReducer from "./slices/ratingSlice"
 import authReducer from "./slices/authSlice"
 import customerReducer from "./slices/customerSlice"
+import inquiryReducer from "./slices/inquirySlice"
 
 const reducer = {
     auth: authReducer,
@@ -18,7 +19,8 @@ const reducer = {
     location: locationReducer,
     rating: ratingReducer,
     special: specialReducer,
-    animation: animationReducer
+    animation: animationReducer,
+    inquiry: inquiryReducer
 }
 
 const store = configureStore({

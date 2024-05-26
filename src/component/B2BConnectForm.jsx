@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { B2B } from '../slices/inquirySlice';
 
 const B2BConnectForm = () => {
   const [formData, setFormData] = useState({
@@ -7,6 +9,8 @@ const B2BConnectForm = () => {
     email: '',
     reasonToConnect: ''
   });
+  const dispatch = useDispatch()
+  const {loading} = useSelector((state) => state.inquiry)
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,7 +22,7 @@ const B2BConnectForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    dispatch(B2B({businessName:formData.businessName, phone:formData.mobileNo, email:formData.email, reason:formData.reasonToConnect}))
   };
 
   return (
@@ -77,7 +81,7 @@ const B2BConnectForm = () => {
           />
         </div>
         <div className="flex items-center justify-center">
-          <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+          <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:bg-gray-500 disabled:cursor-not-allowed" disabled={loading}>
             Connect
           </button>
         </div>
