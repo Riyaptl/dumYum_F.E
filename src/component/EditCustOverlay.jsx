@@ -1,13 +1,19 @@
 import React, { useState } from 'react'
 import { AiOutlineClose } from 'react-icons/ai'
-import { useSelector, useDispatch } from 'react-redux';
-import { updateCustomer } from '../slices/customerSlice';
-import { FaChild, FaUser, FaAddressCard, FaCalendarAlt, FaRing } from 'react-icons/fa';
+import { useSelector, useDispatch } from 'react-redux'
+import { updateCustomer } from '../slices/customerSlice'
+import {
+  FaChild,
+  FaUser,
+  FaAddressCard,
+  FaCalendarAlt,
+  FaRing,
+} from 'react-icons/fa'
 
 const EditCustOverlay = ({ handleCloseEditForm }) => {
-
   const dispatch = useDispatch()
-  const {customer} = useSelector((state) => state.customer)
+  const { customer } = useSelector((state) => state.customer)
+  const currentDate = new Date().toISOString().split('T')[0]
 
   const [formData, setFormData] = useState({
     name: customer?.name,
@@ -18,7 +24,7 @@ const EditCustOverlay = ({ handleCloseEditForm }) => {
     marraigeStatus: customer?.marraigeStatus || '',
     kidsStatus: customer?.kidsStatus || '',
     anniversary: customer?.anniversary || '',
-    kidsBirthdate: customer?.kidsBirthdate || ''
+    kidsBirthdate: customer?.kidsBirthdate || '',
   })
 
   const handleChange = (e) => {
@@ -30,16 +36,15 @@ const EditCustOverlay = ({ handleCloseEditForm }) => {
   }
 
   const handleChangeKidsBirthdate = (e) => {
-    const { name, value} = e.target;
-      const index = parseInt(name.split('.')[1]);
-      const updatedKids = [...formData.kidsBirthdate];
-      updatedKids[index] = value;
-      setFormData(prevState => ({
-        ...prevState,
-        kidsBirthdate: updatedKids
-      }));
-    };
-
+    const { name, value } = e.target
+    const index = parseInt(name.split('.')[1])
+    const updatedKids = [...formData.kidsBirthdate]
+    updatedKids[index] = value
+    setFormData((prevState) => ({
+      ...prevState,
+      kidsBirthdate: updatedKids,
+    }))
+  }
 
   const handleKidsChange = (e) => {
     const { name, checked } = e.target
@@ -51,27 +56,28 @@ const EditCustOverlay = ({ handleCloseEditForm }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    await dispatch(updateCustomer({id: customer._id, body: formData}))
+    await dispatch(updateCustomer({ id: customer._id, body: formData }))
     handleCloseEditForm()
   }
 
   const addKid = () => {
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
-      kidsBirthdate: [...prevState.kidsBirthdate, '']
-    }));
-  };
+      kidsBirthdate: [...prevState.kidsBirthdate, ''],
+    }))
+  }
 
   return (
-    <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
-      <div className="w-[80%] bg-white rounded shadow-lg p-4">
-        <div className="flex justify-end">
+    <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-filter backdrop-blur-sm"></div>
+      <div className="w-[70%] bg-white rounded shadow-lg p-4 relative">
+        <div className="flex justify-between">
+          <h2 className="text-xl font-bold mb-4">Edit Details</h2>
           <AiOutlineClose
             className="text-2xl cursor-pointer"
             onClick={handleCloseEditForm}
           />
         </div>
-        <h2 className="text-xl font-bold mb-4">Edit Details</h2>
         <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-2">
           {/* <div className="mb-4">
             <label className="block text-sm font-semibold mb-2">
@@ -127,6 +133,7 @@ const EditCustOverlay = ({ handleCloseEditForm }) => {
               name="birthdate"
               value={formData.birthdate}
               onChange={handleChange}
+              max={currentDate}
               className="border border-gray-300 rounded px-3 py-2 w-full"
             />
           </div>
@@ -162,33 +169,39 @@ const EditCustOverlay = ({ handleCloseEditForm }) => {
             </div>
           </div>
           {/* Anniversary */}
-          {formData.marraigeStatus === 'Married' && <div className="mb-4">
-            <label className="block text-sm font-semibold mb-2">
-              Anniversary
-            </label>
-            <input
-              type="date"
-              name="anniversary"
-              value={formData.anniversary}
-              onChange={handleChange}
-              className="border border-gray-300 rounded px-3 py-2 w-full"
-            />
-          </div>}
-          {formData.marraigeStatus === 'Married' &&
-            <>
-              {/* Has Kids */}
+          {formData.marraigeStatus === 'Married' && (
             <div className="mb-4">
-              <label className="block text-sm font-semibold mb-2">Has Kids</label>
+              <label className="block text-sm font-semibold mb-2">
+                Anniversary
+              </label>
               <input
-                type="checkbox"
-                name="kidsStatus"
-                checked={formData.kidsStatus === 'yes'}
-                onChange={handleKidsChange}
-                className="form-checkbox"
+                type="date"
+                name="anniversary"
+                value={formData.anniversary}
+                max={currentDate}
+                onChange={handleChange}
+                className="border border-gray-300 rounded px-3 py-2 w-full"
               />
             </div>
-            {/* Kids Birthdate */}
-            {/* {formData.kidsStatus === 'yes' && (
+          )}
+          {formData.marraigeStatus === 'Married' && (
+            <>
+              {/* Has Kids */}
+              <div className="mb-4 flex items-center">
+                <label className="block text-sm font-semibold mr-2">
+                  Has Kids
+                </label>
+                <input
+                  type="checkbox"
+                  name="kidsStatus"
+                  checked={formData.kidsStatus === 'yes'}
+                  onChange={handleKidsChange}
+                  className="form-checkbox"
+                />
+              </div>
+
+              {/* Kids Birthdate */}
+              {/* {formData.kidsStatus === 'yes' && (
               <div className="mb-4">
                 <label className="block text-sm font-semibold mb-2">
                   Kids Birthdate
@@ -202,13 +215,15 @@ const EditCustOverlay = ({ handleCloseEditForm }) => {
                 />
               </div>
             )} */}
-            {formData.kidsStatus === 'yes' && (
+              {formData.kidsStatus === 'yes' && (
                 <div className="col-span-2">
                   <div className="border rounded p-4">
                     <h4 className="text-lg font-semibold mb-2">Kids Details</h4>
                     {formData.kidsBirthdate.map((kid, index) => (
                       <div key={index} className="mb-4 border p-4 rounded-lg">
-                        <h5 className="text-md font-semibold mb-2">Kid {index + 1}</h5>
+                        <h5 className="text-md font-semibold mb-2">
+                          Kid {index + 1}
+                        </h5>
                         <div className="grid grid-cols-2 gap-4">
                           {/* <div>
                             <label htmlFor={`kidName${index}`} className="block text-gray-700 text-sm font-bold mb-2">Name *</label>
@@ -223,12 +238,18 @@ const EditCustOverlay = ({ handleCloseEditForm }) => {
                             />
                           </div> */}
                           <div>
-                            <label htmlFor={`kidBirthday${index}`} className="block text-gray-700 text-sm font-bold mb-2">Birthday *</label>
+                            <label
+                              htmlFor={`kidBirthday${index}`}
+                              className="block text-gray-700 text-sm font-bold mb-2"
+                            >
+                              Birthday *
+                            </label>
                             <input
                               type="date"
                               id={`kidBirthday${index}`}
                               name={`kid.${index}`}
                               value={kid}
+                              max={currentDate}
                               onChange={handleChangeKidsBirthdate}
                               className="w-full border border-gray-300 rounded px-3 py-2"
                             />
@@ -236,17 +257,24 @@ const EditCustOverlay = ({ handleCloseEditForm }) => {
                         </div>
                       </div>
                     ))}
-                    <button type="button" onClick={addKid} className=" bg-fuchsia-50 hover:bg-fuchsia-100 text-black px-2 py-2  mt-2 border border-brown shadow-md transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center"> <FaChild className="mr-2" />Add Kid's Birthdate</button>
+                    <button
+                      type="button"
+                      onClick={addKid}
+                      className=" bg-fuchsia-50 hover:bg-fuchsia-100 text-black px-2 py-2  mt-2 border border-brown shadow-md transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center"
+                    >
+                      {' '}
+                      <FaChild className="mr-2" />
+                      Add Kid's Birthdate
+                    </button>
                   </div>
                 </div>
               )}
-
             </>
-          }
+          )}
           <div className="col-span-2">
             <button
               type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none"
+              className="hover:border hover:border-black hover:text-black hover:bg-transparent bg-black duration-300 text-white px-4 py-2 rounded focus:outline-none"
             >
               Save
             </button>

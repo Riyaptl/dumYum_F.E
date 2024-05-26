@@ -232,11 +232,15 @@ const Header = () => {
         </div>
         {isLoggedIn ? (
           <div className="menu-right flex items-center text-black text-md">
-            <Link to="/cart" className=" ">
+            <Link to="/cart" className="py-1 pr-1 md:pr-2 ">
               <FaShoppingCart />
             </Link>
-            <button onClick={handleLogout} className="  py-2 px-2 md:px-4">
-              <FaSignOutAlt />
+            <Link to="/profile" className="py-1 px-1 md:px-2">
+              <FaUser />
+            </Link>
+            <button onClick={handleLogout} className="py-1 px-1 md:px-2">
+              {/* <FaSignOutAlt /> */}
+              LogOut
             </button>
           </div>
         ) : (
@@ -245,7 +249,8 @@ const Header = () => {
               <FaShoppingCart />
             </Link>
             <Link to="/auth" className=" md:py-2 md:px-4 ">
-              <FaUser />
+              {/* <FaUser /> */}
+              LogIn
             </Link>
           </div>
         )}

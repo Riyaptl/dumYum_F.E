@@ -181,7 +181,7 @@ const SingleProduct = () => {
       <div className="max-w-[85%] mx-auto">
         <div className="flex flex-col lg:flex-row items-start">
           <div className="lg:w-1/2 relative mb-8 lg:mb-0">
-            <div className="w-full h-[400px] lg:mb-4 ">
+            <div className="w-full h-[470px] lg:mb-4 ">
               <img
                 src={pageImages + singleSubCategory?.images[currentImage]}
                 alt={singleSubCategory?.name.split('|')[0]}
@@ -191,14 +191,14 @@ const SingleProduct = () => {
             <Slider {...settings} ref={sliderRef} initialSlide={currentImage}>
               {singleSubCategory?.smallImages.map((image, index) => (
                 <div
-                  className="px-2"
+                  className="px-2 h-32"
                   key={index}
                   onClick={() => handleImageClick(index)}
                 >
                   <img
                     src={pageImages + image}
                     alt={singleSubCategory?.name.split('|')[0]}
-                    className="w-full max-h-28"
+                    className="w-full  mb-2 object-contain"
                   />
                 </div>
               ))}

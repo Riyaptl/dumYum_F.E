@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {signIn, forgotPass, sendOTP} from "../slices/authSlice"
 import {addBucketCart} from "../slices/cartSlice"
 import Cookies from 'js-cookie';
+import { AiOutlineClose } from "react-icons/ai";
 
 function SignIn(props) {
   const cart = Cookies.get('cart') && JSON.parse(Cookies.get('cart'))
@@ -152,7 +153,8 @@ function SignIn(props) {
           </div>
           <div className="flex items-center justify-center mt-6">
             <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="rounded hover:bg-black  hover:text-white border border-black text-black py-2 px-4   focus:outline-none transition duration-300 ease-in-out"
+              // className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="submit"
             >
               Enter Your Account
@@ -173,8 +175,8 @@ function SignIn(props) {
         {showOverlay && (
           <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
             <div className="w-72 h-60 md:w-1/2 lg:w-2/6 lg:h-1/2 bg-white flex justify-center rounded shadow-lg relative">
-              <div className="absolute top-4 right-4 text-lg text-red-600">
-                <ImCross onClick={closeOverlay} />
+              <div className="absolute top-4 right-4 text-lg text-black">
+                <AiOutlineClose onClick={closeOverlay} />
               </div>
               <div className="w-64 md: xl:w-96 flex flex-col justify-center">
                 {!otpSent ? 
@@ -237,14 +239,14 @@ function SignIn(props) {
                 {!otpSent ? 
                   <button
                     onClick={handleSendOTP}
-                    className="bg-blue-500 text-white py-2 px-4 hover:bg-blue-600"
+                    className=" text-black py-2 px-4 hover:bg-black border-black  border hover:text-white"
                   >
                     Send OTP
                   </button> 
                   :
                   <button
                     onClick={handleResetPassword}
-                    className="bg-blue-500 text-white py-2 px-4 hover:bg-blue-600"
+                    className="border-black text-black hover:text-white py-2 px-4 hover:bg-black border"
                   >
                     Reset Password
                   </button> 
