@@ -10,7 +10,7 @@ const UserDetailPage = () => {
     <Navbar />
     {/* <div className="sm:pt-20 pt-10"> */}
       <UserDetailsForm />
-      <Footer />
+   
     {/* </div> */}
   </div>
   )

@@ -10,7 +10,7 @@ import {
   FaUser,
   FaShoppingCart,
   FaSignOutAlt,
-  FaSignInAlt
+  FaSignInAlt,
 } from 'react-icons/fa'
 // import logo from '../assets/Logo2.png';
 import logo from '../assets/final-02.png'
@@ -59,7 +59,6 @@ const Navbar = () => {
       window.removeEventListener('resize', handleResize)
     }
   }, [])
-
 
   const handleResize = () => {
     setShowMenu(false)
@@ -132,7 +131,7 @@ const Navbar = () => {
               <li key={index} className="relative">
                 <Link
                   to={menuItem.url}
-                  className="text-text-black  py-2 px-4 block"
+                  className="text-text-black py-2 px-4 block"
                   onMouseEnter={
                     menuItem.title === 'Products'
                       ? handleProductsHover
@@ -146,7 +145,8 @@ const Navbar = () => {
                 </Link>
                 {menuItem.isMegaMenu && showProductsDropdown && (
                   <div
-                    className="mega-box bg-white shadow-lg md:shadow-none absolute top-full left-0 right-0 md:transform md:translate-y-1/5 md:-translate-x-1/3 w-full lg:w-[60vw] mx-auto p-4 z-20"
+                    // className="mega-box bg-white shadow-lg md:shadow-none absolute top-full left-0 right-0 md:left-10 md:transform md:translate-y-1/5 md:-translate-x-1/3 w-full lg:w-[60vw] mx-auto p-4 z-20"
+                    className="mega-box bg-white shadow-lg md:shadow-none absolute top-full w-full lg:w-[60vw]  "
                     onMouseEnter={handleProductsHover}
                     onMouseLeave={handleDropdownLeave}
                   >
@@ -210,7 +210,7 @@ const Navbar = () => {
               </button>
               {showMeetTheMasterDropdown && (
                 <div
-                  className="meet-chef-dropdown bg-white shadow-lg md:shadow-none absolute top-full md:right-14 md:transform md:translate-x-1/4 w-full lg:w-[60vw] mx-auto p-4 z-20"
+                  className="meet-chef-dropdown bg-white shadow-lg md:shadow-none absolute top-full lg:right-0 md:right-14 md:transform md:translate-x-1/4 w-full lg:w-[60vw] mx-auto p-4 z-20"
                   onMouseEnter={handleMeetTheMasterHover}
                   onMouseLeave={handleDropdownLeave}
                 >
@@ -256,7 +256,7 @@ const Navbar = () => {
             </Link>
 
             <Link to="/auth" className="md:py-1 md:px-2 ">
-            <FaSignInAlt />
+              <FaSignInAlt />
               {/* <FaUser /> */}
               {/* LogIn */}
             </Link>

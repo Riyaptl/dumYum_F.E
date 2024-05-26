@@ -111,7 +111,7 @@ function SignIn(props) {
   return (
     <div className="flex justify-center items-center">
       <div className="max-w-md w-full mx-auto">
-        <form onSubmit={handleSubmit} className=" bg-white shadow-md rounded mt-5 px-8 pt-4 pb-8">
+        <form onSubmit={handleSubmit} className=" bg-white  mt-5 px-8  pb-8">
           <h1 className="text-3xl font-bold text-center mb-4">Welcome!</h1>
           <p className="text-gray-600 text-center mb-8">Use credentials to access your account.</p>
           <div className="mb-4">
@@ -146,7 +146,7 @@ function SignIn(props) {
             <Link
               to="#"
               onClick={handleForgotPasswordClick}
-              className="text-red-800 hover:underline"
+              className="text-black-800 hover:underline"
             >
               Forgot password
             </Link>
@@ -163,7 +163,7 @@ function SignIn(props) {
           <div className="text-center mt-4">
             <span className="text-gray-600">
               Don't have an account? Click on the{" "}
-              <span className="text-blue-600 cursor-pointer" onClick={props.showSignupForm}>
+              <span className="text-black font-bold cursor-pointer" onClick={props.showSignupForm}>
                 ( Sign Up )
               </span>{" "}
               button above

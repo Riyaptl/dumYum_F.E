@@ -1,17 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { FaChild, FaUser, FaAddressCard, FaCalendarAlt, FaRing } from 'react-icons/fa';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router';
-import { signUp } from '../slices/authSlice';
-import { addBucketCart } from '../slices/cartSlice';
-import Cookies from 'js-cookie';
+import React, { useEffect, useState } from 'react'
+import {
+  FaChild,
+  FaUser,
+  FaAddressCard,
+  FaCalendarAlt,
+  FaRing,
+} from 'react-icons/fa'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router'
+import { signUp } from '../slices/authSlice'
+import { addBucketCart } from '../slices/cartSlice'
+import Cookies from 'js-cookie'
 
 const UserDetailsForm = () => {
   const cart = Cookies.get('cart') && JSON.parse(Cookies.get('cart'))
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const {username, email, password, authError} = useSelector((state) => state.auth)
-  const [error, setError] = useState("")
+  const { username, email, password, authError } = useSelector(
+    (state) => state.auth,
+  )
+  const [error, setError] = useState('')
   const currentDate = new Date().toISOString().split('T')[0]
 
   const [formData, setFormData] = useState({
@@ -23,91 +31,91 @@ const UserDetailsForm = () => {
         state: '',
         city: '',
         nearby: '',
-        pincode: ''
-      }
+        pincode: '',
+      },
     },
     birthday: '',
     maritalStatus: '',
     anniversary: '',
     hasKids: false,
-    kids: []
-  });
+    kids: [],
+  })
 
-  useEffect(() => {
-    if (!username || !email || !password){
-      navigate('/auth')
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (!username || !email || !password){
+  //     navigate('/auth')
+  //   }
+  // }, [])
 
   useEffect(() => {
     setError(authError)
   }, [authError])
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, type, checked } = e.target
     if (name.startsWith('contact')) {
-      const field = name.split('.')[1];
+      const field = name.split('.')[1]
       if (field === 'address') {
-        const addressField = name.split('.')[2];
-        setFormData(prevState => ({
+        const addressField = name.split('.')[2]
+        setFormData((prevState) => ({
           ...prevState,
           contact: {
             ...prevState.contact,
             address: {
               ...prevState.contact.address,
-              [addressField]: value
-            }
-          }
-        }));
+              [addressField]: value,
+            },
+          },
+        }))
       } else {
-        setFormData(prevState => ({
+        setFormData((prevState) => ({
           ...prevState,
           contact: {
             ...prevState.contact,
-            [field]: value
-          }
-        }));
+            [field]: value,
+          },
+        }))
       }
     } else if (name === 'hasKids') {
-      setFormData(prevState => ({
+      setFormData((prevState) => ({
         ...prevState,
         [name]: checked,
-        kids: checked ? [''] : []
-      }));
+        kids: checked ? [''] : [],
+      }))
     } else if (name.startsWith('kid')) {
-      const index = parseInt(name.split('.')[1]);
-      const updatedKids = [...formData.kids];
-      updatedKids[index] = value;
-      setFormData(prevState => ({
+      const index = parseInt(name.split('.')[1])
+      const updatedKids = [...formData.kids]
+      updatedKids[index] = value
+      setFormData((prevState) => ({
         ...prevState,
-        kids: updatedKids
-      }));
+        kids: updatedKids,
+      }))
     } else {
-      setFormData(prevState => ({
+      setFormData((prevState) => ({
         ...prevState,
-        [name]: type === 'checkbox' ? checked : value
-      }));
+        [name]: type === 'checkbox' ? checked : value,
+      }))
     }
-  };
+  }
 
   const addKid = () => {
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
-      kids: [...prevState.kids, '']
-    }));
-  };
+      kids: [...prevState.kids, ''],
+    }))
+  }
 
   // useEffect(() => {
   //   console.log(formData.kids);
   // }, [formData.kids])
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const {address,} = formData.contact
-    const kidsBirthdate = formData.kids.filter(entry => entry !== '')
+    e.preventDefault()
+    const { address } = formData.contact
+    const kidsBirthdate = formData.kids.filter((entry) => entry !== '')
     const data = {
-      name: username, 
-      email, 
+      name: username,
+      email,
       password,
       phone: formData.contact.phone,
       addressDetails: [address],
@@ -115,34 +123,49 @@ const UserDetailsForm = () => {
       marraigeStatus: formData.maritalStatus,
       kidsStatus: formData.hasKids ? 'yes' : 'no',
       anniversary: formData.anniversary,
-      kidsBirthdate
+      kidsBirthdate,
     }
     let signUpFormData = {}
-    for(let key in data){
-      if (data[key]){
+    for (let key in data) {
+      if (data[key]) {
         signUpFormData[key] = data[key]
       }
     }
-    let res = await dispatch(signUp(signUpFormData));
-    if (!res.error && cart){
+    let res = await dispatch(signUp(signUpFormData))
+    if (!res.error && cart) {
       res = await dispatch(addBucketCart(cart))
     }
-    !res.error && navigate("/")
-  };
+    !res.error && navigate('/')
+  }
 
   return (
-    <div className="flex justify-center items-center h-full bg-gray-100">
-      <div className="max-w-screen-lg w-full bg-white  my-2 p-8">
-        <h2 className="text-2xl font-semibold mb-4 text-center">User Details</h2>
-        <form onSubmit={handleSubmit}>
-
+    <div
+      className="w-full flex justify-center items-start min-h-screen "
+      style={{
+        backgroundImage:
+          'url(https://images.unsplash.com/photo-1606312619070-d48b4c652a52?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    >
+      <div className="max-w-screen-lg w-full bg-white rounded-lg shadow-lg my-2 p-8">
+        <h2 className="text-2xl font-semibold mb-4 text-center capitalize">
+          {/* User Details */}
+          USER DETAILS
+        </h2>
+        <form onSubmit={handleSubmit} className='border p-4'>
           {/* Basic Details Section */}
-          <div className="mb-6">
+          <div className="mb-6 ">
             <h3 className="text-lg font-semibold mb-2">Basic Details</h3>
             <div className="grid grid-cols-2 gap-4">
               {/* Contact Details */}
               <div>
-                <label htmlFor="phone" className="block text-gray-700 text-sm font-bold mb-2"><FaUser className="inline-block mr-2" /> Mobile Number *</label>
+                <label
+                  htmlFor="phone"
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                >
+                  <FaUser className="inline-block mr-2" /> Mobile Number 
+                </label>
                 <input
                   type="text"
                   id="phone"
@@ -155,7 +178,12 @@ const UserDetailsForm = () => {
               </div>
               {/* Address Details */}
               <div>
-                <label htmlFor="houseNumber" className="block text-gray-700 text-sm font-bold mb-2"><FaAddressCard className="inline-block mr-2" /> House Number *</label>
+                <label
+                  htmlFor="houseNumber"
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                >
+                  <FaAddressCard className="inline-block mr-2" /> House Number 
+                </label>
                 <input
                   type="text"
                   id="houseNumber"
@@ -168,7 +196,12 @@ const UserDetailsForm = () => {
               </div>
               {/* More Address Details */}
               <div>
-                <label htmlFor="street" className="block text-gray-700 text-sm font-bold mb-2"><FaAddressCard className="inline-block mr-2" /> Street *</label>
+                <label
+                  htmlFor="street"
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                >
+                  <FaAddressCard className="inline-block mr-2" /> Street 
+                </label>
                 <input
                   type="text"
                   id="street"
@@ -181,7 +214,12 @@ const UserDetailsForm = () => {
               </div>
               {/* State Details */}
               <div>
-                <label htmlFor="state" className="block text-gray-700 text-sm font-bold mb-2"><FaAddressCard className="inline-block mr-2" /> State *</label>
+                <label
+                  htmlFor="state"
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                >
+                  <FaAddressCard className="inline-block mr-2" /> State 
+                </label>
                 <input
                   type="text"
                   id="state"
@@ -194,7 +232,12 @@ const UserDetailsForm = () => {
               </div>
               {/* city Details */}
               <div>
-                <label htmlFor="city" className="block text-gray-700 text-sm font-bold mb-2"><FaAddressCard className="inline-block mr-2" /> city *</label>
+                <label
+                  htmlFor="city"
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                >
+                  <FaAddressCard className="inline-block mr-2" /> city 
+                </label>
                 <input
                   type="text"
                   id="city"
@@ -207,7 +250,12 @@ const UserDetailsForm = () => {
               </div>
               {/* Nearby Details */}
               <div>
-                <label htmlFor="nearby" className="block text-gray-700 text-sm font-bold mb-2"><FaAddressCard className="inline-block mr-2" /> Nearby *</label>
+                <label
+                  htmlFor="nearby"
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                >
+                  <FaAddressCard className="inline-block mr-2" /> Nearby 
+                </label>
                 <input
                   type="text"
                   id="nearby"
@@ -220,7 +268,12 @@ const UserDetailsForm = () => {
               </div>
               {/* Pincode */}
               <div>
-                <label htmlFor="pincode" className="block text-gray-700 text-sm font-bold mb-2"><FaAddressCard className="inline-block mr-2" /> Pincode *</label>
+                <label
+                  htmlFor="pincode"
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                >
+                  <FaAddressCard className="inline-block mr-2" /> Pincode *
+                </label>
                 <input
                   type="text"
                   id="pincode"
@@ -234,7 +287,12 @@ const UserDetailsForm = () => {
               </div>
               {/* Birthday */}
               <div>
-                <label htmlFor="birthday" className="block text-gray-700 text-sm font-bold mb-2"><FaCalendarAlt className="inline-block mr-2" /> Birthday *</label>
+                <label
+                  htmlFor="birthday"
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                >
+                  <FaCalendarAlt className="inline-block mr-2" /> Birthday 
+                </label>
                 <input
                   type="date"
                   id="birthday"
@@ -254,7 +312,9 @@ const UserDetailsForm = () => {
             <div className="grid grid-cols-2 gap-4">
               {/* Marital Status */}
               <div>
-                <label className="block text-gray-700 text-sm font-bold mb-2"><FaRing className="inline-block mr-2" /> Marital Status</label>
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  <FaRing className="inline-block mr-2" /> Marital Status
+                </label>
                 <div className="flex items-center space-x-4">
                   <input
                     type="radio"
@@ -265,7 +325,9 @@ const UserDetailsForm = () => {
                     onChange={handleChange}
                     className="form-radio"
                   />
-                  <label htmlFor="married" className="text-gray-700">Married</label>
+                  <label htmlFor="married" className="text-gray-700">
+                    Married
+                  </label>
                   <input
                     type="radio"
                     id="unmarried"
@@ -275,13 +337,21 @@ const UserDetailsForm = () => {
                     onChange={handleChange}
                     className="form-radio"
                   />
-                  <label htmlFor="unmarried" className="text-gray-700">Unmarried</label>
+                  <label htmlFor="unmarried" className="text-gray-700">
+                    Unmarried
+                  </label>
                 </div>
               </div>
               {/* Anniversary Date */}
               {formData.maritalStatus === 'married' && (
                 <div>
-                  <label htmlFor="anniversary" className="block text-gray-700 text-sm font-bold mb-2"><FaCalendarAlt className="inline-block mr-2" /> Anniversary Date</label>
+                  <label
+                    htmlFor="anniversary"
+                    className="block text-gray-700 text-sm font-bold mb-2"
+                  >
+                    <FaCalendarAlt className="inline-block mr-2" /> Anniversary
+                    Date
+                  </label>
                   <input
                     type="date"
                     id="anniversary"
@@ -296,7 +366,9 @@ const UserDetailsForm = () => {
               {/* Has Kids */}
               {formData.maritalStatus === 'married' && (
                 <div>
-                  <label className="block text-gray-700 text-sm font-bold mb-2"><FaChild className="inline-block mr-2" /> Has Kids</label>
+                  <label className="block text-gray-700 text-sm font-bold mb-2">
+                    <FaChild className="inline-block mr-2" /> Has Kids
+                  </label>
                   <div className="flex items-center space-x-4">
                     <input
                       type="checkbox"
@@ -306,7 +378,9 @@ const UserDetailsForm = () => {
                       onChange={handleChange}
                       className="form-checkbox"
                     />
-                    <label htmlFor="hasKids" className="text-gray-700">Yes</label>
+                    <label htmlFor="hasKids" className="text-gray-700">
+                      Yes
+                    </label>
                   </div>
                 </div>
               )}
@@ -317,7 +391,9 @@ const UserDetailsForm = () => {
                     <h4 className="text-lg font-semibold mb-2">Kids Details</h4>
                     {formData.kids.map((kid, index) => (
                       <div key={index} className="mb-4 border p-4 rounded-lg">
-                        <h5 className="text-md font-semibold mb-2">Kid {index + 1}</h5>
+                        <h5 className="text-md font-semibold mb-2">
+                          Kid {index + 1}
+                        </h5>
                         <div className="grid grid-cols-2 gap-4">
                           {/* <div>
                             <label htmlFor={`kidName${index}`} className="block text-gray-700 text-sm font-bold mb-2">Name *</label>
@@ -332,7 +408,12 @@ const UserDetailsForm = () => {
                             />
                           </div> */}
                           <div>
-                            <label htmlFor={`kidBirthday${index}`} className="block text-gray-700 text-sm font-bold mb-2">Birthday *</label>
+                            <label
+                              htmlFor={`kidBirthday${index}`}
+                              className="block text-gray-700 text-sm font-bold mb-2"
+                            >
+                              Birthday 
+                            </label>
                             <input
                               type="date"
                               id={`kidBirthday${index}`}
@@ -346,20 +427,32 @@ const UserDetailsForm = () => {
                         </div>
                       </div>
                     ))}
-                    <button type="button" onClick={addKid} className=" bg-fuchsia-50 hover:bg-fuchsia-100 text-black px-2 py-2  mt-2 border border-brown shadow-md transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center"> <FaChild className="mr-2" />Add Kid's Birthdate</button>
+                    <button
+                      type="button"
+                      onClick={addKid}
+                      className=" bg-fuchsia-50 hover:bg-fuchsia-100 text-black px-2 py-2  mt-2 border border-brown shadow-md transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center"
+                    >
+                      {' '}
+                      <FaChild className="mr-2" />
+                      Add Kid's Birthdate
+                    </button>
                   </div>
                 </div>
               )}
             </div>
           </div>
-          <div className='flex justify-center'>
-          <button type="submit" className="border border-black text-black px-4 py-2 rounded hover:bg-black hover:text-white focus:outline-none">
+          <div className="flex justify-center">
+            <button
+              type="submit"
+              className="border border-black text-black px-4 py-2 rounded hover:bg-black hover:text-white focus:outline-none"
+            >
               Submit
-          </button></div>
+            </button>
+          </div>
         </form>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default UserDetailsForm;
+export default UserDetailsForm

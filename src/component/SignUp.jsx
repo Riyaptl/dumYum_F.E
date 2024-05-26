@@ -62,10 +62,10 @@ function SignUp(props) {
 
   return (
     <div className="w-full flex justify-center">
-      <div className="w-10/12 bg-white shadow-md rounded mt-5 px-8 pt-4 pb-8">
+      <div className="w-10/12 bg-white mt-5 px-8  pb-8">
         <div className="text-center pb-8">
-          <div className="text-4xl font-bold pb-5">Register</div>
-          <div>Setup a new account in a minute.</div>
+          <div className="text-3xl font-bold pb-4">Register</div>
+          <p className="text-gray-600 text-center mb-2">Setup a new account in a minute.</p>
         </div>
 
         <div className="w-full h-56 flex flex-col justify-between">
@@ -145,13 +145,14 @@ function SignUp(props) {
             onClick={handleSubmit}
             className="text-md font-semibold w-full rounded hover:bg-black  hover:text-white border border-black text-black  pt-3 pb-3 focus:outline-none transition duration-300 ease-in-out"
           >
-            CREATE NEW ACCOUNT
+            {/* CREATE NEW ACCOUNT */}
+            NEXT
           </button>
         </div>
 
         <div className="w-full flex justify-center text-center">
           <div className=" text-lg font-medium text-gray-500">
-            Already have an account? <p className="text-blue-600"><Link onClick={props.showSignInForm}> sign in </Link>
+            Already have an account? <p className="text-black font-bold hover:underline transition duration-300 ease-in-out"><Link onClick={props.showSignInForm}> sign in </Link>
             </p>
     
           </div>
