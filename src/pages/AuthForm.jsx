@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import SignIn from '../component/SignIn';
 import SignUp from '../component/SignUp';
 import { FiLogIn, FiUserPlus } from 'react-icons/fi';
+import Navbar from '../component/Navbar';
 
 function AuthForm() {
   const [showSignIn, setShowSignIn] = useState(true);
@@ -18,6 +19,8 @@ function AuthForm() {
   };
 
   return (
+    <>
+    <Navbar />
     <div className="w-full flex justify-center bg-[#fdf4ff] min-h-screen">
       <div className="w-11/12 flex">
         <div
@@ -60,6 +63,7 @@ function AuthForm() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

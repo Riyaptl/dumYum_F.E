@@ -2,6 +2,9 @@ module.exports = {
   content: ['./index.html', './src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
+      top: {
+        '2/5': '50%',
+      },
       transitionDuration: {
         '500': '500ms',
       },

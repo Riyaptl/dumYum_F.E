@@ -90,15 +90,13 @@ const ExploreSlider = () => {
                 onMouseEnter={() => handleHover(category)}
                 onMouseLeave={handleNormal}
               >
-                {category.smallImages.length > 1 ? (
                   <img
                     src={
-                      delayedSpecial === category &&
-                      category.smallImages.length > 1
-                        ? categoryImages + category.smallImages[0]
+                      delayedSpecial === category && category.smallImages.length > 1
+                        ? categoryImages + category.smallImages[1]
                         : category.smallImages.length > 0
                         ? categoryImages + category.smallImages[1]
-                        : categoryImages + category.smallImages[0]
+                        : image1
                     }
                     alt={category.name}
                     className="w-full h-72 object-cover transition-transform duration-700 transform hover:scale-105 cursor-pointer"
@@ -108,18 +106,6 @@ const ExploreSlider = () => {
                         delayedSpecial === category ? 'scale(1.1)' : 'scale(1)',
                     }}
                   />
-                ) : (
-                  <img
-                    src={image1}
-                    alt={category.name}
-                    className="w-full h-72 object-cover transition-transform duration-700 transform hover:scale-110 cursor-pointer  "
-                    style={{
-                      transitionDelay: '0.2s',
-                      transform:
-                        delayedSpecial === category ? 'scale(1)' : 'scale(1)',
-                    }}
-                  />
-                )}
                 {hoveredSpecial === category && (
                   <div className="absolute inset-0 flex justify-center items-center">
                     <motion.div

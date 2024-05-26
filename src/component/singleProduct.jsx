@@ -145,7 +145,7 @@ const SingleProduct = () => {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: 4,
     slidesToScroll: 1,
     arrows: true,
     adaptiveHeight: true,
@@ -177,7 +177,7 @@ const SingleProduct = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 md:pt-44">
+    <div className="container mx-auto px-4 py-8 md:pt-30">
       <div className="max-w-[85%] mx-auto">
         <div className="flex flex-col lg:flex-row items-start">
           <div className="lg:w-1/2 relative mb-8 lg:mb-0">
@@ -220,6 +220,26 @@ const SingleProduct = () => {
           </div>
           <div className="lg:w-1/2 lg:pl-8">
             <div>dumyum</div>
+            {rating && 
+                <div className="flex items-center">
+                  Rating - 
+                    {Array.from({ length: rating?.rating }, (_, i) => (
+                        <svg
+                            key={i}
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5 text-yellow-500 fill-current"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                          <path
+                              fillRule="evenodd"
+                              d="M10 3.578l1.124 3.459h3.617a.414.414 0 0 1 .268.732l-2.926 2.135 1.109 3.4a.414.414 0 0 1-.602.484L10 13.28l-2.99 2.268a.414.414 0 0 1-.602-.484l1.109-3.4-2.926-2.135a.414.414 0 0 1 .268-.732h3.617L10 3.578z"
+                              clipRule="evenodd"
+                          />
+                        </svg>
+                    ))}
+                </div>
+            }
             <div className="mb-6">
               <h1 className="text-3xl font-extralight mb-2">
                 {singleSubCategory?.name.split('|')[0]}
@@ -244,8 +264,10 @@ const SingleProduct = () => {
                 >
                   Check
                 </button>
-                {status}
               </div>
+                <p className='text-green-700 mt-4 mb-4'>
+                  {deliveryStatus}
+                </p>
               <div className="flex items-center mb-4">
                 <div className="flex">
                   <button

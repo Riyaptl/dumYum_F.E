@@ -45,14 +45,13 @@ const SpecialFixed = () => {
               onMouseEnter={() => handleHover(special)}
               onMouseLeave={handleNormal}
             >
-              {special.smallImages.length > 1 ? (
                 <img
                   src={
                     delayedSpecial === special && special.smallImages.length > 1
                       ? specialImages + special.smallImages[1]
                       : special.smallImages.length > 0
                       ? specialImages + special.smallImages[0]
-                      : specialImages + special.smallImages[1]
+                      : image1
                   }
                   alt={special.name}
                   className="w-full h-72 object-cover transition-transform duration-700 transform hover:scale-105"
@@ -62,13 +61,6 @@ const SpecialFixed = () => {
                       delayedSpecial === special ? 'scale(1.1)' : 'scale(1)',
                   }}
                 />
-              ) : (
-                <img
-                  src={image1}
-                  alt={special.name}
-                  className="w-full h-72 object-cover transition-transform duration-700 transform hover:scale-110"
-                />
-              )}
               {hoveredSpecial === special && (
                 <div className="absolute inset-0 flex justify-center items-center">
                   <motion.div

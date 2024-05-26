@@ -15,6 +15,7 @@ import { getCategories } from '../slices/categorySlice'
 import { getSpecials } from '../slices/specialSlice'
 import ExploreFixed from '../component/ExploreFixed'
 import SpecialFixed from '../component/specialFixed'
+import Announcement from '../component/Announcement'
 
 const HomePage = () => {
   const [selectedPage, setSelectedPage] = useState('home')
@@ -23,7 +24,7 @@ const HomePage = () => {
   const controls = useAnimation()
   const { categories } = useSelector((state) => state.category)
   const { specials } = useSelector((state) => state.special)
-  const dispatch = useDispatch()
+  const dispatch = useDispatch() 
 
   useEffect(() => {
     dispatch(getCategories())
@@ -70,7 +71,7 @@ const HomePage = () => {
         >
           <Tagline tagline="All parcels are dispatched with ice packs or dry ice to ensure maximum product freshness until delivery!" />
         </motion.div>
-        {categories.length > 3 
+        {categories?.length > 3 
         ? 
           <ExploreSlider />
         :
@@ -93,7 +94,7 @@ const HomePage = () => {
         >
           <Tagline tagline="All parcels are dispatched with ice packs or dry ice to ensure maximum product freshness until delivery!" />
         </motion.div>
-        {specials.length > 3 
+        {specials?.length > 3 
         ? 
           <SpecialSlider />
         :

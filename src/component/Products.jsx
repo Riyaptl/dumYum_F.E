@@ -21,7 +21,6 @@ const productVariant = {
 const Products = () => {
   const [showOverlay, setShowOverlay] = useState(false);
   const [delayedSpecial, setDelayedSpecial] = useState(null);
-  const [hoveredSpecial, setHoveredSpecial] = useState(null);
   const [addressDetails, setAddressDetails] = useState({
     address: '',
     city: '',
@@ -55,77 +54,25 @@ const Products = () => {
     navigate(`/product/${id}`);
   };
   const handleHover = (product) => {
-    setHoveredSpecial(product);
     const timerId = setTimeout(() => {
       setDelayedSpecial(product);
     }, 300);
     return () => clearTimeout(timerId);
   };
   const handleNormal = () => {
-    setHoveredSpecial(null);
     setDelayedSpecial(null);
   };
 
   return (
     <>
-      {subCategories && subCategories.length > 3 ? (
+      {subCategories?.length>0 && 
+      <>
         <div className="flex justify-center">
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-4 max-w-[90%]"
-          >
-            {subCategories?.map((product) => (
-              <motion.div
-                key={product._id}
-                variants={productVariant}
-                whileTap={{ scale: 0.95 }}
-                className="bg-white overflow-hidden flex flex-col justify-between shadow-[0_2px_1px_0_rgba(0,0,0,0.1)]"
-                onMouseEnter={() => handleHover(product)}
-                onMouseLeave={handleNormal}
-              >
-                {product.smallImages.length > 0 ? (
-                  <motion.img
-                    onClick={() => handleShop(product._id)}
-                    src={
-                      delayedSpecial === product && product.smallImages.length > 0
-                        ? subCategoryImages + product.smallImages[1]
-                        : product.smallImages.length > 0
-                        ? subCategoryImages + product.smallImages[0]
-                        : subCategoryImages + product.smallImages[1]
-                    }
-                    alt={product.name}
-                    className="w-full h-72 object-cover transition-transform duration-700 transform hover:scale-105"
-                    style={{
-                      transitionDelay: '0s',
-                      transform: delayedSpecial === product ? 'scale(1)' : 'scale(0.9)',
-                    }}
-                  />
-                ) : (
-                  <motion.img
-                    onClick={() => handleShop(product._id)}
-                    src={image1}
-                    alt={product.name}
-                    className="w-full h-72  object-cover transition duration-300 transform hover:scale-105"
-                    whileHover={{ scale: 1.05 }}
-                  />
-                )}
-                <div className="p-4 text-center">
-                  <h2 className="text-xl font-serif">{product?.name.split('|')[0]}</h2>
-                  <p className="text-gray-800 font-bold">{product?.quantity}</p>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      ) : (
-        <div className="flex justify-center">
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="flex flex-wrap justify-center p-4 max-w-[90%]"
+            className="flex flex-wrap justify-center p-4 w-[90%]"
           >
             {subCategories?.map((product, index) => (
               <motion.div
@@ -135,7 +82,7 @@ const Products = () => {
                 className="bg-white overflow-hidden flex flex-col justify-between shadow-[0_2px_1px_0_rgba(0,0,0,0.1)] mx-2 mb-4"
                 onMouseEnter={() => handleHover(product)}
                 onMouseLeave={handleNormal}
-                style={{ flex: '0 0 25%', maxWidth: '25%' }}
+                style={{ flex: '0 0 22.5%', maxWidth: '22.5%' }}
               >
                 {product && (
                   <>
@@ -165,7 +112,8 @@ const Products = () => {
             ))}
           </motion.div>
         </div>
-      )}
+      </>
+      }
     </>
   );
 };
