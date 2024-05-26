@@ -49,15 +49,15 @@ const BannerSlider = () => {
   };
 
   const handleShop = (id) =>{
-    navigate(`/${id}?page=special`)
+    navigate(`/categories`)
   }
 
   return (
-    <div className="max-h-[89vh] flex flex-col items-center justify-center relative ">
+    <div className="max-h-[85vh] flex flex-col items-center justify-center relative ">
       <div className="w-full overflow-hidden relative">
         <Slider {...settings} ref={sliderRef}>
         {specials.map((animation, index) => (
-          <div key={index} className="relative w-full h-full">
+          <div key={index} className="relative w-full h-full ">
             <div className="w-full h-[100vh] relative">
               <img
                 src={specialImages + animation.images[0]}
@@ -74,7 +74,7 @@ const BannerSlider = () => {
               />
               <div className="absolute top-0 left-0 w-full h-full bg-black opacity-60"></div>
             </div>
-            <div className="w-10/12 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white">
+            <div className="w-10/12 absolute left-1/2 bottom-1/3 transform -translate-x-1/2 -translate-y-1/2 text-center text-white">
               <h2 className="cedarville-cursive-regular text-lg lg:text-3xl text-black font-cursive font-semibold mb-4">
                 {animation.name}
               </h2>

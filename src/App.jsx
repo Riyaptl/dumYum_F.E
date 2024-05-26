@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import HomePage from './pages/HomePage'
 import ProductPage from './pages/ProductPage'
@@ -17,20 +17,42 @@ import B2BConnectPage from './pages/B2BConnectPage'
 import UserDetailPage from './pages/UserDetailPage'
 import FaqPage from './pages/FaqPage'
 import AboutUsPage from './pages/AboutUsPage'
+import CategoryPage from './pages/CategoryPage'
+import Announcement from './component/Announcement'
 
 
 function App() {
   const { isLoggedIn } = useSelector((state) => state.auth)
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+ 
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   return (
     <div>
       <Router>
         <ToastContainer />
+        <div className={`transition-all duration-500 ${isScrolled ? '-top-12' : 'top-0'}`}>
+          <Announcement/>
+        </div>
         <Routes>
           <Route exact path="/" element={<HomePage />} />
           <Route exact path="/auth" element={<AuthForm />} />
           <Route exact path="/details" element={<UserDetailPage />} />
           <Route exact path="/:id" element={<ProductPage />} />
+          <Route exact path="/categories" element={<CategoryPage />} />
           <Route exact path="/product/:id" element={<SingleProductPage />} />
           <Route exact path="/cart" element={<CartPage />} />
           <Route exact path="/policy" element={<PrivacyPolicyPage />} />

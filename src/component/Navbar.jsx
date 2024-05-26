@@ -10,6 +10,7 @@ import {
   FaUser,
   FaShoppingCart,
   FaSignOutAlt,
+  FaSignInAlt
 } from 'react-icons/fa'
 // import logo from '../assets/Logo2.png';
 import logo from '../assets/final-02.png'
@@ -53,21 +54,12 @@ const Navbar = () => {
   useEffect(() => {
     dispatch(getCategories())
     dispatch(getSpecials())
-    window.addEventListener('scroll', handleScroll)
     window.addEventListener('resize', handleResize)
     return () => {
-      window.removeEventListener('scroll', handleScroll)
       window.removeEventListener('resize', handleResize)
     }
   }, [])
 
-  const handleScroll = () => {
-    if (window.scrollY > 0) {
-      setScrolled(true)
-    } else {
-      setScrolled(false)
-    }
-  }
 
   const handleResize = () => {
     setShowMenu(false)
@@ -103,15 +95,10 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full bg-white shadow-md z-50  ${
+      className={`sticky top-0 left-0 w-full bg-white shadow-md z-50  ${
         scrolled ? 'scrolled' : ''
       }`}
     >
-      {!scrolled && (
-        <div className="hidden sm:block bg-gray-100 text-black p-2 text-center">
-          <p>{jsonData.offer.message}</p>
-        </div>
-      )}
       <div
         className={` relative wrapper bg-white text-black md:px-1   md:py-${
           scrolled ? '5' : '5'
@@ -258,8 +245,8 @@ const Navbar = () => {
               <FaUser />
             </Link>
             <button onClick={handleLogout} className="py-1 px-1 md:px-2">
-              {/* <FaSignOutAlt /> */}
-              LogOut
+              <FaSignOutAlt />
+              {/* LogOut */}
             </button>
           </div>
         ) : (
@@ -269,8 +256,9 @@ const Navbar = () => {
             </Link>
 
             <Link to="/auth" className="md:py-1 md:px-2 ">
+            <FaSignInAlt />
               {/* <FaUser /> */}
-              LogIn
+              {/* LogIn */}
             </Link>
           </div>
         )}

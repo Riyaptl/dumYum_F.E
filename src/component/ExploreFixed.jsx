@@ -9,43 +9,13 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion';
 
-const ExploreSlider = () => {
-  const sliderRef = useRef(null)
+const ExploreFixed = () => {
+//   const sliderRef = useRef(null)
   const [hoveredSpecial, setHoveredSpecial] = useState(null)
   const [delayedSpecial, setDelayedSpecial] = useState(null)
   const navigate = useNavigate()
   const { categories } = useSelector((state) => state.category)
   const categoryImages = 'http://localhost:8000/uploads/category/'
-
-  const settings = {
-    infinite: true,
-    speed: 1000,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    autoplay: true,
-    // autoplaySpeed: 2000,
-    arrows: false,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-        },
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-      {
-        breakpoint: 640,
-        settings: {
-          slidesToShow: 1,
-        },
-      },
-    ],
-  }
 
   const handleNext = () => {
     sliderRef.current.slickNext()
@@ -80,19 +50,19 @@ const ExploreSlider = () => {
           Explore Our Chocolates
           </h2>
         </div>
-        <Slider {...settings} ref={sliderRef}>
-        {categories.map((category) => {
-            return (
+        <div className="flex justify-center flex-wrap">
+        {categories.map((category) => (
               <div
                 onClick={() => handleShop(category._id)}
                 key={category._id}
-                className="px-5 relative overflow-hidden"
+                className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 px-2 mb-4 relative overflow-hidden cursor-pointer"
                 onMouseEnter={() => handleHover(category)}
                 onMouseLeave={handleNormal}
               >
                   <img
                     src={
-                      delayedSpecial === category && category.smallImages.length > 1
+                      delayedSpecial === category &&
+                      category.smallImages.length > 1
                         ? categoryImages + category.smallImages[1]
                         : category.smallImages.length > 0
                         ? categoryImages + category.smallImages[1]
@@ -119,24 +89,12 @@ const ExploreSlider = () => {
                   </div>
                 )}
               </div>
-            )
-          })}
-        </Slider>
-        <button
-          onClick={handlePrev}
-          className=" bg-white border border-slate-200 rounded-full hover:bg-black hover:text-white duration-300 p-4 text-black mr-5 absolute left-14 top-1/2 transform -translate-y-1/2 hidden md:block"
-        >
-          <TiArrowLeftThick />
-        </button>
-        <button
-          onClick={handleNext}
-          className="border border-slate-200 bg-white rounded-full hover:bg-black hover:text-white duration-300 p-4 text-black ml-5 absolute right-14 top-1/2 transform -translate-y-1/2 hidden md:block"
-        >
-          <TiArrowRightThick />
-        </button>
+          ))}
+        </div>
+        
       </div>
     </div>
   )
 }
 
-export default ExploreSlider
+export default ExploreFixed
