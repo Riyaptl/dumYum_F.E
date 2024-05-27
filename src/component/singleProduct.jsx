@@ -191,14 +191,14 @@ const SingleProduct = () => {
             <Slider {...settings} ref={sliderRef} initialSlide={currentImage}>
               {singleSubCategory?.smallImages.map((image, index) => (
                 <div
-                  className="px-2 h-32"
+                  className="px-2"
                   key={index}
                   onClick={() => handleImageClick(index)}
                 >
                   <img
                     src={pageImages + image}
                     alt={singleSubCategory?.name.split('|')[0]}
-                    className="w-full  mb-2 object-contain"
+                    className="w-full h-28"
                   />
                 </div>
               ))}

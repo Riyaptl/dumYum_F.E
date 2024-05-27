@@ -19,6 +19,8 @@ import FaqPage from './pages/FaqPage'
 import AboutUsPage from './pages/AboutUsPage'
 import CategoryPage from './pages/CategoryPage'
 import Announcement from './component/Announcement'
+import RefundPolicyPage from './pages/RefundPolicyPage'
+import ShippingPolicyPage from './pages/ShippingPolicyPage'
 
 
 function App() {
@@ -61,6 +63,8 @@ function App() {
           <Route exact path="/b2b" element={<B2BConnectPage />} />
           <Route exact path="/faq" element={<FaqPage/>} />
           <Route exact path="/about" element={<AboutUsPage />} />
+          <Route exact path="/refund-policy" element={<RefundPolicyPage />} />
+          <Route exact path="/shipping-policy" element={<ShippingPolicyPage />} />
         </Routes>
       </Router>
     </div>
