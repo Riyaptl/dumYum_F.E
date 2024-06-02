@@ -52,7 +52,7 @@ const SingleProduct = () => {
     (state) => state.cart,
   )
   const { rating } = useSelector((state) => state.rating)
-  const pageImages = `http://localhost:8000/uploads/subCategory/`
+  const pageImages = `${import.meta.env.VITE_APP_SUBCAT_URL}`
   const [formattedDescription, setFormattedDescription] = useState("")
 
   useEffect(() => {

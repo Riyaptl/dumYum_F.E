@@ -32,7 +32,7 @@ const Navbar = () => {
     menuItems: [
       { title: 'Home', url: '/' },
       { title: 'Products', url: '#', isMegaMenu: true },
-      { title: 'About', url: '/' },
+      { title: 'About', url: '/about' },
       { title: 'B2B Connect', url: '/b2b' },
     ],
     megaMenu: {

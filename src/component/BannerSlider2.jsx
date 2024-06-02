@@ -11,7 +11,7 @@ import image2 from '../assets/slider2.png'
 const HomeScreen = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const specialImages = 'http://localhost:8000/uploads/special/'
+  const specialImages = `${import.meta.env.VITE_APP_SPECIAL_URL}`
   const { animationLoading, animationSpecials } = useSelector(
     (state) => state.animation,
   )

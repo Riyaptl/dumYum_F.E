@@ -14,8 +14,8 @@ const Footer = () => {
         links: [
           ["FAQ's", '/faq'],
           ['Privacy Policy', '/policy'],
-          ['Shipping Policy', '/policy'],
-          ['Refund/Return Policy', '/policy'],
+          ['Shipping Policy', '/shipping-policy'],
+          ['Refund/Return Policy', '/refund-policy'],
           ['Terms And Conditions', '/t&c'],
           ['My Account', '/profile'],
           ['My Orders', '/profile'],

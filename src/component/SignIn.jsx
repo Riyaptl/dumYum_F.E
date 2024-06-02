@@ -13,7 +13,7 @@ function SignIn(props) {
   const [error, setError] = useState("")
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {authError} = useSelector((state) => state.auth)
+  const {authError, loading} = useSelector((state) => state.auth)
 
   const [formData, setFormData] = useState({
     email: "",
@@ -239,7 +239,8 @@ function SignIn(props) {
                 {!otpSent ? 
                   <button
                     onClick={handleSendOTP}
-                    className=" text-black py-2 px-4 hover:bg-black border-black  border hover:text-white"
+                    className=" text-black py-2 px-4 hover:bg-black border-black  border hover:text-white disabled:bg-gray-500 disabled:cursor-not-allowed"
+                    disabled={loading}
                   >
                     Send OTP
                   </button> 
