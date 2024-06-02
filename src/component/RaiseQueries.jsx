@@ -1,12 +1,20 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getorderIds } from '../slices/customerSlice';
 // import { raiseQuery } from '../slices/customerSlice';
 
 const RaiseQueries = () => {
+  const {orderIds} = useSelector((state) => state.customer)
   const dispatch = useDispatch();
   const [raiseQueryFormData, setRaiseQueryFormData] = useState('');
   const [raiseQueryAttachments, setRaiseQueryAttachments] = useState([]);
   const [isRaiseQueryOverlayVisible, setIsRaiseQueryOverlayVisible] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState('');
+
+
+  useEffect(() => {
+    dispatch(getorderIds())
+  }, [])
 
   const handleRaiseQueryAttachmentsChange = (e) => {
     const files = e.target.files;
@@ -21,6 +29,11 @@ const RaiseQueries = () => {
     setRaiseQueryFormData(e.target.value);
   };
 
+  const handleSelectChange = (event) => {
+    setSelectedOrder(event.target.value);
+  };
+
+
   const raiseQuery = () => {
     console.log('Query raised:', raiseQueryFormData);
     console.log('Attachments:', raiseQueryAttachments);
@@ -32,6 +45,21 @@ const RaiseQueries = () => {
   return (
     <div className="bg-white shadow rounded-lg overflow-hidden h-screen p-4">
       <h2 className="text-2xl font-semibold mb-4">Raise Queries</h2>
+
+      <select
+        id="orders"
+        value={selectedOrder}
+        onChange={handleSelectChange}
+        className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+      >
+        <option value="" disabled>Select an order</option>
+        {orderIds?.map((order) => (
+          <option key={order._id} value={order._id}>
+            {order.orderId} 
+          </option>
+        ))}
+      </select>
+
       <textarea
         className="w-full h-32 border border-gray-300 rounded-md px-3 py-2 focus:outline-none mb-4"
         placeholder="Write your query here..."

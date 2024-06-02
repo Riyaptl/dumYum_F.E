@@ -30,8 +30,9 @@ const locationSlice = createSlice({
     name: "location",
     initialState,
     reducers: {
-        clearlocationErrorMessage: (state) => {
-            state.message = null;
+        clearLocation: (state) => {
+            state.location = null;
+            state.message = null
             state.error = null;
         }
     },
@@ -74,7 +75,7 @@ const locationSlice = createSlice({
     }
 })
 
-export const {clearlocationErrorMessage} = locationSlice.actions;
+export const {clearLocation} = locationSlice.actions;
 const { reducer } = locationSlice;
 export default reducer;
 
