@@ -39,6 +39,8 @@ const CartOffline = () => {
   }
 
   return (
+    <>
+    {products?.length> 0 ?
     <div className="bg-gray-100 py-4">
       <div className="flex shadow-md my-10 mx-auto  w-4/5">
         <div className="w-3/4 bg-white px-10 py-10 ">
@@ -196,7 +198,15 @@ const CartOffline = () => {
         </div>
       </div>
     </div>
-
+    :
+    <div className="relative h-screen">
+      <p className="absolute top-4 left-1/2 transform -translate-x-1/2 text-xl font-bold text-gray-800">
+        No items in cart
+      </p>
+      {/* Other components */}
+    </div>
+    }
+   </>
   )
 }
 

@@ -13,6 +13,7 @@ import {
 import { addAddress, updateAddress, getAddress } from '../slices/customerSlice'
 import { ImCross } from 'react-icons/im'
 import { clearLocation, getLocationCart, whetherDeliver } from '../slices/locationSlice'
+import { useLocation } from 'react-router-dom'
 
 const Cart = () => {
   const [pincode, setPincode] = useState('')
@@ -44,15 +45,18 @@ const Cart = () => {
   }, [])
 
   useEffect(() => {
-    const addressCart = cart?.addressDetails
-    if (addressCart) {
-      setPincode(addressCart.pincode)
-      setAddressDetails({
-        ...addressCart,
-      })
-    }
+    if(cart?.predefinedOrder.length > 0){
+
+      const addressCart = cart?.addressDetails
+      if (addressCart) {
+        setPincode(addressCart.pincode)
+        setAddressDetails({
+          ...addressCart,
+        })
+      }
     setOrderFor(cart?.orderFor)
     setNote(cart?.message)
+    }
   }, [cart])
 
   useEffect(() => {
@@ -144,6 +148,8 @@ const Cart = () => {
   }
 
   return (
+    <>
+   {cart?.predefinedOrder.length > 0 ?
     <div className="bg-gray-100 py-4 relative">
       <div className="flex flex-col md:flex-row shadow-md my-10 mx-auto max-w-[95%]">
         <div className="md:w-4/5 bg-white px-10 py-10 ">
@@ -613,6 +619,15 @@ const Cart = () => {
         </div>
       </div>
     </div>
+    :
+    <div className="relative h-screen">
+      <p className="absolute top-4 left-1/2 transform -translate-x-1/2 text-xl font-bold text-gray-800">
+        No items in cart
+      </p>
+      {/* Other components */}
+    </div>
+    }
+    </>
   )
 }
 

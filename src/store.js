@@ -8,6 +8,7 @@ import locationReducer from "./slices/locationSlice"
 import ratingReducer from "./slices/ratingSlice"
 import authReducer from "./slices/authSlice"
 import customerReducer from "./slices/customerSlice"
+import orderReducer from "./slices/orderSlice"
 import inquiryReducer from "./slices/inquirySlice"
 
 const reducer = {
@@ -16,6 +17,7 @@ const reducer = {
     subCategory: subCategoryReducer,
     cart: cartReducer,
     customer: customerReducer,
+    order: orderReducer,
     location: locationReducer,
     rating: ratingReducer,
     special: specialReducer,

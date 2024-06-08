@@ -1,35 +1,67 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getOrders, getProducts } from '../slices/customerSlice';
+import { getOrders, getProducts } from '../slices/orderSlice';
 import { AiOutlineClose } from 'react-icons/ai';
+import image1 from "../assets/slider1.png";
+import { useNavigate } from 'react-router-dom';
 
 const MyOrders = () => {
   const dispatch = useDispatch();
-  const { orders, products } = useSelector((state) => state.customer);
+  const { orders, products } = useSelector((state) => state.order);
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const [showProds, setShowProds] = useState([]);
+  // const [showProds, setShowProds] = useState([]);
+  const subCategoryImages = `${import.meta.env.VITE_APP_SUBCAT_URL}`
+  const [productsDict, setProductsDict] = useState({})
+  const navigate = useNavigate()
 
   useEffect(() => {
     dispatch(getOrders());
   }, [dispatch]);
 
   useEffect(() => {
-    setShowProds(products);
-  }, [products]);
+    if (orders && orders.length > 0) {
+      const fetchProducts = async () => {
+        const products = await Promise.all(
+          orders.map(async (order) => {
+            const orderId = order._id;
+            const products = await dispatch(getProducts(orderId));
+            return { orderId, products: products.payload.orders };
+          })
+        );
+
+        const productsDictionary = products.reduce((acc, { orderId, products }) => {
+          acc[orderId] = products;
+          return acc;
+        }, {});
+
+        setProductsDict(productsDictionary);
+      };
+
+      fetchProducts();
+    }
+  }, [orders, dispatch]);
+
+  // useEffect(() => {
+  //   setShowProds(products);
+  // }, [products]);
 
   const handleViewOrderDetails = async (order) => {
-    await dispatch(getProducts(order._id));
     setSelectedOrder(order);
   };
 
   const handleCloseOrderDetails = () => {
-    setShowProds([]);
+    // setShowProds([]);
     setSelectedOrder(null);
   };
 
   const handleRepeatOrder = (order) => {
     console.log('Repeat order:', order);
   };
+
+  const handleRepeat = (id) => {
+    // console.log(id);
+    navigate(`/product/${id}`)
+  }
 
   return (
     <div className="bg-white shadow rounded-lg overflow-hidden h-full p-2">
@@ -47,12 +79,12 @@ const MyOrders = () => {
                 <span>{order.finalPrice}</span>
               </div>
               <div>
-                <span className="block font-semibold">Ship To:</span>
-                <span>{order.orderFor}</span>
+                <span className="block font-semibold">Status:</span>
+                <span>{order.orderStatus == 'active' ? 'ordered' : order.orderStatus == 'cancelled' ? 'cancelled' : 'delivered'}</span>
               </div>
               <div>
                 <span className="block font-semibold">Order ID:</span>
-                <span>{order._id}</span>
+                <span>{order.orderId.split('/').join('').split('_').join('')}</span>
               </div>
               <button
                 className="px-2 py-1 rounded  focus:outline-none border hover:bg-black hover:text-white"
@@ -68,32 +100,41 @@ const MyOrders = () => {
               </button> */}
             </div>
             <div className="flex flex-wrap flex-col mt-4 p-4">
-              <div>
                 <span className="block font-semibold">Delivered On:</span>
-                <span>{order.delivered || '-'}</span>
-              </div>
-              {/* {order?.products?.map((product, index) => ( */}
-              <div className="flex items-center mt-2">
-                <img
-                  src="https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg"
-                  alt="image"
-                  className="w-16 h-16 object-cover mr-4"
-                />
-                <div>
-                  {/* <span className="block font-semibold">{product.name}</span>
-                    <span className="block text-gray-600">{product.brand}</span> */}
-                  <span className="block font-semibold">chocolate</span>
-                  <span className="block text-gray-600">dumyum</span>
-                </div>
-                <button
-                  className="px-2 py-1 rounded  focus:outline-none border ml-auto  hover:bg-black hover:text-white"
-                  onClick={() => handleRepeatOrder(order)}
-                >
-                  Repeat Order
-                </button>
-              </div>
-              {/* ))} */}
+                <span>{order.closedAt || '-'}</span>
             </div>
+            {productsDict[order._id] && productsDict[order._id].length > 0 ? (
+              <ul>
+                {productsDict[order._id].map((product, index) => (
+                  <div key={index}>
+                    <div className="flex items-center mt-2">
+                      <img
+                        src={product.image 
+                            ? subCategoryImages + product.image
+                            : image1 
+                        }
+                        alt="image"
+                        className="w-16 h-16 object-cover mr-4"
+                        onClick={() => handleRepeat(product.subCategoryId)}
+                      />
+                      <div>
+                        <span className="block font-semibold">
+                          Product Name:
+                        </span>
+                        <span>{product.subCategory.split('|')[0]}</span>
+                      </div>
+                      <div>
+                        <span className="block font-semibold">Quantity:</span>
+                        <span>{product.quantity}</span>
+                      </div>            
+                  </div>
+                  </div>
+                ))}
+              </ul>
+            ) : (
+              <p>No products available for this order.</p>
+            )}
+
             {selectedOrder && selectedOrder._id === order._id && (
               <div className="bg-white mt-4 p-4 rounded shadow-lg">
                 <div className="flex justify-between items-center mb-4">
@@ -108,50 +149,25 @@ const MyOrders = () => {
                 <div className='flex justify-between flex-wrap'>
                   <div className="mb-4">
                     <h4 className="font-semibold">Shipping Address:</h4>
-                    <p>{selectedOrder.shippingAddress}</p>
+                    <p>{Object.values(selectedOrder.addressDetails).slice(0,-1).join(', ')}</p>
                   </div>
                   <div className="mb-4">
                     <h4 className="font-semibold">Payment Method:</h4>
-                    <p>{selectedOrder.paymentMethod}</p>
+                    <p>{selectedOrder.paymentMethod == 'Cash' ? 'Cash On Delivery' : selectedOrder.paymentMethod}</p>
                   </div>
                   <div className="mb-4">
                     <h4 className="font-semibold">Order Summary:</h4>
                     <p>Grand Total: {selectedOrder.finalPrice}</p>
-                    <p>Shipping Charge: {selectedOrder.shippingCharge}</p>
+                    <p>Shipping Charge: {selectedOrder.finalPrice - selectedOrder.totalPrice}</p>
                   </div>
+                  <button
+                    className="px-2 py-1 rounded  focus:outline-none border ml-auto  hover:bg-black hover:text-white"
+                    onClick={() => handleRepeatOrder(order)}
+                  >
+                    Repeat Order
+                  </button>
                 </div>
                 <div className="grid grid-cols-1 gap-4">
-                  {showProds?.map((product, index) => (
-                    <div
-                      key={index}
-                      className="bg-gray-50 p-4 rounded shadow-md flex justify-between flex-wrap"
-                    >
-                      <div>
-                        <span className="block font-semibold">Category:</span>
-                        <span>{product.category}</span>
-                      </div>
-                      <div>
-                        <span className="block font-semibold">
-                          Product Name:
-                        </span>
-                        <span>{product.subCategory}</span>
-                      </div>
-                      <div>
-                        <span className="block font-semibold">Quantity:</span>
-                        <span>{product.quantity}</span>
-                      </div>
-                      <div>
-                        <span className="block font-semibold">Price:</span>
-                        <span>{product.price}</span>
-                      </div>
-                      <button
-                        className="px-1 py-1 rounded  focus:outline-none border  hover:bg-black hover:text-white"
-                        onClick={() => handleRepeatOrder(product)}
-                      >
-                        Repeat Order
-                      </button>
-                    </div>
-                  ))}
                 </div>
               </div>
             )}
@@ -163,3 +179,5 @@ const MyOrders = () => {
 };
 
 export default MyOrders;
+
+
