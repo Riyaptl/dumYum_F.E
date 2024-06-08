@@ -33,7 +33,7 @@ function FooterBanner(props) {
 
   return (
     <>
-    <div className='relative w-full h-[40vh]'>
+    <div className='relative w-full h-[40vh] max-w-[2000px] m-auto max-h-[303px]'>
       {product?.images.length > 0 ? 
         <div
           className='absolute inset-0 bg-cover bg-center bg-no-repeat'

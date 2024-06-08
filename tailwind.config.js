@@ -34,6 +34,10 @@ module.exports = {
         fadeInOut: 'fadeInOut 1s ease-in-out',
       },
     },
+    fontFamily: {
+      Dancing:["Dancing Script","cursive"],
+      monospace:["ui-monospace","cursive"],
+    }
   },
   variants: {
     display: ['responsive', 'group-hover', 'group-focus'],

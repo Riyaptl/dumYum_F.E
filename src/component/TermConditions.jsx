@@ -3,21 +3,21 @@ import React, { useState } from 'react';
 const TermConditions = () => {
   const [activeIndex, setActiveIndex] = useState(null);
 
-  const faqData = [
+  const termData = [
     {
-      "title": "<h3 style=\"color: #333;\">1. ONLINE STORE TERMS</h3>",
+      "title": "<h3 style=\"color: #333;\">1.  Online Store Terms</h3>",
       "content": "<p style=\"text-align: justify; color: #666; font-size: 16px; line-height: 1.6;\">By agreeing to these Terms of Service, you confirm that you are legally able to enter into a contract (which typically means you are at least the age of majority in your state or province of residence). If you are not of legal age, you affirm that you have obtained consent from your parent or legal guardian to use this site. Our products must not be used for any unlawful or unauthorized purpose, and you agree not to violate any laws in your jurisdiction (including copyright laws) while using our service. You are prohibited from transmitting any worms or viruses or any code that may harm or disrupt our service. Violation of any of these terms will result in the immediate termination of your services.</p>"
     },
     {
-      "title": "<h3 style=\"color: #333;\">2. GENERAL CONDITIONS</h3>",
+      "title": "<h3 style=\"color: #333;\">2. General Conditions</h3>",
       "content": "<p style=\"text-align: justify; color: #666; font-size: 16px; line-height: 1.6;\">We reserve the right to refuse service to anyone at our discretion, for any reason, and at any time. You acknowledge that your content (excluding credit card information) may be transferred unencrypted and could involve (a) transmissions over various networks; and (b) changes to conform and adapt to technical requirements of connecting networks or devices. Credit card information is always encrypted during transfer over networks. You agree not to reproduce, duplicate, copy, sell, resell, or exploit any portion of the Service, use of the Service, or access to the Service without our express written permission. The headings used in this agreement are for convenience only and will not limit or otherwise affect these Terms.</p>"
     },
     {
-      "title": "<h3 style=\"color: #333;\">3. REQUESTS AND CONFIRMATION</h3>",
+      "title": "<h3 style=\"color: #333;\">3. Requests and Confirmation</h3>",
       "content": "<p style=\"text-align: justify; color: #666; font-size: 16px; line-height: 1.6;\">Orders can be placed through our website, dumyumchocolates.com, at any time, Monday through Sunday, 24 hours a day, 7 days a week. Cancellation charges apply if an order is canceled after 24 hours of placement. Once an order is out for delivery, it cannot be canceled or replaced. However, DumYum Chocolates will consider the request and will respond accordingly if possible. Each order is subject to approval by DumYum Chocolates. We reserve the right to reject any order due to insufficient stock, incomplete customer information, or any other lawful reason. If there is an issue filling an order, we will notify the purchaser within 2 business days of receiving the order.</p>"
     },
     {
-      "title": "<h3 style=\"color: #333;\">4. MODIFICATIONS TO THE SERVICE AND PRICES</h3>",
+      "title": "<h3 style=\"color: #333;\">4. Modifications to the Services and Prices</h3>",
       "content": "<p style=\"text-align: justify; color: #666; font-size: 16px; line-height: 1.6;\">Prices for our products are subject to change without prior notice. DumYum Chocolates reserves the right to modify or discontinue the Service (or any part thereof) at any time without notice. We shall not be liable to you or any third-party for any modification, price change, suspension, or discontinuance of the Service. Unless otherwise specified, all DumYum Chocolates pricing and charges are stated in INR and include 18% GST. Prices are subject to change. Shipping charges, which are the responsibility of the purchaser, are additional and vary by destination. Shipping details are available upon request from DumYum Chocolates.</p>"
     },
     {
@@ -65,7 +65,7 @@ const TermConditions = () => {
         <div className='flex justify-center py-4'><h1 className="text-3xl font-bold mb-8">Terms & Conditions</h1></div>
         
         <div className="container">
-          {faqData.map((item, index) => (
+          {termData.map((item, index) => (
             <div className="question border-b border-gray-300 mb-4" key={index} onClick={() => toggleAccordion(index)}>
               <div className="flex items-center justify-between py-4 px-6 cursor-pointer">
                 <span className="text-lg font-semibold"dangerouslySetInnerHTML={{ __html: item.title }}></span>

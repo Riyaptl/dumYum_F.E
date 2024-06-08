@@ -22,12 +22,14 @@ function AuthForm() {
     <>
       <Navbar />
       <div
-        className="w-full flex justify-center items-start min-h-screen "
+        className="w-full flex justify-center items-start max-h-[768px] "
         style={{
           backgroundImage:
             'url(https://images.unsplash.com/photo-1606312619070-d48b4c652a52?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
+          maxHeight: '768px',
+          height: '100vh',
         }}
       >
         <div className="w-11/12 lg:w-5/12 flex flex-col justify-center items-center bg-white p-8 rounded-lg shadow-lg mt-5">

@@ -12,14 +12,13 @@ const Tagline = ({ tagline }) => {
 
   return (
     <motion.div
-      className="md:w-2/5 mx-auto text-center"
+      className="w-full px-4 md:px-0 md:w-2/3 lg:w-1/2 mx-auto text-center"
       ref={ref}
       initial={{ opacity: 0, y: 100 }}
       animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 100 }}
       transition={{ duration: 1 }}
     >
-      <div className="flex  h-full max-w-3xl mx-auto text-center justify-center align-middle flex-col ">
-        <hr className=" border-double  mb-4 w-16 mx-auto" />
+      <div className="flex h-full max-w-3xl mx-auto text-center justify-center items-center flex-col py-8 font-sans">
         <p className="text-xl font-medium  text-black">
           {tagline.split('\n').map((line, index) => (
             <span key={index}>

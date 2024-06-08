@@ -54,7 +54,7 @@ const BannerSlider = () => {
 
   return (
     <div className="max-h-[85vh] flex flex-col items-center justify-center relative ">
-      <div className="w-full overflow-hidden relative">
+      <div className="w-full overflow-hidden relative max-w-[1800px] mx-auto max-h-[650px] my-auto">
         <Slider {...settings} ref={sliderRef}>
         {specials.map((animation, index) => (
           <div key={index} className="relative w-full h-full ">

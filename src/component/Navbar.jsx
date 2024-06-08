@@ -94,16 +94,16 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`sticky top-0 left-0 w-full bg-white shadow-md z-50  ${
+      className={`sticky top-0 left-0 w-full bg-white shadow-md z-50 py-4  mx-auto  ${
         scrolled ? 'scrolled' : ''
       }`}
     >
       <div
-        className={` relative wrapper bg-white text-black md:px-1   md:py-${
+        className={` relative wrapper bg-white text-black md:px-1 md:py-${
           scrolled ? '5' : '5'
-        } flex justify-between items-center md:max-w-[92%] w-full mx-auto h-full`}
+        } flex justify-between items-center md:w-[92%] w-full mx-auto h-full  max-w-[1800px] `}
       >
-        <div className="w-32  hidden lg:block">
+        <div className="w-32 hidden lg:block">
           <Link to="/">
             <img src={logo} alt="logo" className="h-full" />
           </Link>

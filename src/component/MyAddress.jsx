@@ -129,13 +129,13 @@ const MyAddress = () => {
             </div>
             <div className="address-actions absolute top-0 right-0 mt-2 mr-2 flex">
               <button
-                className="edit-button bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 focus:outline-none"
+                className="edit-button border border-black  hover:bg-black  hover:text-white px-3 py-1 rounded focus:outline-none"
                 onClick={() => handleEditAddress(addressItem)}
               >
                 <AiOutlineEdit />
               </button>
               <button
-                className="delete-button bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 focus:outline-none ml-2"
+                className="delete-button border border-black hover:bg-black  hover:text-white px-3 py-1 rounded  focus:outline-none ml-2"
                 onClick={() => handleDeleteAddress(addressItem._id)}
               >
                 <AiOutlineDelete />
@@ -150,7 +150,6 @@ const MyAddress = () => {
       >
         New Address
       </button>
-
 
       {showOverlay && (
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
