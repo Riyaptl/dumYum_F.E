@@ -55,7 +55,7 @@ const RaiseQueries = () => {
         <option value="" disabled>Select an order</option>
         {orderIds?.map((order) => (
           <option key={order._id} value={order._id}>
-            {order.orderId} 
+            {order.orderId.split('/').join('').split('_').join('')} 
           </option>
         ))}
       </select>
