@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getorderIds } from '../slices/customerSlice';
-// import { raiseQuery } from '../slices/customerSlice';
+import { getorderIds } from '../slices/orderSlice';
+// import { raiseQuery } from '../slices/orderSlice';
 
 const RaiseQueries = () => {
-  const {orderIds} = useSelector((state) => state.customer)
+  const {orderIds} = useSelector((state) => state.order)
   const dispatch = useDispatch();
   const [raiseQueryFormData, setRaiseQueryFormData] = useState('');
   const [raiseQueryAttachments, setRaiseQueryAttachments] = useState([]);

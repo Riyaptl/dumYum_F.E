@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getQueries, getImages } from '../slices/customerSlice';
+import { getQueries, getImages } from '../slices/orderSlice';
 
 const MyQueries = () => {
   const dispatch = useDispatch();
-  const { queries, images } = useSelector((state) => state.customer);
+  const { queries, images } = useSelector((state) => state.order);
   const [activeQueryId, setActiveQueryId] = useState(null);
   const queryImages = `http://localhost:8000`;
 

@@ -71,46 +71,6 @@ export const updateCustomer = createAsyncThunk(
     }
 )
 
-export const getOrders = createAsyncThunk (
-    "customer/getOrders",
-    async () => {
-        const res = await customerService.getOrders()
-        return res.data
-    }
-)
-
-export const getQueries = createAsyncThunk (
-    "customer/getQueries",
-    async () => {
-        const res = await customerService.getQueries()
-        return res.data
-    }
-)
-
-export const getProducts = createAsyncThunk (
-    "customer/getProducts",
-    async (id) => {
-        const res = await customerService.getProducts(id)
-        return res.data
-    }
-)
-
-export const getImages = createAsyncThunk (
-    "customer/getImages",
-    async (id) => {
-        const res = await customerService.getImages(id)
-        return res.data
-    }
-)
-
-export const getorderIds = createAsyncThunk (
-    "customer/orderIds",
-    async (id) => {
-        const res = await customerService.orderIds(id)
-        return res.data
-    }
-) 
-
 const customerSlice = createSlice({
     name: "cart",
     initialState,
@@ -222,78 +182,6 @@ const customerSlice = createSlice({
         .addCase(updateCustomer.rejected, (state, action) => {
             state.loading = true;
             state.customer = null;
-            state.error = action.error.message;
-        })
-        .addCase(getOrders.pending, (state) => {
-            state.loading = true;
-            state.error = null;
-        })
-        .addCase(getOrders.fulfilled, (state, action) => {
-            state.loading = true;
-            state.orders = action.payload.orders;
-            state.error = null;
-        })
-        .addCase(getOrders.rejected, (state, action) => {
-            state.loading = true;
-            state.orders = null;
-            state.error = action.error.message;
-        })
-        .addCase(getProducts.pending, (state) => {
-            state.loading = true;
-            state.products = null;
-            state.error = null;
-        })
-        .addCase(getProducts.fulfilled, (state, action) => {
-            state.loading = true;
-            state.products = action.payload.orders;
-            state.error = null;
-        })
-        .addCase(getProducts.rejected, (state, action) => {
-            state.loading = true;
-            state.products = null;
-            state.error = action.error.message;
-        })
-        .addCase(getQueries.pending, (state) => {
-            state.loading = true;
-            state.error = null;
-        })
-        .addCase(getQueries.fulfilled, (state, action) => {
-            state.loading = true;
-            state.queries = action.payload.queries;
-            state.error = null;
-        })
-        .addCase(getQueries.rejected, (state, action) => {
-            state.loading = true;
-            state.queries = null;
-            state.error = action.error.message;
-        })
-        .addCase(getImages.pending, (state) => {
-            state.loading = true;
-            state.images = null;
-            state.error = null;
-        })
-        .addCase(getImages.fulfilled, (state, action) => {
-            state.loading = true;
-            state.images = action.payload.images;
-            state.error = null;
-        })
-        .addCase(getImages.rejected, (state, action) => {
-            state.loading = true;
-            state.images = null;
-            state.error = action.error.message;
-        })
-        .addCase(getorderIds.pending, (state) => {
-            state.loading = true;
-            state.error = null;
-        })
-        .addCase(getorderIds.fulfilled, (state, action) => {
-            state.loading = true;
-            state.orderIds = action.payload.orders;
-            state.error = null;
-        })
-        .addCase(getorderIds.rejected, (state, action) => {
-            state.loading = true;
-            state.orderIds = null;
             state.error = action.error.message;
         })
     }
