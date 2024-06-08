@@ -7,7 +7,7 @@ import { useInView } from 'react-intersection-observer';
 const VideoSection = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef(null);
-  const { ref, inView } = useInView({ triggerOnce: false });
+  const { ref, inView } = useInView({ triggerOnce: true });
 
   const handleVideoClick = () => {
     setIsPlaying(true);
@@ -38,7 +38,6 @@ const VideoSection = () => {
           backgroundImage: `url('https://lepure.in/cdn/shop/products/re-min_460x.jpg?v=1664703775')`,
         }}
       ></div>
-      {/* Light black layer */}
       <div className="absolute inset-0 bg-black opacity-50 max-w-[90%] m-auto"></div>
       <div className="absolute inset-0 flex flex-col justify-center items-center text-white">
         <h1 className="text-3xl md:text-7xl font-serif mb-4">Sweet Story</h1>
@@ -46,8 +45,6 @@ const VideoSection = () => {
           WITH OUR UNIQUE TAKE ON THE PROFESSION OF A PASTRY CHEF, WE
           REVOLUTIONIZE EVEN <br /> THE MOST FIRMLY ENTRENCHED TRADITIONS.
         </p>
-
-        {/* Conditional rendering for the video button or cancel button */}
         {isPlaying ? (
           <button
             className="bg-white hover:bg-transparent hover:border text-white font-bold py-3 px-3 md:py-5 md:px-5 rounded-full transition-colors duration-300 absolute top-3 right-3"

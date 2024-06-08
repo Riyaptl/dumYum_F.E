@@ -72,14 +72,14 @@ const Products = () => {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="flex flex-wrap justify-center p-4 w-[90%]"
+            className="flex flex-wrap  p-4 w-[90%]"
           >
             {subCategories?.map((product, index) => (
               <motion.div
                 key={product?._id || index}
                 variants={productVariant}
                 whileTap={{ scale: 0.95 }}
-                className="bg-white overflow-hidden flex flex-col justify-between shadow-[0_2px_1px_0_rgba(0,0,0,0.1)] mx-2 mb-4"
+                className="bg-white overflow-hidden flex flex-col justify-between shadow-[0_2px_1px_0_rgba(0,0,0,0.1)] mx-2 mb-4 "
                 onMouseEnter={() => handleHover(product)}
                 onMouseLeave={handleNormal}
                 style={{ flex: '0 0 22.5%', maxWidth: '22.5%' }}
