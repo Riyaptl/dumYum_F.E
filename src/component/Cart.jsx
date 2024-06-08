@@ -33,7 +33,7 @@ const Cart = () => {
   const { location, error, deliverMessage } = useSelector(
     (state) => state.location,
   )
-  const productImages = `http://localhost:8000/uploads/subCategory/`
+  const productImages = `${import.meta.env.VITE_APP_SUBCAT_URL}`
   const [note, setNote] = useState('')
   const [orderFor, setOrderFor] = useState('')
 

@@ -9,7 +9,7 @@ const SpecialFixed = () => {
   const [delayedSpecial, setDelayedSpecial] = useState(null)
   const navigate = useNavigate()
   const { specials } = useSelector((state) => state.special)
-  const specialImages = 'http://localhost:8000/uploads/special/'
+  const specialImages = `${import.meta.env.VITE_APP_SPECIAL_URL}`
 
   const handleShop = (id) => {
     navigate(`/${id}?page=special`)

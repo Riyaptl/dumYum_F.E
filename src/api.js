@@ -1,10 +1,11 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const baseURL = "http://localhost:8000/api/v1";
+const baseURL = `${import.meta.env.VITE_APP_API_URL}`
 
 export const server = async () => {
   try {
+    
     const axiosInstance = axios.create({
       baseURL,
       headers: {

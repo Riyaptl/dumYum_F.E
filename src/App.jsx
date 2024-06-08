@@ -65,6 +65,7 @@ function App() {
           <Route exact path="/about" element={<AboutUsPage />} />
           <Route exact path="/refund-policy" element={<RefundPolicyPage />} />
           <Route exact path="/shipping-policy" element={<ShippingPolicyPage />} />
+          <Route exact path="/about" element={<AboutUsPage />} />
         </Routes>
       </Router>
     </div>

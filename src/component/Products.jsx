@@ -36,7 +36,7 @@ const Products = () => {
   const { singleCategory } = useSelector((state) => state.category);
   const { singleSpecial } = useSelector((state) => state.special);
   const { cartProducts, error } = useSelector((state) => state.cart);
-  const subCategoryImages = 'http://localhost:8000/uploads/subCategory/';
+  const subCategoryImages = `${import.meta.env.VITE_APP_SUBCAT_URL}`
 
   useEffect(() => {
     window.scrollTo(0, 0); // Scroll to the top of the page
@@ -105,6 +105,7 @@ const Products = () => {
                     <div className="p-4 text-center">
                       <h2 className="text-xl font-serif">{product?.name.split('|')[0]}</h2>
                       <p className="text-gray-800 font-bold">{product?.quantity}</p>
+                      <p className="text-gray-800 font-bold">Rs. {product?.finalPrice}</p>
                     </div>
                   </>
                 )}

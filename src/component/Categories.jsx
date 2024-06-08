@@ -28,8 +28,8 @@ const Categories = () => {
   const navigate = useNavigate();
   const { categories } = useSelector((state) => state.category);
   const { specials } = useSelector((state) => state.special);
-  const categoryImages = 'http://localhost:8000/uploads/category/';
-  const specialImages = 'http://localhost:8000/uploads/special/';
+  const categoryImages = `${import.meta.env.VITE_APP_CATEGORY_URL}`
+  const specialImages = `${import.meta.env.VITE_APP_SPECIAL_URL}`
 
   useEffect(() => {
     window.scrollTo(0, 0); // Scroll to the top of the page

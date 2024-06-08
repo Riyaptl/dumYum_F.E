@@ -15,7 +15,7 @@ const ExploreSlider = () => {
   const [delayedSpecial, setDelayedSpecial] = useState(null)
   const navigate = useNavigate()
   const { categories } = useSelector((state) => state.category)
-  const categoryImages = 'http://localhost:8000/uploads/category/'
+  const categoryImages = `${import.meta.env.VITE_APP_CATEGORY_URL}`
 
   const settings = {
     infinite: true,
