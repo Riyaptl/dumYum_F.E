@@ -1,5 +1,5 @@
   
-  import React, { useState } from 'react';
+  import React, { useEffect, useState } from 'react';
   import { RiLogoutBoxLine } from 'react-icons/ri';
   import BasicDetails from './BasicDetails';
   import MyAddress from './MyAddress';
@@ -9,7 +9,7 @@
   import { DiVim } from 'react-icons/di';
   import { logOut } from '../slices/authSlice';
   import { useDispatch , useSelector } from 'react-redux'
-  import { useNavigate } from "react-router-dom";
+  import { useLocation, useNavigate } from "react-router-dom";
 import ResetPassword from './ResetPassword';
   
 const Profile = () => {
@@ -25,6 +25,12 @@ const Profile = () => {
     await dispatch(logOut())  
     navigate('/')
   };
+
+  const location = useLocation()
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to the top of the page
+  }, [location.pathname]); 
+
 
   const renderTabContent = () => {
     switch (selectedTab) {

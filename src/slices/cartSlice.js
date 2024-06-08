@@ -43,6 +43,14 @@ export const getcartQuantity = createAsyncThunk(
     }
 )
 
+export const deleteCart = createAsyncThunk(
+    "cart/deleteCart",
+    async () => {
+        const res = await cartService.deleteCart();
+        return res.data;
+    }
+)
+
 export const checkDelivery = createAsyncThunk(
     "cart/checkDelivery",
     async (pincode) => {
@@ -225,6 +233,21 @@ const cartSlice = createSlice({
             state.error = null;
         })
         .addCase(updateAddressCart.rejected, (state, action) => {
+            state.loading = false;
+            state.message = null;
+            state.error = action.error.message ;
+        })
+        .addCase(deleteCart.pending, (state) => {
+            state.loading = true;
+            state.message = null;
+        })
+        .addCase(deleteCart.fulfilled, (state, action) => {
+            state.loading = false;
+            state.message = action.payload.message;
+            state.cart = action.payload.cart;
+            state.error = null;
+        })
+        .addCase(deleteCart.rejected, (state, action) => {
             state.loading = false;
             state.message = null;
             state.error = action.error.message ;

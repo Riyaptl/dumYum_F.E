@@ -6,6 +6,7 @@ const initialState = {
     queries: null,
     images: null,
     orders: null,
+    orderIds: null,
     products: null,
     loading: false,
     customer: null,
@@ -15,7 +16,7 @@ const initialState = {
 }
 
 export const addAddress = createAsyncThunk (
-    "auth/addAddress",
+    "customer/addAddress",
     async (formData) => {
         const res = await customerService.addAddress(formData)
         return res.data
@@ -23,7 +24,7 @@ export const addAddress = createAsyncThunk (
 )
 
 export const updateAddress = createAsyncThunk (
-    "auth/updateAddress",
+    "customer/updateAddress",
     async (formData) => {
         const res = await customerService.updateAddress(formData)
         return res.data
@@ -31,7 +32,7 @@ export const updateAddress = createAsyncThunk (
 )
 
 export const defaultAddress = createAsyncThunk (
-    "auth/defaultAddress",
+    "customer/defaultAddress",
     async (id) => {
         const res = await customerService.defaultAddress(id)
         return res.data
@@ -39,7 +40,7 @@ export const defaultAddress = createAsyncThunk (
 )
 
 export const removeAddress = createAsyncThunk (
-    "auth/removeAddress",
+    "customer/removeAddress",
     async (id) => {
         const res = await customerService.removeAddress(id)
         return res.data
@@ -47,7 +48,7 @@ export const removeAddress = createAsyncThunk (
 )
 
 export const getAddress = createAsyncThunk (
-    "auth/getAddress",
+    "customer/getAddress",
     async () => {
         const res = await customerService.getAddress()
         return res.data
@@ -71,7 +72,7 @@ export const updateCustomer = createAsyncThunk(
 )
 
 export const getOrders = createAsyncThunk (
-    "auth/getOrders",
+    "customer/getOrders",
     async () => {
         const res = await customerService.getOrders()
         return res.data
@@ -79,7 +80,7 @@ export const getOrders = createAsyncThunk (
 )
 
 export const getQueries = createAsyncThunk (
-    "auth/getQueries",
+    "customer/getQueries",
     async () => {
         const res = await customerService.getQueries()
         return res.data
@@ -87,7 +88,7 @@ export const getQueries = createAsyncThunk (
 )
 
 export const getProducts = createAsyncThunk (
-    "auth/getProducts",
+    "customer/getProducts",
     async (id) => {
         const res = await customerService.getProducts(id)
         return res.data
@@ -95,14 +96,22 @@ export const getProducts = createAsyncThunk (
 )
 
 export const getImages = createAsyncThunk (
-    "auth/getImages",
+    "customer/getImages",
     async (id) => {
         const res = await customerService.getImages(id)
         return res.data
     }
 )
 
-const authSlice = createSlice({
+export const getorderIds = createAsyncThunk (
+    "customer/orderIds",
+    async (id) => {
+        const res = await customerService.orderIds(id)
+        return res.data
+    }
+) 
+
+const customerSlice = createSlice({
     name: "cart",
     initialState,
     reducers: {},
@@ -273,8 +282,22 @@ const authSlice = createSlice({
             state.images = null;
             state.error = action.error.message;
         })
+        .addCase(getorderIds.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        })
+        .addCase(getorderIds.fulfilled, (state, action) => {
+            state.loading = true;
+            state.orderIds = action.payload.orders;
+            state.error = null;
+        })
+        .addCase(getorderIds.rejected, (state, action) => {
+            state.loading = true;
+            state.orderIds = null;
+            state.error = action.error.message;
+        })
     }
 })
 
-const {reducer} = authSlice
+const {reducer} = customerSlice
 export default reducer

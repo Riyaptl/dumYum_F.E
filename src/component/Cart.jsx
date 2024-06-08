@@ -8,10 +8,11 @@ import {
   removeProduct,
   updateAddressCart,
   addMessage,
+  deleteCart,
 } from '../slices/cartSlice'
 import { addAddress, updateAddress, getAddress } from '../slices/customerSlice'
 import { ImCross } from 'react-icons/im'
-import { getLocationCart, whetherDeliver } from '../slices/locationSlice'
+import { clearLocation, getLocationCart, whetherDeliver } from '../slices/locationSlice'
 
 const Cart = () => {
   const [pincode, setPincode] = useState('')
@@ -56,7 +57,10 @@ const Cart = () => {
 
   useEffect(() => {
     if (pincode) {
+      console.log(pincode);
       dispatch(getLocationCart({ pincode }))
+    }else {
+      dispatch(clearLocation())
     }
   }, [pincode])
 
@@ -133,6 +137,10 @@ const Cart = () => {
 
   const handleSave = () => {
     dispatch(addMessage({ orderFor, message: note }))
+  }
+
+  const handleClear = () => {
+    dispatch(deleteCart())
   }
 
   return (
@@ -302,7 +310,7 @@ const Cart = () => {
               Rs. {cart?.finalPrice.toFixed(0)}
             </span>
           </div> */}
-          {location && (
+          {location && cart && (
             <div>
               <div className="flex flex-col space-y-4">
                 <div className="flex justify-between">
@@ -311,6 +319,7 @@ const Cart = () => {
                     Rs. {cart?.finalPrice}
                   </span>
                 </div>
+                {console.log(location)}
                 <div className="flex justify-between">
                   <span className="font-semibold text-sm uppercase">
                     Shipping Charge:
@@ -377,6 +386,13 @@ const Cart = () => {
             </svg>
             Continue Shopping
           </a>
+          {cart && <a
+            href="/"
+            className="flex font-semibold text-indigo-600 text-sm mt-10"
+            onClick={handleClear}
+          >
+            Clear Cart
+          </a>}
         </div>
 
         <div id="summary" className="md:w-2/5 px-8 py-10 bg-white border-l">

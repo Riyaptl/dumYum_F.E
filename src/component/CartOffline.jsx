@@ -30,6 +30,9 @@ const CartOffline = () => {
     }
   }
 
+  const handleClear = () => {
+    Cookies.remove('cart')
+  }
 
   const checkShippingAvailability = async () => {
     await dispatch(whetherDeliver({pincode}))
@@ -130,7 +133,7 @@ const CartOffline = () => {
             </div>
           </div>
           <a
-            href="#"
+            href="/"
             className="flex font-semibold text-indigo-600 text-sm mt-10"
           >
             <svg
@@ -141,6 +144,13 @@ const CartOffline = () => {
             </svg>
             Continue Shopping
           </a>
+          {products && products.length > 0 && <a
+            href="/"
+            className="flex font-semibold text-indigo-600 text-sm mt-10"
+            onClick={handleClear}
+          >
+            Clear Cart
+          </a>}
         </div>
 
         <div id="summary" className="w-1/4 px-8 py-10 bg-white border-l">
