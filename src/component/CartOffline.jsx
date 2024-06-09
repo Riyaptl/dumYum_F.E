@@ -4,6 +4,10 @@ import { AiOutlineCheck } from 'react-icons/ai'
 import Cookies from 'js-cookie';
 import { whetherDeliver } from '../slices/locationSlice'
 import { useDispatch, useSelector } from 'react-redux';
+import ExploreSlider from './ExploreSlider';
+import ExploreFixed from './ExploreFixed';
+import SpecialSlider from './SpecialSlider';
+import SpecialFixed from './specialFixed';
 
 const CartOffline = () => {
   const [products, setProducts] = useState(Cookies.get('cart') ? JSON.parse(Cookies.get('cart')) : [])
@@ -11,7 +15,8 @@ const CartOffline = () => {
   const dispatch = useDispatch()
   const {deliverMessage} = useSelector(state => state.location)
   const [pincode, setPincode] = useState('')
-
+  const { categories } = useSelector((state) => state.category)
+  const { specials } = useSelector((state) => state.special)
 
   const removeProduct = (id) => {
     let cartItems = JSON.parse(Cookies.get('cart'))
@@ -198,11 +203,24 @@ const CartOffline = () => {
       </div>
     </div>
     :
-    <div className="relative h-screen">
+    <div className="relative p-15">
       <p className="absolute top-4 left-1/2 transform -translate-x-1/2 text-xl font-bold text-gray-800">
         No items in cart
       </p>
-      {/* Other components */}
+      <div className="pt-20">
+        {categories?.length > 3 
+          ? 
+          <ExploreSlider />
+          :
+          <ExploreFixed />
+        }
+        {specials?.length > 3 
+          ? 
+          <SpecialSlider />
+          :
+          <SpecialFixed />
+        }
+      </div>
     </div>
     }
    </>
