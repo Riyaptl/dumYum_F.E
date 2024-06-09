@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { getOrders, getProducts } from '../slices/orderSlice'
-import { AiOutlineClose } from 'react-icons/ai'
-import image1 from '../assets/slider1.png'
+
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getOrders, getProducts } from '../slices/orderSlice';
+import { AiOutlineClose } from 'react-icons/ai';
+import image1 from "../assets/slider1.png";
+import { resolvePath, useNavigate } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom'
+
 
 const MyOrders = () => {
   const dispatch = useDispatch()
@@ -23,24 +26,21 @@ const MyOrders = () => {
       const fetchProducts = async () => {
         const products = await Promise.all(
           orders.map(async (order) => {
-            const orderId = order._id
-            const products = await dispatch(getProducts(orderId))
-            return { orderId, products: products.payload.orders }
-          }),
-        )
+            const orderId = order._id;
+            const res = await dispatch(getProducts(orderId));
+            return { orderId, res: res.payload.orders };
+          })
+        );
 
-        const productsDictionary = products.reduce(
-          (acc, { orderId, products }) => {
-            acc[orderId] = products
-            return acc
-          },
-          {},
-        )
+        const productsDictionary = products.reduce((acc, { orderId, res }) => {
+          acc[orderId] = res;
+          return acc;
+        }, {});
 
-        setProductsDict(productsDictionary)
-      }
+        setProductsDict(productsDictionary);
+      };
 
-      fetchProducts()
+      fetchProducts();
     }
   }, [orders, dispatch])
 

@@ -147,7 +147,6 @@ const CartOffline = () => {
             Continue Shopping
           </a>
           {products && products.length > 0 && <a
-            href="/"
             className="flex font-semibold text-indigo-600 text-sm mt-10"
             onClick={handleClear}
           >
