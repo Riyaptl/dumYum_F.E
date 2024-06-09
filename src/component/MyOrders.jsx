@@ -1,22 +1,25 @@
+
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getOrders, getProducts } from '../slices/orderSlice';
 import { AiOutlineClose } from 'react-icons/ai';
 import image1 from "../assets/slider1.png";
 import { resolvePath, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
+
 
 const MyOrders = () => {
-  const dispatch = useDispatch();
-  const { orders, products } = useSelector((state) => state.order);
-  const [selectedOrder, setSelectedOrder] = useState(null);
+  const dispatch = useDispatch()
+  const { orders, products } = useSelector((state) => state.order)
+  const [selectedOrder, setSelectedOrder] = useState(null)
   // const [showProds, setShowProds] = useState([]);
   const subCategoryImages = `${import.meta.env.VITE_APP_SUBCAT_URL}`
   const [productsDict, setProductsDict] = useState({})
   const navigate = useNavigate()
 
   useEffect(() => {
-    dispatch(getOrders());
-  }, [dispatch]);
+    dispatch(getOrders())
+  }, [dispatch])
 
   useEffect(() => {
     if (orders && orders.length > 0) {
@@ -39,24 +42,24 @@ const MyOrders = () => {
 
       fetchProducts();
     }
-  }, [orders, dispatch]);
+  }, [orders, dispatch])
 
   // useEffect(() => {
   //   setShowProds(products);
   // }, [products]);
 
   const handleViewOrderDetails = async (order) => {
-    setSelectedOrder(order);
-  };
+    setSelectedOrder(order)
+  }
 
   const handleCloseOrderDetails = () => {
     // setShowProds([]);
-    setSelectedOrder(null);
-  };
+    setSelectedOrder(null)
+  }
 
   const handleRepeatOrder = (order) => {
-    console.log('Repeat order:', order);
-  };
+    console.log('Repeat order:', order)
+  }
 
   const handleRepeat = (id) => {
     // console.log(id);
@@ -80,18 +83,20 @@ const MyOrders = () => {
               </div>
               <div>
                 <span className="block font-semibold">Status:</span>
-                <span>{order.orderStatus == 'active' ? 'ordered' : order.orderStatus == 'cancelled' ? 'cancelled' : 'delivered'}</span>
+                <span>
+                  {order.orderStatus == 'active'
+                    ? 'ordered'
+                    : order.orderStatus == 'cancelled'
+                    ? 'cancelled'
+                    : 'delivered'}
+                </span>
               </div>
               <div>
                 <span className="block font-semibold">Order ID:</span>
-                <span>{order.orderId.split('/').join('').split('_').join('')}</span>
+                <span>
+                  {order.orderId?.split('/').join('').split('_').join('')}
+                </span>
               </div>
-              <button
-                className="px-2 py-1 rounded  focus:outline-none border hover:bg-black hover:text-white"
-                onClick={() => handleViewOrderDetails(order)}
-              >
-                View Order Details
-              </button>
               {/* <button
                 className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 focus:outline-none"
                 onClick={() => handleRepeatOrder(order)}
@@ -99,19 +104,17 @@ const MyOrders = () => {
                 Repeat Order
               </button> */}
             </div>
-            <div className="flex flex-wrap flex-col mt-4 p-4">
-                <span className="block font-semibold">Delivered On:</span>
-                <span>{order.closedAt || '-'}</span>
-            </div>
+
             {productsDict[order._id] && productsDict[order._id].length > 0 ? (
-              <ul>
+              <ul className="my-6">
                 {productsDict[order._id].map((product, index) => (
                   <div key={index}>
-                    <div className="flex items-center mt-2">
+                    <div className="flex items-center mt-2 pl-3">
                       <img
-                        src={product.image 
+                        src={
+                          product.image
                             ? subCategoryImages + product.image
-                            : image1 
+                            : image1
                         }
                         alt="image"
                         className="w-16 h-16 object-cover mr-4"
@@ -123,17 +126,32 @@ const MyOrders = () => {
                         </span>
                         <span>{product.subCategory.split('|')[0]}</span>
                       </div>
-                      <div>
-                        <span className="block font-semibold">Quantity:</span>
-                        <span>{product.quantity}</span>
-                      </div>            
-                  </div>
+                    </div>
+                    <div className="flex justify-start pl-3 ">
+                      <span className="block font-semibold">Quantity:</span>
+                      <span className="ml-2">{product.quantity}</span>
+                    </div>
                   </div>
                 ))}
               </ul>
             ) : (
               <p>No products available for this order.</p>
             )}
+
+            <div className="flex justify-between bg-gray-50">
+              <div className="flex flex-wrap flex-col mt-4 p-4">
+                <span className="block font-semibold">Delivered On:</span>
+                <span>{order.closedAt || '-'}</span>
+              </div>
+              <div className="flex justify-center align-middle content-center">
+                <button
+                  className="px-2 py-1 rounded  focus:outline-none border hover:bg-black hover:text-white max-h-9 my-auto"
+                  onClick={() => handleViewOrderDetails(order)}
+                >
+                  View Order Details
+                </button>
+              </div>
+            </div>
 
             {selectedOrder && selectedOrder._id === order._id && (
               <div className="bg-white mt-4 p-4 rounded shadow-lg">
@@ -146,19 +164,32 @@ const MyOrders = () => {
                     <AiOutlineClose />
                   </button>
                 </div>
-                <div className='flex justify-between flex-wrap'>
-                  <div className="mb-4">
-                    <h4 className="font-semibold">Shipping Address:</h4>
-                    <p>{Object.values(selectedOrder.addressDetails).slice(0,-1).join(', ')}</p>
-                  </div>
-                  <div className="mb-4">
-                    <h4 className="font-semibold">Payment Method:</h4>
-                    <p>{selectedOrder.paymentMethod == 'Cash' ? 'Cash On Delivery' : selectedOrder.paymentMethod}</p>
-                  </div>
-                  <div className="mb-4">
-                    <h4 className="font-semibold">Order Summary:</h4>
-                    <p>Grand Total: {selectedOrder.finalPrice}</p>
-                    <p>Shipping Charge: {selectedOrder.finalPrice - selectedOrder.totalPrice}</p>
+                <div className="">
+                  <div className="flex justify-between flex-wrap">
+                    <div className="mb-4">
+                      <h4 className="font-semibold">Shipping Address:</h4>
+                      {/* <p>
+                      {Object.values(selectedOrder.addressDetails)
+                        .slice(0, -1)
+                        .join(', ')}
+                    </p> */}
+                    </div>
+                    <div className="mb-4">
+                      <h4 className="font-semibold">Payment Method:</h4>
+                      <p>
+                        {selectedOrder.paymentMethod == 'Cash'
+                          ? 'Cash On Delivery'
+                          : selectedOrder.paymentMethod}
+                      </p>
+                    </div>
+                    <div className="mb-4">
+                      <h4 className="font-semibold">Order Summary:</h4>
+                      <p>Grand Total: {selectedOrder.finalPrice}</p>
+                      <p>
+                        Shipping Charge:{' '}
+                        {selectedOrder.finalPrice - selectedOrder.totalPrice}
+                      </p>
+                    </div>
                   </div>
                   <button
                     className="px-2 py-1 rounded  focus:outline-none border ml-auto  hover:bg-black hover:text-white"
@@ -167,17 +198,14 @@ const MyOrders = () => {
                     Repeat Order
                   </button>
                 </div>
-                <div className="grid grid-cols-1 gap-4">
-                </div>
+                <div className="grid grid-cols-1 gap-4"></div>
               </div>
             )}
           </div>
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default MyOrders;
-
-
+export default MyOrders

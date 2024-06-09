@@ -24,7 +24,7 @@ const HomePage = () => {
   const controls = useAnimation()
   const { categories } = useSelector((state) => state.category)
   const { specials } = useSelector((state) => state.special)
-  const dispatch = useDispatch() 
+  const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(getCategories())
@@ -41,14 +41,14 @@ const HomePage = () => {
       if (window.scrollY === 0) {
         setSelectedPage('home')
       }
-      setIsVisible(true);
+      setIsVisible(true)
     }
-  
-    window.addEventListener('scroll', handleScroll);
+
+    window.addEventListener('scroll', handleScroll)
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', handleScroll)
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
     if (isVisible || isNewsletterVisible) {
@@ -71,20 +71,10 @@ const HomePage = () => {
         >
           <Tagline tagline="All parcels are dispatched with ice packs or dry ice to ensure maximum product freshness until delivery!" />
         </motion.div>
-        {categories?.length > 3 
-        ? 
-          <ExploreSlider />
-        :
-          <ExploreFixed/>
-        }
-        <motion.div
-          className="my-12"
-          animate={controls}
-          initial={{ opacity: 0, y: 100 }}
-          transition={{ duration: 1.2 }}
-        >
+        {categories?.length > 3 ? <ExploreSlider /> : <ExploreFixed />}
+        <div>
           <VideoSection />
-        </motion.div>
+        </div>
         <motion.div
           className="my-12"
           animate={controls}
@@ -94,21 +84,10 @@ const HomePage = () => {
         >
           <Tagline tagline="All parcels are dispatched with ice packs or dry ice to ensure maximum product freshness until delivery!" />
         </motion.div>
-        {specials?.length > 3 
-        ? 
-          <SpecialSlider />
-        :
-          <SpecialFixed/>
-        }
-        <motion.div
-          className="my-12"
-          animate={controls}
-          initial={{ opacity: 0, y: 100 }}
-          transition={{ duration: 1.2 }}
-          onAnimationComplete={() => setIsNewsletterVisible(true)}
-        >
+        {specials?.length > 3 ? <SpecialSlider /> : <SpecialFixed />}
+        <div className="my-12">
           <Newsletter />
-        </motion.div>
+        </div>
         <Footer />
       </div>
     </div>

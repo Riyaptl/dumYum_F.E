@@ -73,7 +73,7 @@ const SpecialSlider = () => {
   }
 
   return (
-    <div className="w-full flex justify-center pb-14 relative">
+    <div className="w-full flex justify-center pb-14 relative max-w-[1800px] mx-auto">
       <div className="w-11/12">
         <div className="text-center pb-8">
           <h2 className="text-black font-serif text-center text-3xl ">
@@ -100,7 +100,7 @@ const SpecialSlider = () => {
                         : image1
                     }
                     alt={special.name}
-                    className="w-full h-72 object-cover transition-transform duration-700 transform hover:scale-105  "
+                    className="w-full h-72 object-cover transition-transform duration-600 transform hover:scale-105  "
                     style={{
                       transitionDelay: '0s',
                       transform:

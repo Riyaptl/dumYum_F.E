@@ -140,20 +140,22 @@ const UserDetailsForm = () => {
 
   return (
     <div
-      className="w-full flex justify-center items-start min-h-screen "
+      className="w-full flex justify-center items-start max-h-[768px]"
       style={{
         backgroundImage:
           'url(https://images.unsplash.com/photo-1606312619070-d48b4c652a52?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
+        maxHeight: '768px',
+        height: '100vh',
       }}
     >
-      <div className="max-w-screen-lg w-full bg-white rounded-lg shadow-lg my-2 p-8">
+      <div className=" w-full bg-white rounded-lg shadow-lg my-2 p-8 max-w-[1800px] mx-auto">
         <h2 className="text-2xl font-semibold mb-4 text-center capitalize">
           {/* User Details */}
           USER DETAILS
         </h2>
-        <form onSubmit={handleSubmit} className='border p-4'>
+        <form onSubmit={handleSubmit} className="border p-4">
           {/* Basic Details Section */}
           <div className="mb-6 ">
             <h3 className="text-lg font-semibold mb-2">Basic Details</h3>
@@ -164,7 +166,7 @@ const UserDetailsForm = () => {
                   htmlFor="phone"
                   className="block text-gray-700 text-sm font-bold mb-2"
                 >
-                  <FaUser className="inline-block mr-2" /> Mobile Number 
+                  <FaUser className="inline-block mr-2" /> Mobile Number
                 </label>
                 <input
                   type="text"
@@ -182,7 +184,7 @@ const UserDetailsForm = () => {
                   htmlFor="houseNumber"
                   className="block text-gray-700 text-sm font-bold mb-2"
                 >
-                  <FaAddressCard className="inline-block mr-2" /> House Number 
+                  <FaAddressCard className="inline-block mr-2" /> House Number
                 </label>
                 <input
                   type="text"
@@ -200,7 +202,7 @@ const UserDetailsForm = () => {
                   htmlFor="street"
                   className="block text-gray-700 text-sm font-bold mb-2"
                 >
-                  <FaAddressCard className="inline-block mr-2" /> Street 
+                  <FaAddressCard className="inline-block mr-2" /> Street
                 </label>
                 <input
                   type="text"
@@ -218,7 +220,7 @@ const UserDetailsForm = () => {
                   htmlFor="state"
                   className="block text-gray-700 text-sm font-bold mb-2"
                 >
-                  <FaAddressCard className="inline-block mr-2" /> State 
+                  <FaAddressCard className="inline-block mr-2" /> State
                 </label>
                 <input
                   type="text"
@@ -236,7 +238,7 @@ const UserDetailsForm = () => {
                   htmlFor="city"
                   className="block text-gray-700 text-sm font-bold mb-2"
                 >
-                  <FaAddressCard className="inline-block mr-2" /> city 
+                  <FaAddressCard className="inline-block mr-2" /> city
                 </label>
                 <input
                   type="text"
@@ -254,7 +256,7 @@ const UserDetailsForm = () => {
                   htmlFor="nearby"
                   className="block text-gray-700 text-sm font-bold mb-2"
                 >
-                  <FaAddressCard className="inline-block mr-2" /> Nearby 
+                  <FaAddressCard className="inline-block mr-2" /> Nearby
                 </label>
                 <input
                   type="text"
@@ -291,7 +293,7 @@ const UserDetailsForm = () => {
                   htmlFor="birthday"
                   className="block text-gray-700 text-sm font-bold mb-2"
                 >
-                  <FaCalendarAlt className="inline-block mr-2" /> Birthday 
+                  <FaCalendarAlt className="inline-block mr-2" /> Birthday
                 </label>
                 <input
                   type="date"
@@ -323,7 +325,7 @@ const UserDetailsForm = () => {
                     value="married"
                     checked={formData.maritalStatus === 'married'}
                     onChange={handleChange}
-                    className="form-radio"
+                    className="form-radio text-black"
                   />
                   <label htmlFor="married" className="text-gray-700">
                     Married
@@ -335,7 +337,7 @@ const UserDetailsForm = () => {
                     value="unmarried"
                     checked={formData.maritalStatus === 'unmarried'}
                     onChange={handleChange}
-                    className="form-radio"
+                    className="form-radio selection:text-black checked:text-black outline:black"
                   />
                   <label htmlFor="unmarried" className="text-gray-700">
                     Unmarried
@@ -376,7 +378,7 @@ const UserDetailsForm = () => {
                       name="hasKids"
                       checked={formData.hasKids}
                       onChange={handleChange}
-                      className="form-checkbox"
+                      className="form-checkbox checked:text-black"
                     />
                     <label htmlFor="hasKids" className="text-gray-700">
                       Yes
@@ -412,7 +414,7 @@ const UserDetailsForm = () => {
                               htmlFor={`kidBirthday${index}`}
                               className="block text-gray-700 text-sm font-bold mb-2"
                             >
-                              Birthday 
+                              Birthday
                             </label>
                             <input
                               type="date"
@@ -430,7 +432,7 @@ const UserDetailsForm = () => {
                     <button
                       type="button"
                       onClick={addKid}
-                      className=" bg-fuchsia-50 hover:bg-fuchsia-100 text-black px-2 py-2  mt-2 border border-brown shadow-md transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center"
+                      className="  hover:bg-black hover:text-white text-black px-2 py-2  mt-2 border border-black rounded transition duration-300 flex items-center justify-center"
                     >
                       {' '}
                       <FaChild className="mr-2" />
