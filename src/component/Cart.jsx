@@ -23,8 +23,16 @@ const Cart = () => {
   const [pincode, setPincode] = useState('')
   const [checkPincode, setCheckPincode] = useState('')
   const [showOverlay, setShowOverlay] = useState(false)
-  const [saveAddress, setSaveAddress] = useState(false)
+  const [showCheckoutOverlay, setShowCheckoutOverlay] = useState(false)
   const [addressDetails, setAddressDetails] = useState({
+    houseNumber: '',
+    street: '',
+    nearby: '',
+    city: '',
+    pincode: '',
+    state: '',
+  })
+  const [addressCheckoutDetails, setAddressCheckoutDetails] = useState({
     houseNumber: '',
     street: '',
     nearby: '',
@@ -42,6 +50,8 @@ const Cart = () => {
   const productImages = `${import.meta.env.VITE_APP_SUBCAT_URL}`
   const [note, setNote] = useState('')
   const [orderFor, setOrderFor] = useState('')
+  const { categories } = useSelector((state) => state.category)
+  const { specials } = useSelector((state) => state.special)
 
   useEffect(() => {
     dispatch(getCart())
@@ -65,7 +75,6 @@ const Cart = () => {
 
   useEffect(() => {
     if (pincode) {
-      console.log(pincode);
       dispatch(getLocationCart({ pincode }))
     }else {
       dispatch(clearLocation())
@@ -104,11 +113,15 @@ const Cart = () => {
 
   const addNewAddress = () => {
     setShowOverlay(true)
-    console.log('Edit address')
   }
 
   const closeOverlay = () => {
-    setShowOverlay(false)
+    if (showOverlay){
+      setShowOverlay(false)
+    }
+    if (showCheckoutOverlay){
+      setShowCheckoutOverlay(false)
+    }
   }
   const handleCheckboxChange = () => {
     setTermsChecked(!termsChecked)
@@ -125,19 +138,6 @@ const Cart = () => {
     setShowOverlay(false)
   }
 
-  // const handleSaveAddress = async () => {
-  //   if (addressDetails.pincode === pincode){
-  //     await dispatch(updateAddress({...addressDetails}))
-  //   }else{
-  //     await dispatch(addAddress({...addressDetails}))
-  //     setPincode(addressDetails.pincode)
-  //   }
-  //   await dispatch(getLocationCart({pincode: addressDetails.pincode}))
-  // }
-
-  const handleCheckout = () => {
-    cart.addressDetails = { ...addressDetails }
-  }
 
   const handleMessage = (e) => {
     setNote(e.target.value)
@@ -149,6 +149,29 @@ const Cart = () => {
 
   const handleClear = () => {
     dispatch(deleteCart())
+  }
+
+  const handleCheckoutChange = (e) => {
+    const { name, value } = e.target
+    setAddressCheckoutDetails({
+      ...addressCheckoutDetails,
+      [name]: value,
+    })
+  }
+
+  const handleSubmit = () => {
+    setAddressCheckoutDetails({
+      ...cart.addressDetails
+    })
+    for (let key in cart.addressDetails){
+      if (cart.addressDetails[key] == ''){
+        console.log(key);
+        setShowCheckoutOverlay(true)
+      }
+    }
+    console.log({...cart, addressDetails:addressCheckoutDetails});
+    // Apply checkout dispatch
+
   }
 
   return (
@@ -329,7 +352,6 @@ const Cart = () => {
                     Rs. {cart?.finalPrice}
                   </span>
                 </div>
-                {console.log(location)}
                 <div className="flex justify-between">
                   <span className="font-semibold text-sm uppercase">
                     Shipping Charge:
@@ -397,7 +419,7 @@ const Cart = () => {
             Continue Shopping
           </a>
           {cart && <a
-            className="flex font-semibold text-indigo-600 text-sm mt-10"
+            className="flex font-semibold text-indigo-600 text-sm mt-10 hover:cursor-pointer"
             onClick={handleClear}
           >
             Clear Cart
@@ -425,7 +447,7 @@ const Cart = () => {
             />
             <button
               onClick={checkShippingAvailability}
-              className="ml-2 bg-indigo-500 font-semibold hover:bg-indigo-600 py-2 px-4 text-sm text-white uppercase"
+              className="ml-2 hover:border hover:border-black hover:text-black hover:bg-transparent bg-black duration-300 p-2 text-white"
             >
               <AiOutlineCheck />
             </button>
@@ -478,7 +500,7 @@ const Cart = () => {
 
               <div className="flex justify-end">
                 <button
-                  class="ml-auto px-4 py-1 border border-separate text-black hover:border-black "
+                  class="ml-auto px-4 py-1 hover:border hover:border-black hover:text-black hover:bg-transparent bg-black duration-300 p-2 text-white "
                   onClick={handleSave}
                 >
                   Save
@@ -600,8 +622,6 @@ const Cart = () => {
             </div>
           )}
 
-          <p className="mt-2 text-green-600">{error}</p>
-
           <div className="mt-6 flex">
             <input
               type="checkbox"
@@ -616,18 +636,110 @@ const Cart = () => {
               Returns Policy.
             </label>
           </div>
-          <button className=" hover:border hover:border-black hover:text-black hover:bg-transparent bg-black duration-300 p-2 text-white py-3 text-sm  uppercase w-full mt-6">
+          <button className=" hover:border hover:border-black hover:text-black hover:bg-white bg-black duration-300 p-2 text-white py-3 text-sm  uppercase w-full mt-6 disabled:cursor-not-allowed" disabled={!termsChecked || error} onClick={handleSubmit}>
             Checkout
           </button>
+          {<p className="mt-2 text-red-600">{error}</p>}
+          {showCheckoutOverlay && (
+            <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
+              <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-filter backdrop-blur-sm"></div>
+              <div className="w-full md:w-[50%] bg-white flex flex-col justify-center rounded-lg shadow-lg relative h-[95%] md:h-[65%] ">
+                <div className="absolute top-4 right-4 text-lg text-black cursor-pointer">
+                  <AiOutlineClose onClick={closeOverlay} />
+                </div>
+                {/* <div className=""> */}
+                <div className="w-full md:w-72 lg:w-2/3 m-auto">
+                  <div className="p-6">
+                    <input
+                      value={addressCheckoutDetails.houseNumber}
+                      onChange={handleCheckoutChange}
+                      type="text"
+                      name="houseNumber"
+                      className="w-full border border-gray-300 mb-3 px-3 py-2 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                      placeholder="Enter your house number"
+                      required
+                    />
+                    <input
+                      value={addressCheckoutDetails.street}
+                      onChange={handleCheckoutChange}
+                      type="text"
+                      name="street"
+                      className="w-full border border-gray-300 mb-3 px-3 py-2 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                      placeholder="Enter your street"
+                      required
+                    />
+                    <input
+                      value={addressCheckoutDetails.nearby}
+                      onChange={handleCheckoutChange}
+                      type="text"
+                      name="nearby"
+                      className="w-full border border-gray-300 mb-3 px-3 py-2 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                      placeholder="Enter your nearby"
+                      required
+                    />
+                    <input
+                      value={addressCheckoutDetails.pincode}
+                      onChange={handleCheckoutChange}
+                      type="text"
+                      name="pincode"
+                      className="w-full border border-gray-300 mb-3 px-3 py-2 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                      placeholder="Enter your pincode"
+                      required
+                    />
+                    <input
+                      value={addressCheckoutDetails.city}
+                      onChange={handleCheckoutChange}
+                      type="text"
+                      name="city"
+                      className="w-full border border-gray-300 mb-3 px-3 py-2 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                      placeholder="Enter your city"
+                      required
+                    />
+                    <input
+                      value={addressCheckoutDetails.state}
+                      onChange={handleCheckoutChange}
+                      type="text"
+                      name="state"
+                      className="w-full border border-gray-300 mb-3 px-3 py-2 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                      placeholder="Enter your state"
+                      required
+                    />
+
+                    <button
+                      onClick={handleSubmit}
+                      className="w-full hover:border hover:border-black hover:text-black hover:bg-transparent bg-black duration-300 p-2 text-white"
+                    >
+                      Checkout
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
     :
-    <div className="relative h-screen">
+    <div className="relative p-15">
       <p className="absolute top-4 left-1/2 transform -translate-x-1/2 text-xl font-bold text-gray-800">
         No items in cart
       </p>
+      <div className="pt-20">
+        {categories?.length > 3 
+          ? 
+          <ExploreSlider />
+          :
+          <ExploreFixed />
+        }
+        {specials?.length > 3 
+          ? 
+          <SpecialSlider />
+          :
+          <SpecialFixed />
+        }
+      </div>
     </div>
+
     }
     </>
   )

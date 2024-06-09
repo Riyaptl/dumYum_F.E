@@ -5,7 +5,6 @@ import { getOrders, getProducts } from '../slices/orderSlice';
 import { AiOutlineClose } from 'react-icons/ai';
 import image1 from "../assets/slider1.png";
 import { resolvePath, useNavigate } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom'
 
 
 const MyOrders = () => {
@@ -165,15 +164,15 @@ const MyOrders = () => {
                   </button>
                 </div>
                 <div className="">
-                  <div className="flex justify-between flex-wrap">
-                    <div className="mb-4">
-                      <h4 className="font-semibold">Shipping Address:</h4>
-                      {/* <p>
+                  <div className="mb-4">
+                    <h4 className="font-semibold">Shipping Address:</h4>
+                      <p>
                       {Object.values(selectedOrder.addressDetails)
                         .slice(0, -1)
                         .join(', ')}
-                    </p> */}
-                    </div>
+                    </p>
+                  </div>
+                  <div className="flex justify-between flex-wrap">
                     <div className="mb-4">
                       <h4 className="font-semibold">Payment Method:</h4>
                       <p>
