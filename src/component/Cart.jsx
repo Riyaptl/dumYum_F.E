@@ -14,6 +14,10 @@ import { addAddress, updateAddress, getAddress } from '../slices/customerSlice'
 import { ImCross } from 'react-icons/im'
 import { clearLocation, getLocationCart, whetherDeliver } from '../slices/locationSlice'
 import { useLocation } from 'react-router-dom'
+import ExploreSlider from './ExploreSlider'
+import ExploreFixed from './ExploreFixed'
+import SpecialSlider from './SpecialSlider'
+import SpecialFixed from './specialFixed'
 
 const Cart = () => {
   const [pincode, setPincode] = useState('')
@@ -393,7 +397,6 @@ const Cart = () => {
             Continue Shopping
           </a>
           {cart && <a
-            href="/"
             className="flex font-semibold text-indigo-600 text-sm mt-10"
             onClick={handleClear}
           >
@@ -624,7 +627,6 @@ const Cart = () => {
       <p className="absolute top-4 left-1/2 transform -translate-x-1/2 text-xl font-bold text-gray-800">
         No items in cart
       </p>
-      {/* Other components */}
     </div>
     }
     </>
