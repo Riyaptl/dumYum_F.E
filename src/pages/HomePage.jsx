@@ -16,6 +16,7 @@ import { getSpecials } from '../slices/specialSlice'
 import ExploreFixed from '../component/ExploreFixed'
 import SpecialFixed from '../component/specialFixed'
 import Announcement from '../component/Announcement'
+import Header from '../component/Header'
 
 const HomePage = () => {
   const [selectedPage, setSelectedPage] = useState('home')
@@ -60,7 +61,8 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen">
-      <Navbar />
+      {/* <Navbar /> */}
+      <Header />
       <div className="pt-18 ">
         <BannerSlider />
         <motion.div

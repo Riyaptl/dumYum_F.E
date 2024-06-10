@@ -257,8 +257,6 @@ const Navbar = () => {
 
             <Link to="/auth" className="md:py-1 md:px-2 ">
               <FaSignInAlt />
-              {/* <FaUser /> */}
-              {/* LogIn */}
             </Link>
           </div>
         )}

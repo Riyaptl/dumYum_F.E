@@ -81,7 +81,7 @@ const B2BConnectForm = () => {
           />
         </div>
         <div className="flex items-center justify-center">
-          <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:bg-gray-500 disabled:cursor-not-allowed" disabled={loading}>
+          <button type="submit" className=" border border-black hover:text-white hover:bg-black text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:bg-gray-500 disabled:cursor-not-allowed" disabled={loading}>
             Connect
           </button>
         </div>

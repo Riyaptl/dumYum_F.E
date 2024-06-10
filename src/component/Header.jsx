@@ -1,262 +1,295 @@
-import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getCategories } from '../slices/categorySlice'
 import { getSpecials } from '../slices/specialSlice'
 import { logOut } from '../slices/authSlice'
+import { TiArrowLeftThick, TiArrowRightThick } from 'react-icons/ti'
 import {
-  FaBars,
-  FaTimes,
-  FaUser,
   FaShoppingCart,
+  FaUser,
   FaSignOutAlt,
+  FaSignInAlt,
 } from 'react-icons/fa'
-// import logo from '../assets/Logo.svg';
-import logo from '../assets/final-02.png'
+import '../pages/Navbar.scss'
+import LogoSvg from './LogoSvg'
 
-const Header = () => {
+const Navbar = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { categories } = useSelector((state) => state.category)
   const { specials } = useSelector((state) => state.special)
   const { isLoggedIn } = useSelector((state) => state.auth)
-  const [showMenu, setShowMenu] = useState(false)
-  const [showProductsDropdown, setShowProductsDropdown] = useState(false)
-  const [showMeetTheMasterDropdown, setShowMeetTheMasterDropdown] = useState(
-    false,
-  )
+  const [isMenuActive, setIsMenuActive] = useState(false)
+  const [activeSubMenu, setActiveSubMenu] = useState(null)
   const [scrolled, setScrolled] = useState(false)
+  const [menuTitle, setMenuTitle] = useState('')
 
-  const jsonData = {
-    menuItems: [
-      { title: 'Home', url: '/' },
-      { title: 'Products', url: '#', isMegaMenu: true },
-      { title: 'About', url: '/' },
-      { title: 'B2B Connect', url: '/b2b' },
-    ],
-    megaMenu: {
-      imageUrl:
-        'https://fadzrinmadu.github.io/hosted-assets/responsive-mega-menu-and-dropdown-menu-using-only-html-and-css/img.jpg',
-      types: [{ title: 'Collections' }, { title: 'Our Specials' }],
-    },
-    feedback: {
-      imageUrl:
-        'https://fadzrinmadu.github.io/hosted-assets/responsive-mega-menu-and-dropdown-menu-using-only-html-and-css/img.jpg',
-      story: `For the past 5 to 6 years, I've been crafting chocolates,using my friends and family as taste-testers.Their enthusiastic feedback pushed me to refine flavors and turn my passion into a business. Inspired by my grandmother's spirit and supported by my family, especially my husband, I embarked on my journey as a chocolatier, naming my creations "DumYum" in honor of my grandmother - "Mrs.Damyanti Joshi". My hope is that everyone who tries my chocolates enjoys the taste and emotions of hand making in every bite..`,
-    },
+  const toggleMenu = () => {
+    setIsMenuActive(!isMenuActive)
+    setActiveSubMenu(null)
   }
+
+  const showSubMenu = (title, index) => {
+    setActiveSubMenu(index)
+    setMenuTitle(title)
+  }
+
+  const hideSubMenu = () => {
+    setActiveSubMenu(null)
+    setMenuTitle('')
+  }
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768 && isMenuActive) {
+        toggleMenu()
+      }
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [isMenuActive])
 
   useEffect(() => {
     dispatch(getCategories())
     dispatch(getSpecials())
-    window.addEventListener('scroll', handleScroll)
-    window.addEventListener('resize', handleResize)
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-      window.removeEventListener('resize', handleResize)
-    }
   }, [])
-
-  const handleScroll = () => {
-    setScrolled(window.scrollY > 0)
-  }
-
-  const handleResize = () => {
-    setShowMenu(false)
-    setShowProductsDropdown(false)
-    setShowMeetTheMasterDropdown(false)
-  }
 
   const handleLogout = () => {
     dispatch(logOut())
-  }
-
-  const handleMenuClick = () => {
-    setShowMenu(!showMenu)
-    setShowProductsDropdown(false)
-    setShowMeetTheMasterDropdown(false)
-  }
-
-  const handleProductsHover = () => {
-    setShowProductsDropdown(true)
-    setShowMeetTheMasterDropdown(false)
-  }
-
-  const handleMeetTheMasterHover = () => {
-    setShowMeetTheMasterDropdown(true)
-    setShowProductsDropdown(false)
-  }
-
-  const handleDropdownLeave = () => {
-    setShowProductsDropdown(false)
-    setShowMeetTheMasterDropdown(false)
+    navigate('/')
   }
 
   return (
-    <nav
-      className={`fixed top-0 left-0 w-full bg-white shadow-md z-50 ${
+    <div
+      className={`sticky top-0 left-0 w-full bg-white shadow-md z-50 py-4  mx-auto  ${
         scrolled ? 'scrolled' : ''
       }`}
     >
-      <div className="wrapper bg-white text-black md:px-4 py-5 flex justify-between items-center md:max-w-[90%] w-full mx-auto h-full">
-        <div className="w-32 hidden lg:block ">
-          <Link to="/">
-            <img src={logo} alt="logo" className="w-full " />
-          </Link>
-        </div>
-        <div className="flex items-center pl-4">
-          {showMenu ? (
-            <FaTimes
-              onClick={handleMenuClick}
-              className="btn close-btn text-gray-700 text-xl lg:hidden"
-            />
-          ) : (
-            <FaBars
-              onClick={handleMenuClick}
-              className="menu-icon cursor-pointer lg:hidden text-gray-700 text-xl"
-            />
-          )}
-          <ul
-            className={
-              showMenu
-                ? 'nav-links absolute top-full left-0 w-full bg-white p-4'
-                : 'nav-links hidden lg:flex'
-            }
-          >
-            {jsonData.menuItems.map((menuItem, index) => (
-              <li key={index} className="relative">
-                <Link
-                  to={menuItem.url}
-                  className="text-text-black  py-2 px-4 block"
-                  onMouseEnter={
-                    menuItem.title === 'Products'
-                      ? handleProductsHover
-                      : menuItem.title === 'Meet the Master'
-                      ? handleMeetTheMasterHover
-                      : null
-                  }
-                  onMouseLeave={handleDropdownLeave}
+      <div
+        className={` relative wrapper bg-white text-black md:px-1 md:py-${
+          scrolled ? '5' : '5'
+        } flex justify-between items-center md:w-[92%] w-full mx-auto h-full  max-w-[1800px] `}
+      >
+        <header className="header" id="header">
+          <nav className="navbar container">
+            <section className="navbar__left">
+              <Link to="/" className="brand">
+                <LogoSvg />
+              </Link>
+              <div className="burger" id="burger" onClick={toggleMenu}>
+                <span className="burger-line"></span>
+                <span className="burger-line"></span>
+                <span className="burger-line"></span>
+              </div>
+            </section>
+            <section className="navbar__center">
+              <span
+                className={`overlay ${isMenuActive ? 'is-active' : ''}`}
+                onClick={toggleMenu}  
+              ></span>
+              <div
+                className={`menu ${isMenuActive ? 'is-active' : ''}`}
+                id="menu"
+              >
+                <div
+                  className={`menu__header ${
+                    activeSubMenu !== null ? 'is-active' : ''
+                  }`}
                 >
-                  {menuItem.title}
-                </Link>
-                {menuItem.isMegaMenu && showProductsDropdown && (
-                  <div
-                    className="mega-box bg-white shadow-lg md:shadow-none absolute top-full left-0 right-0 md:transform md:translate-y-1/5 md:-translate-x-1/3 w-full lg:w-[60vw] mx-auto p-4 z-20"
-                    onMouseEnter={handleProductsHover}
-                    onMouseLeave={handleDropdownLeave}
-                  >
-                    <div className="content flex flex-row">
-                      <div className="hidden md:block md:w-1/2">
+                  <span className="menu__arrow" onClick={hideSubMenu}>
+                    <TiArrowLeftThick />
+                  </span>
+                  <span className="menu__title">{menuTitle}</span>
+                </div>
+                <ul className="menu__inner">
+                  <li className="menu__item">
+                    <Link to="/" className="menu__link">
+                      Home
+                    </Link>
+                  </li>
+                  <li className="menu__item menu__dropdown">
+                    <a
+                      href="#"
+                      className="menu__link"
+                      onClick={() => showSubMenu('Products', 0)}
+                    >
+                      Products
+                      <TiArrowRightThick />
+                    </a>
+                    <div
+                      className={`submenu megamenu__text ${
+                        activeSubMenu === 0 ? 'is-active' : ''
+                      }`}
+                    >
+                      <div className="submenu__inner">
                         <img
-                          src={jsonData.megaMenu.imageUrl}
-                          alt="Mega Menu Image"
-                          className="w-full h-auto"
+                          src="https://fadzrinmadu.github.io/hosted-assets/responsive-mega-menu-and-dropdown-menu-using-only-html-and-css/img.jpg"
+                          alt="Products image"
+                          className="Product_image"
                         />
                       </div>
-                      <div className="row w-full lg:w-1/2 flex justify-evenly ml-4">
-                        <div className="">
-                          <ul className="mega-links">
-                            <header className="text-lg font-semibold mb-2">
-                              {jsonData.megaMenu.types[0].title}
-                            </header>
-                            {categories.map((item, itemIndex) => (
-                              <li key={itemIndex}>
-                                <Link
-                                  to={`/${item._id}?page=category`}
-                                  className="text-gray-900 py-1 block"
-                                >
-                                  {item.name}
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                        <div className="">
-                          <ul className="mega-links">
-                            <header className="text-lg font-semibold mb-2">
-                              {jsonData.megaMenu.types[1].title}
-                            </header>
-                            {specials.map((item, itemIndex) => (
-                              <li key={itemIndex}>
-                                <Link
-                                  to={`/${item._id}?page=special`}
-                                  className="text-gray-900 hover:text-gray-500 py-1 block"
-                                >
-                                  {item.name}
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
+                      <div className="submenu__inner">
+                        <h4 className="submenu__title">Collections</h4>
+                        <ul className="submenu__list">
+                          {categories.map((item, itemIndex) => (
+                            <li key={itemIndex}>
+                              <Link
+                                to={`/${item._id}?page=category`}
+                                className="text-gray-900 py-1 block"
+                              >
+                                {item.name}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div className="submenu__inner">
+                        <h4 className="submenu__title">Our Specials</h4>
+                        <ul className="submenu__list">
+                          {specials.map((item, itemIndex) => (
+                            <li key={itemIndex}>
+                              <Link
+                                to={`/${item._id}?page=special`}
+                                className="text-gray-900 hover:text-gray-500 py-1 block"
+                              >
+                       {item.name}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
                       </div>
                     </div>
-                  </div>
-                )}
-              </li>
-            ))}
-            <li className="relative">
-              <button
-                onClick={handleMeetTheMasterHover}
-                className="text-black  py-2 px-4 block focus:outline-none"
-                onMouseEnter={handleMeetTheMasterHover}
-                onMouseLeave={handleDropdownLeave}
-              >
-                Meet the Master
-              </button>
-              {showMeetTheMasterDropdown && (
-                <div
-                  className="meet-chef-dropdown bg-white shadow-lg md:shadow-none absolute top-full md:right-14 md:transform md:translate-x-1/4 w-full lg:w-[60vw] mx-auto p-4 z-20"
-                  onMouseEnter={handleMeetTheMasterHover}
-                  onMouseLeave={handleDropdownLeave}
-                >
-                  <div className="content flex flex-wrap justify-between flex-col sm:flex-row">
-                    <div className="row lg:w-1/2 sm:w-1/3 hidden sm:block">
-                      <img
-                        src={jsonData.feedback.imageUrl}
-                        alt=""
-                        className="w-full h-auto"
-                      />
+                  </li>
+                  <li className="menu__item">
+                    <Link to="/about" className="menu__link">
+                      About
+                    </Link>
+                  </li>
+                  <li className="menu__item">
+                    <Link to="/b2b" className="menu__link">
+                      B2B Connect
+                    </Link>
+                  </li>
+
+                  <li className="menu__item menu__dropdown">
+                    <a
+                      href="#"
+                      className="menu__link"
+                      onClick={() => showSubMenu('Meet the Master', 1)}
+                    >
+                      Meet the Master
+                      <TiArrowRightThick />
+                    </a>
+                    <div
+                      className={`submenu megamenu__image ${
+                        activeSubMenu === 1 ? 'is-active' : ''
+                      }`}
+                    >
+                      <div className="submenu__inner meet-master">
+                        <a href="#">
+                          <img
+                            src="https://fadzrinmadu.github.io/hosted-assets/responsive-mega-menu-and-dropdown-menu-using-only-html-and-css/img.jpg"
+                            className="submenu-image"
+                            alt="meet the master "
+                          />
+                          <span className="submenu__title story-text">
+                            For the past 5 to 6 years, I've been crafting
+                            chocolates,using my friends and family as
+                            taste-testers.Their enthusiastic feedback pushed me
+                            to refine flavors and turn my passion into a
+                            business. Inspired by my grandmother's spirit and
+                            supported by my family, especially my husband, I
+                            embarked on my journey as a chocolatier, naming my
+                            creations "DumYum" in honor of my grandmother -
+                            "Mrs.Damyanti Joshi". My hope is that everyone who
+                            tries my chocolates enjoys the taste and emotions of
+                            hand making in every bite..
+                          </span>
+                        </a>
+                      </div>
                     </div>
-                    <div className="row md:w-1/2 w-full md:pl-4">
-                      <p className="text-gray-900">{jsonData.feedback.story}</p>
+                  </li>
+                  <li className="menu__item menu__dropdown">
+                    <a
+                      href="#"
+                      className="menu__link"
+                      onClick={() => showSubMenu('Account', 2)}
+                    >
+                      Account
+                      <TiArrowRightThick />
+                    </a>
+                    <div
+                      className={`submenu megamenu__normal ${
+                        activeSubMenu === 2 ? 'is-active' : ''
+                      }`}
+                    >
+                      <ul className="submenu__list">
+                        {isLoggedIn ? (
+                          // If logged in, render profile and logout
+                          <>
+                            <li>
+                              <a href="/profile">Profile</a>
+                            </li>
+                            <li>
+                              <a href="/logout" onClick={handleLogout}>
+                                Logout
+                              </a>
+                            </li>
+                          </>
+                        ) : (
+                          <>
+                            <li>
+                              <a href="/auth">Login</a>
+                            </li>
+                            <li>
+                              <a href="#">Register</a>
+                            </li>
+                          </>
+                        )}
+                        <li>
+                          <Link to="/cart">Cart</Link>
+                        </li>
+                        <li>
+                          <a href="#">Help</a>
+                        </li>
+                      </ul>
                     </div>
-                  </div>
+                  </li>
+                </ul>
+              </div>
+            </section>
+            <section className="navbar__right">
+              {isLoggedIn ? (
+                <div className="menu-right">
+                  <Link to="/cart" className='Cart'>
+                    <FaShoppingCart />
+                  </Link>
+                  <Link to="/profile" className="profile">
+                    <FaUser />
+                  </Link>
+                  <button onClick={handleLogout} className="signOut">
+                    <FaSignOutAlt />
+                  </button>
+                </div>
+              ) : (
+                <div className="menu-right">
+                  <Link to="/cart" className="Cart">
+                    <FaShoppingCart />
+                  </Link>
+                  <Link to="/auth" className="signIn">
+                    <FaSignInAlt />
+                  </Link>
                 </div>
               )}
-            </li>
-          </ul>
-        </div>
-        <div className="w-24 lg:hidden ">
-          <Link to="/">
-            <img src={logo} alt="logo" className="w-full" />
-          </Link>
-        </div>
-        {isLoggedIn ? (
-          <div className="menu-right flex items-center text-black text-md">
-            <Link to="/cart" className="py-1 pr-1 md:pr-2 ">
-              <FaShoppingCart />
-            </Link>
-            <Link to="/profile" className="py-1 px-1 md:px-2">
-              <FaUser />
-            </Link>
-            <button onClick={handleLogout} className="py-1 px-1 md:px-2">
-              {/* <FaSignOutAlt /> */}
-              LogOut
-            </button>
-          </div>
-        ) : (
-          <div className="menu-right flex items-center text-black text-lg">
-            <Link to="/cart" className=" ">
-              <FaShoppingCart />
-            </Link>
-            <Link to="/auth" className=" md:py-2 md:px-4 ">
-              {/* <FaUser /> */}
-              LogIn
-            </Link>
-          </div>
-        )}
+            </section>   
+           
+          </nav>
+        </header>
       </div>
-    </nav>
+    </div>
   )
 }
 
-export default Header
+export default Navbar
