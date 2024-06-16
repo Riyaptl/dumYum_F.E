@@ -105,7 +105,7 @@ const MyOrders = () => {
             </div>
 
             {productsDict[order._id] && productsDict[order._id].length > 0 ? (
-              <ul className="my-6">
+              <ul className="my-3">
                 {productsDict[order._id].map((product, index) => (
                   <div key={index}>
                     <div className="flex items-center mt-2 pl-3">
@@ -116,7 +116,7 @@ const MyOrders = () => {
                             : image1
                         }
                         alt="image"
-                        className="w-16 h-16 object-cover mr-4"
+                        className="w-16 h-16 object-cover mr-4 rounded-sm"
                         onClick={() => handleRepeat(product.subCategoryId)}
                       />
                       <div>
@@ -126,7 +126,7 @@ const MyOrders = () => {
                         <span>{product.subCategory.split('|')[0]}</span>
                       </div>
                     </div>
-                    <div className="flex justify-start pl-3 ">
+                    <div className="flex justify-start pl-3 pt-3 ">
                       <span className="block font-semibold">Quantity:</span>
                       <span className="ml-2">{product.quantity}</span>
                     </div>
@@ -138,7 +138,7 @@ const MyOrders = () => {
             )}
 
             <div className="flex justify-between bg-gray-50">
-              <div className="flex flex-wrap flex-col mt-4 p-4">
+              <div className="flex flex-wrap flex-col mt-2 p-2">
                 <span className="block font-semibold">Delivered On:</span>
                 <span>{order.closedAt || '-'}</span>
               </div>
@@ -166,11 +166,11 @@ const MyOrders = () => {
                 <div className="">
                   <div className="mb-4">
                     <h4 className="font-semibold">Shipping Address:</h4>
-                      <p>
+                      {/* <p>
                       {Object.values(selectedOrder.addressDetails)
                         .slice(0, -1)
                         .join(', ')}
-                    </p>
+                    </p> */}
                   </div>
                   <div className="flex justify-between flex-wrap">
                     <div className="mb-4">

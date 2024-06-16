@@ -57,10 +57,12 @@ const ShippingPolicy = () => {
     setActiveIndex(activeIndex === index ? null : index)
   }
   return (
-    <div className="bg-white min-h-screen flex justify-center items-center  ">
+    <div className="bg-gray-100 py-7 min-h-screen flex justify-center items-center  ">
       <div className="wrapper w-4/5 ">
         <div className="flex justify-center py-4">
-          <h1 className="text-3xl font-bold mb-8"> SHIPPING POLICY</h1>
+          <h1 className="cedarville-cursive-regular text-lg lg:text-3xl text-black font-cursive font-semibold mb-4 text-center">
+            Shipping Policy
+          </h1>
         </div>
 
         <div className="container">
@@ -72,7 +74,7 @@ const ShippingPolicy = () => {
             >
               <div className="flex items-center justify-between py-4 px-6 cursor-pointer">
                 <span
-                  className="text-lg font-semibold"
+                  className="text-lg font-medium text-[#333]"
                   dangerouslySetInnerHTML={{ __html: item.title }}
                 ></span>
                 <span
@@ -89,11 +91,11 @@ const ShippingPolicy = () => {
                 }`}
               >
                 <div
-                  className="answer p-6"
+                  className="answer px-6"
                   dangerouslySetInnerHTML={{ __html: item.content }}
                 ></div>
                 <div
-                  className="answer p-6 pt-0"
+                  className="answer px-6 pt-2"
                   dangerouslySetInnerHTML={{ __html: item.content2 }}
                 ></div>
               </div>

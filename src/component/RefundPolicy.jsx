@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
+import { BsPlusLg } from 'react-icons/bs'
 
 const RefundPolicy = () => {
-    const [activeIndex, setActiveIndex] = useState(null)
+  const [activeIndex, setActiveIndex] = useState(null)
   const RefundData = [
     {
       title: 'Our Commitment to Quality',
@@ -34,10 +35,12 @@ const RefundPolicy = () => {
     setActiveIndex(activeIndex === index ? null : index)
   }
   return (
-    <div className="bg-white min-h-screen flex justify-center ">
+    <div className="bg-gray-100 min-h-screen py-7 flex justify-center ">
       <div className="wrapper w-4/5 ">
         <div className="flex justify-center py-4">
-          <h1 className="text-3xl font-bold mb-8">REFUND POLICY</h1>
+          <h1 className="cedarville-cursive-regular text-lg lg:text-3xl text-black font-cursive font-semibold mb-4 text-center">
+            Refund Policy
+          </h1>
         </div>
 
         <div className="container">
@@ -49,15 +52,15 @@ const RefundPolicy = () => {
             >
               <div className="flex items-center justify-between py-4 px-6 cursor-pointer">
                 <span
-                  className="text-lg font-semibold"
+                  className="text-lg font-medium text-[#333]"
                   dangerouslySetInnerHTML={{ __html: item.title }}
                 ></span>
                 <span
-                  className={`icon ${
+                  className={`icon w-6 h-6 black ${
                     activeIndex === index ? 'transform rotate-45' : ''
                   }`}
                 >
-                  &#43;
+                  <BsPlusLg />
                 </span>
               </div>
               <div
@@ -66,7 +69,7 @@ const RefundPolicy = () => {
                 }`}
               >
                 <div
-                  className="answer p-6"
+                  className="answer px-6 text-[#666] font-[16px]"
                   dangerouslySetInnerHTML={{ __html: item.content }}
                 ></div>
               </div>

@@ -2,6 +2,9 @@ module.exports = {
   content: ['./index.html', './src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
+      border:{
+        'border-black':'1px solid black'
+      },
       top: {
         '2/5': '50%',
       },
@@ -35,8 +38,8 @@ module.exports = {
       },
     },
     fontFamily: {
-      Dancing:["Dancing Script","cursive"],
-      monospace:["ui-monospace","cursive"],
+      Dancing: ["Dancing Script", "cursive"],
+      monospace: ["ui-monospace", "cursive"],
     }
   },
   variants: {

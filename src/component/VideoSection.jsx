@@ -6,16 +6,12 @@ const VideoSection = () => {
 
   return (
     <div
-      className="relative w-full h-auto flex flex-col justify-center items-center py-16 bg-gray-100 "
+      className="relative w-full h-auto flex flex-col justify-center items-center py-8 bg-gray-100 "
     >
-      <div className="text-center   px-4 m-auto max-w-[1800px] mx-auto">
-        <h1 className="text-3xl md:text-6xl  mb-4 text-gray-800">
+      <div className="text-center  m-auto max-w-[1800px] mx-auto">
+        <h1 className="cedarville-cursive-regular text-lg lg:text-3xl text-black font-cursive font-semibold mb-6 text-center">
           Sweet Story
-        </h1>
-        <p className="text-sm md:text-lg mb-8 text-gray-600 ">
-          WITH OUR UNIQUE TAKE ON THE PROFESSION OF A PASTRY CHEF, WE
-          REVOLUTIONIZE EVEN THE MOST FIRMLY ENTRENCHED TRADITIONS.
-        </p>
+        </h1> 
         <div className="mr-auto ml-auto">
           <iframe
             className="  w-[290px] h-[164px] md:w-[725px] md:h-[410px] xl:w-[1344px] xl:h-[756px] rounded-lg shadow-lg mx-auto "

@@ -26,9 +26,9 @@ const B2BConnectForm = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white shadow-md rounded px-8 py-6">
-        <h2 className="text-xl mb-4 font-semibold text-center">B2B Connect</h2>
+    <div className="container mx-auto px-4 py-6 bg-gray-100">
+      <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white shadow-md rounded px-8 py-4">
+        <h2 className="cedarville-cursive-regular text-lg lg:text-2xl text-black font-cursive font-semibold mb-4 text-center">B2B Connect</h2>
         <div className="mb-4">
           <label htmlFor="businessName" className="block text-gray-700 text-sm font-bold mb-2">Name of Business:</label>
           <input

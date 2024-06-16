@@ -18,8 +18,8 @@ const Tagline = ({ tagline }) => {
       animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 100 }}
       transition={{ duration: 1 }}
     >
-      <div className="flex h-full max-w-3xl mx-auto text-center justify-center items-center flex-col py-8 font-sans">
-        <p className="text-xl font-medium  text-black">
+      <div className="flex h-full max-w-3xl mx-auto text-center justify-center items-center flex-col py-8 ">
+        <p className="text-xl   text-black">
           {tagline.split('\n').map((line, index) => (
             <span key={index}>
               {line}

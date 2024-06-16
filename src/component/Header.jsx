@@ -13,6 +13,8 @@ import {
 } from 'react-icons/fa'
 import '../pages/Navbar.scss'
 import LogoSvg from './LogoSvg'
+import { IoIosArrowDown } from 'react-icons/io'
+import { MdArrowDropDown } from 'react-icons/md'
 
 const Navbar = () => {
   const dispatch = useDispatch()
@@ -87,7 +89,7 @@ const Navbar = () => {
             <section className="navbar__center">
               <span
                 className={`overlay ${isMenuActive ? 'is-active' : ''}`}
-                onClick={toggleMenu}  
+                onClick={toggleMenu}
               ></span>
               <div
                 className={`menu ${isMenuActive ? 'is-active' : ''}`}
@@ -116,21 +118,23 @@ const Navbar = () => {
                       onClick={() => showSubMenu('Products', 0)}
                     >
                       Products
-                      <TiArrowRightThick />
+                      <i>
+                        <MdArrowDropDown />
+                      </i>
                     </a>
                     <div
                       className={`submenu megamenu__text ${
                         activeSubMenu === 0 ? 'is-active' : ''
                       }`}
                     >
-                      <div className="submenu__inner">
+                      <div className="submenu_inner_image ">
                         <img
                           src="https://fadzrinmadu.github.io/hosted-assets/responsive-mega-menu-and-dropdown-menu-using-only-html-and-css/img.jpg"
                           alt="Products image"
                           className="Product_image"
                         />
                       </div>
-                      <div className="submenu__inner">
+                      <div className="submenu__inner collection">
                         <h4 className="submenu__title">Collections</h4>
                         <ul className="submenu__list">
                           {categories.map((item, itemIndex) => (
@@ -145,7 +149,7 @@ const Navbar = () => {
                           ))}
                         </ul>
                       </div>
-                      <div className="submenu__inner">
+                      <div className="submenu__inner specials">
                         <h4 className="submenu__title">Our Specials</h4>
                         <ul className="submenu__list">
                           {specials.map((item, itemIndex) => (
@@ -154,7 +158,7 @@ const Navbar = () => {
                                 to={`/${item._id}?page=special`}
                                 className="text-gray-900 hover:text-gray-500 py-1 block"
                               >
-                       {item.name}
+                                {item.name}
                               </Link>
                             </li>
                           ))}
@@ -180,7 +184,9 @@ const Navbar = () => {
                       onClick={() => showSubMenu('Meet the Master', 1)}
                     >
                       Meet the Master
-                      <TiArrowRightThick />
+                      <i>
+                        <MdArrowDropDown />
+                      </i>
                     </a>
                     <div
                       className={`submenu megamenu__image ${
@@ -196,7 +202,7 @@ const Navbar = () => {
                           />
                           <span className="submenu__title story-text">
                             For the past 5 to 6 years, I've been crafting
-                            chocolates,using my friends and family as
+                            chocolates, using my friends and family as
                             taste-testers.Their enthusiastic feedback pushed me
                             to refine flavors and turn my passion into a
                             business. Inspired by my grandmother's spirit and
@@ -218,7 +224,9 @@ const Navbar = () => {
                       onClick={() => showSubMenu('Account', 2)}
                     >
                       Account
-                      <TiArrowRightThick />
+                      <i>
+                        <MdArrowDropDown />
+                      </i>
                     </a>
                     <div
                       className={`submenu megamenu__normal ${
@@ -263,7 +271,7 @@ const Navbar = () => {
             <section className="navbar__right">
               {isLoggedIn ? (
                 <div className="menu-right">
-                  <Link to="/cart" className='Cart'>
+                  <Link to="/cart" className="Cart">
                     <FaShoppingCart />
                   </Link>
                   <Link to="/profile" className="profile">
@@ -283,8 +291,7 @@ const Navbar = () => {
                   </Link>
                 </div>
               )}
-            </section>   
-           
+            </section>
           </nav>
         </header>
       </div>
