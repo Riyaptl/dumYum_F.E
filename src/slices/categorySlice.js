@@ -13,6 +13,7 @@ export const getCategories = createAsyncThunk(
     "categories/getCategories",
     async () => {
         const res = await categoryService.getAll();
+     
         return res.data;
     }
 )

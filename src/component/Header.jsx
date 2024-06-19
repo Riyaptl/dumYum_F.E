@@ -12,7 +12,8 @@ import {
   FaSignInAlt,
 } from 'react-icons/fa'
 import '../pages/Navbar.scss'
-import LogoSvg from './LogoSvg'
+import svgLogo from '../assets/Logo.png'
+// import LogoSvg from './LogoSvg'
 import { IoIosArrowDown } from 'react-icons/io'
 import { MdArrowDropDown } from 'react-icons/md'
 
@@ -78,7 +79,8 @@ const Navbar = () => {
           <nav className="navbar container">
             <section className="navbar__left">
               <Link to="/" className="brand">
-                <LogoSvg />
+                {/* <LogoSvg /> */}
+                <img src={svgLogo} alt="DumYum" className="logo"  />
               </Link>
               <div className="burger" id="burger" onClick={toggleMenu}>
                 <span className="burger-line"></span>
